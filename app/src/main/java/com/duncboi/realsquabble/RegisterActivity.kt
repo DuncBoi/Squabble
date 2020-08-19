@@ -1,66 +1,53 @@
 package com.duncboi.realsquabble
 
-import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.provider.ContactsContract
-import android.util.Log
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintSet
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_email.*
 import kotlinx.android.synthetic.main.activity_register.*
-import kotlinx.android.synthetic.main.activity_username.*
-import java.util.regex.Pattern
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class RegisterActivity : AppCompatActivity() {
-    private var bruhPassword: String = ""
+    private var onClickPassword: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-        passwordError2.run()
+
+        runLivePasswordCheck()
+
         b_password_next.setOnClickListener {
-            handler2.removeCallbacks(passwordError2)
+
+            stopLivePasswordCheck = true
             val password = et_password.text.toString().trim()
-            bruhPassword = password
-            if (password.isEmpty() || password.length < 6 || !isValidPassword(password)){
-                passwordError.run()}
-            else {
-                handler2.removeCallbacks(passwordError2)
-                handler.removeCallbacks(passwordError)
-                val bruh = Intent(this@RegisterActivity, EmailVerification::class.java)
-                val username = intent.getStringExtra("username")
-                val email = intent.getStringExtra("email")
-                bruh.putExtra("username", username)
-                bruh.putExtra("email", email)
-                bruh.putExtra("password", password)
-                startActivity(bruh)
-            }
+            onClickPassword = password
+
+            if (password.isEmpty() || password.length < 6 || !isValidPassword(password)) runOnClickPasswordCheck()
+            else startNextActivity(password)
+
         }
         tv_password_previous.setOnClickListener {
            finish()
         }
 
-        //action bar
-//        var actionBar = supportActionBar
-//        actionBar?.setTitle("Create Account")
-//        actionBar?.setDisplayHomeAsUpEnabled(true)
-//        actionBar?.setDisplayShowHomeEnabled(true)
-
-        //Register button clicked
-//        b_password_next.setOnClickListener {
-//            //performRegister()
-//        }
        }
+
+    private fun startNextActivity(password: String) {
+        val emailVerificationIntent = Intent(this@RegisterActivity, EmailVerification::class.java)
+        val username = intent.getStringExtra("username")
+        val email = intent.getStringExtra("email")
+        emailVerificationIntent.putExtra("username", username)
+        emailVerificationIntent.putExtra("email", email)
+        emailVerificationIntent.putExtra("password", password)
+        startActivity(emailVerificationIntent)
+    }
+
     private fun closeKeyboard(){
         val view = this.currentFocus
         if (view != null){
@@ -92,80 +79,93 @@ class RegisterActivity : AppCompatActivity() {
         defaultSet.connect(b_password_next.id, ConstraintSet.TOP, tv_password_error.id, ConstraintSet.BOTTOM, 12)
         defaultSet.applyTo(passwordLayout)
     }
-    val handler = Handler()
-    var stopped = false
-    private val passwordError: Runnable = object : Runnable {
-        override fun run() {
-            try{
-                val passwordUpdated = et_password.text.toString().trim()
-                val isPasswordMix = isValidPassword(passwordUpdated)
-                if(passwordUpdated.isEmpty()){
-                    errorConstraint()
-                    iv_password_x.bringToFront()
-                    iv_password_x.alpha = 1F
-                    iv_password_checkmark.alpha = 0F
-                    tv_password_error.setTextColor(Color.parseColor("#eb4b4b"))
-                    tv_password_error.setText("Please enter a password")
-                }
-                else if (passwordUpdated.length < 6){
-                    if(bruhPassword != passwordUpdated) {
-                        bruhPassword = "*"
-                        defaultConstraint()
-                        iv_password_x.alpha = 0F
-                    }
-                    else {
-                        errorConstraint()
-                        iv_password_x.bringToFront()
-                        iv_password_checkmark.alpha = 0F
-                        iv_password_x.alpha = 1F
-                        tv_password_error.setTextColor(Color.parseColor("#eb4b4b"))
-                        tv_password_error.setText("Password must be at least 6 characters")
-                    }
-                }
-                else if(!isPasswordMix){
-                    errorConstraint()
-                    iv_password_x.bringToFront()
-                    iv_password_x.alpha = 1F
-                    iv_password_checkmark.alpha = 0F
-                    tv_password_error.setTextColor(Color.parseColor("#eb4b4b"))
-                    tv_password_error.setText("Password must contain a mix of letters and numbers")
-                }
-                else{
-                    errorConstraint()
-                    tv_password_error.setText("Stong password")
-                    tv_password_error.setTextColor(Color.parseColor("#38c96d"))
-                    iv_password_checkmark.bringToFront()
-                    iv_password_checkmark.alpha = 1F
-                    iv_password_x.alpha = 0F
-                }
-            }
-            finally {
-                if(!stopped){
-                    handler.postDelayed(this, 100)} }
-        }}
-    val handler2 = Handler()
-    var stopped2 = false
-    private val passwordError2: Runnable = object : Runnable {
-        override fun run() {
-            try {
-                val passwordUpdated = et_password.text.toString().trim()
-                if (passwordUpdated.length >= 6 && isValidPassword(passwordUpdated)){
-                    errorConstraint()
-                    tv_password_error.setText("Stong password")
-                    tv_password_error.setTextColor(Color.parseColor("#38c96d"))
-                    iv_password_checkmark.bringToFront()
-                    iv_password_checkmark.alpha = 1F
-                    iv_password_x.alpha = 0F
-                }
-                else{
+
+    //stop functions
+    private var stopOnClickPasswordCheck = false
+    private var stopLivePasswordCheck = false
+
+    //runner functions
+    private fun runOnClickPasswordCheck(){
+        CoroutineScope(Dispatchers.Main).launch {
+            onClickPasswordCheckLogic()}
+    }
+    private fun runLivePasswordCheck(){
+        CoroutineScope(Dispatchers.Main).launch {
+            livePasswordCheckLogic()}
+    }
+
+    private suspend fun onClickPasswordCheckLogic(){
+        while (!stopOnClickPasswordCheck){
+            delay (100)
+
+            val password = et_password.text.toString().trim()
+            val isPasswordMix = isValidPassword(password)
+
+            if(password.isEmpty()) onPasswordEmpty()
+
+            else if (password.length < 6){
+
+                if(onClickPassword != password) {
+                    onClickPassword = "*"
                     defaultConstraint()
                 }
+                else onPasswordShort()
+
             }
-                finally {
-                    if(!stopped2){
-                        handler2.postDelayed(this, 100)} }
+            else if(!isPasswordMix) {
+                if(onClickPassword != password) {
+                    onClickPassword = "*"
+                    defaultConstraint()
+                }
+                else{
+                onPasswordNotStrong()}
             }
-            }
+
+            else onStrongPassword()
+
+
+        }
+    }
+
+    private fun onPasswordNotStrong() {
+        errorConstraint()
+        iv_password_x.bringToFront()
+        iv_password_x.alpha = 1F
+        iv_password_checkmark.alpha = 0F
+        tv_password_error.setTextColor(Color.parseColor("#eb4b4b"))
+        tv_password_error.setText("Password must contain a mix of letters and numbers")
+    }
+
+    private fun onPasswordShort() {
+        errorConstraint()
+        iv_password_x.bringToFront()
+        iv_password_checkmark.alpha = 0F
+        iv_password_x.alpha = 1F
+        tv_password_error.setTextColor(Color.parseColor("#eb4b4b"))
+        tv_password_error.setText("Password must be at least 6 characters")
+    }
+
+    private suspend fun livePasswordCheckLogic(){
+
+        while (!stopLivePasswordCheck) {
+            delay (100)
+            val password = et_password.text.toString().trim()
+
+            if (password.length >= 6 && isValidPassword(password)) onStrongPassword()
+            else defaultConstraint()
+
+        }
+    }
+
+    private fun onStrongPassword() {
+        errorConstraint()
+        tv_password_error.setText("Stong password")
+        tv_password_error.setTextColor(Color.parseColor("#38c96d"))
+        iv_password_checkmark.bringToFront()
+        iv_password_checkmark.alpha = 1F
+        iv_password_x.alpha = 0F
+    }
+
     fun isValidPassword(password: String?) : Boolean {
         password?.let {
             val passwordPattern = "^(?=.*[0-9])(?=.*[A-Za-zÀ-ȕ]).{6,20}$"
@@ -175,15 +175,15 @@ class RegisterActivity : AppCompatActivity() {
         } ?: return false
     }
 
-
+private fun RegisterActivity.onPasswordEmpty() {
+    errorConstraint()
+    iv_password_x.bringToFront()
+    iv_password_x.alpha = 1F
+    iv_password_checkmark.alpha = 0F
+    tv_password_error.setTextColor(Color.parseColor("#eb4b4b"))
+    tv_password_error.setText("Please enter a password")
 }
-
-//        //Already Have an Account? Button Clicked
-//        tv_alreadyhaveaccount.setOnClickListener {
-//            val intent = Intent(this, LoginActivity::class.java)
-//            startActivity(intent)
-//            finish()
-//    }
+}
 //        //select photo button clicked
 //        b_selectphoto.setOnClickListener {
 //            Log.d("Main Activity", "Try to show photo selector")
@@ -218,50 +218,7 @@ class RegisterActivity : AppCompatActivity() {
 //            b_selectphoto.alpha =0f
 //        }
 //
-//    //firebase registration
-//    private fun performRegister(){
-//        val progressDialog = ProgressDialog(this)
-//        progressDialog.setMessage("Registering User")
-//
-//        progressDialog.show()
-//        val username = et_login_email.text.toString().trim()
-//        val email= et_email.text.toString().trim()
-//        val password = et_password.text.toString()
-//
-//        if (username.isEmpty()){
-//            Toast.makeText(this, "Please enter username", Toast.LENGTH_SHORT).show()
-//            progressDialog.dismiss()
-//            return
-//        }
-//        if (email.isEmpty()){
-//            Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show()
-//            progressDialog.dismiss()
-//            return
-//        }
-//        if(password.isEmpty()){
-//            Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show()
-//            progressDialog.dismiss()
-//            return
-//        }
-//        Log.d("RegisterActivity", "Email is " + email)
-//        Log.d("RegisterActivity", "Password is $password")
-//        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password)
-//            .addOnCompleteListener{
-//                if(!it.isSuccessful){
-//                    return@addOnCompleteListener
-//                    progressDialog.dismiss()
-//                    Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT)
-//                }
-//            else{
-//                    Log.d("RegisterActivity", "Successfully created user with uid: ${it.result?.user?.uid}")
-//                    progressDialog.dismiss()
-//                    val user = auth.currentUser
-//                    Toast.makeText(this, "Registered\n ${user?.getEmail()}", Toast.LENGTH_SHORT).show()
-//                    val intent = Intent(this, ProfileActivity::class.java)
-//                    startActivity(intent)
-//                    finish()
-//                }
-//                uploadImageToFirebaseStorage()
+
 //            }
 //            .addOnFailureListener {
 //                Log.d("Main", "Failed to create user ${it.message}")
@@ -290,23 +247,3 @@ class RegisterActivity : AppCompatActivity() {
 //            }
 //    }
 //
-//    //firebase database user uploading
-//    private fun saveUserToFirebaseDatabase(profileImageUrl: String){
-//        val uid = FirebaseAuth.getInstance().uid ?: ""
-//        val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
-//
-//        val user = User(uid, et_login_email.text.toString(), profileImageUrl)
-//        ref.setValue(user)
-//            .addOnSuccessListener {
-//                Log.d("RegisterActivity", "saved user to Firebase database")
-//
-//                val intent = Intent(this, ProfileActivity::class.java)
-//                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
-//                startActivity(intent)
-//            }
-//            .addOnFailureListener{
-//                Log.d("RegisterActivity", "failure saving user to firebase Database")
-//            }
-//    }
-//}
-//class User(val uid: String, val username: String, val profileImageUrl: String)

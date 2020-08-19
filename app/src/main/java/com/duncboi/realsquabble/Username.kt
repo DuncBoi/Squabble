@@ -1,23 +1,29 @@
 package com.duncboi.realsquabble
 
+import android.app.Dialog
+import android.app.PendingIntent.getActivity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
+import android.view.View
+import android.widget.ProgressBar
+import android.widget.RelativeLayout
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import com.duncboi.realsquabble.util.UsernameHelper
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_username.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
-import java.lang.Runnable
-import java.util.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 
 class Username : AppCompatActivity() {
 
@@ -31,7 +37,7 @@ class Username : AppCompatActivity() {
         b_username_next.setOnClickListener {
             val username = et_username_username.text.toString().trim()
             val lowerCaseUsername = username.toLowerCase()
-            val usernameQuery = FirebaseDatabase.getInstance().getReference().child("Users").orderByChild("username").equalTo(lowerCaseUsername)
+            val usernameQuery = FirebaseDatabase.getInstance().reference.child("Users").orderByChild("username").equalTo(lowerCaseUsername)
             usernameQuery.addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if(snapshot.childrenCount <= 0 && lowerCaseUsername.isNotEmpty() && lowerCaseUsername.length <= 20){
@@ -162,7 +168,7 @@ class Username : AppCompatActivity() {
         iv_username_checkmark.alpha = 0F
         iv_username_x.alpha = 1F
         tv_username_username_taken.setTextColor(Color.parseColor("#eb4b4b"))
-        tv_username_username_taken.setText("Username length too long")
+        tv_username_username_taken.text = "Username length too long"
     }
     private fun onUsernameAvailable(username: String) {
         errorConstraint()

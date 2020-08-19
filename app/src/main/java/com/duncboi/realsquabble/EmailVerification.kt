@@ -12,6 +12,7 @@ import android.util.Patterns
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
 import com.google.firebase.auth.FirebaseAuth
@@ -22,12 +23,12 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_email_verification.*
+import kotlinx.android.synthetic.main.waiting_for_verification.*
+import kotlinx.coroutines.*
+import java.lang.Runnable
 
 class EmailVerification : AppCompatActivity() {
     override fun onStop() {
-        handler2.removeCallbacks(emailVerificationValid)
-        handler3.removeCallbacks(validRunnable)
-        handler.removeCallbacks(emailVerificationRunnable)
         val user = FirebaseAuth.getInstance().currentUser
         super.onStop()
         if(user != null){
@@ -36,33 +37,35 @@ class EmailVerification : AppCompatActivity() {
         }
     }
             }
+
     private var progressDialog2: ProgressDialog? = null
     private var isEmailVerified:Boolean = false
-    private var bruhEmail: String = ""
+    private var onClickEmail: String = ""
     private lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_email_verification)
-        emailVerificationValid.run()
+
+        defaultConstraint()
+        runLiveEmailCheck()
         auth = Firebase.auth
+
         val email2 = intent.getStringExtra("email")
         val username = intent.getStringExtra("username")
         val password = intent.getStringExtra("password")
         et_email_verification_email.setText(email2)
+
         b_email_verification_send.setOnClickListener {
+            stopLiveEmailCheck = true
             val email = et_email_verification_email.text.toString().trim()
-            bruhEmail = email
-            handler2.removeCallbacks(emailVerificationValid)
-            val usernameQuery2 = FirebaseDatabase.getInstance().getReference().child("Users").orderByChild("email").equalTo(email)
-            usernameQuery2.addListenerForSingleValueEvent(object : ValueEventListener {
+            onClickEmail = email
+            val emailQuery = FirebaseDatabase.getInstance().getReference().child("Users").orderByChild("email").equalTo(email)
+            emailQuery.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
                     TODO("Not yet implemented")
                 }
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if(isEmailValid(email) && snapshot.childrenCount <= 0){
-                        handler2.removeCallbacks(emailVerificationValid)
-                        handler3.removeCallbacks(validRunnable)
-                        handler.removeCallbacks(emailVerificationRunnable)
                         if (password != null) {
                             FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password).addOnCompleteListener {
                                 if (it.isSuccessful){
@@ -77,10 +80,10 @@ class EmailVerification : AppCompatActivity() {
                     }
                     else{
                         if (!isEmailValid(email)){
-                            validRunnable.run()
+                            runOnClickEmailCheck()
                         }
                         else{
-                            emailVerificationValid.run()
+                            runLiveEmailCheck()
                         }}
                 }
             })}
@@ -91,27 +94,24 @@ class EmailVerification : AppCompatActivity() {
 
     private fun sendEmailVerification(){
         Log.d("Emailverification", "send")
-        val progressDialog = ProgressDialog(this)
-        progressDialog.setMessage("Sending Verification Email")
-        progressDialog.setCancelable(false)
-        progressDialog.show()
+        val builder =  AlertDialog.Builder(this)
+        builder.setView(R.layout.sending_email)
+        val dialog = builder.create()
+        dialog.show()
         val user = FirebaseAuth.getInstance().currentUser
         user?.sendEmailVerification()?.addOnCompleteListener {
             if(it.isSuccessful) {
-                progressDialog.dismiss()
-                progressDialog2 = ProgressDialog(this)
-                progressDialog2?.setTitle("Waiting for Verification")
-                progressDialog2?.setMessage("Check your inbox for a link to verify your email address")
-                progressDialog2?.setCancelable(false)
-                progressDialog2!!.setButton(
-                    DialogInterface.BUTTON_NEGATIVE, "Cancel", DialogInterface.OnClickListener { _, _ ->
-                        user.delete()
-                        progressDialog2!!.dismiss() //dismiss dialog
-                    })
-                progressDialog2?.show()
-                startRepeating()
+                dialog.dismiss()
+                val waitingForVerificationBuilder =  AlertDialog.Builder(this)
+                waitingForVerificationBuilder.setView(R.layout.waiting_for_verification)
+                val waitingForVerificationDialog = waitingForVerificationBuilder.create()
+//                        stopOnClickEmailCheck = false
+//                        runOnClickEmailCheck()
+//                        user.delete()
+                waitingForVerificationDialog.show()
             }
-        }?.addOnFailureListener {
+            startRepeating()
+            }?.addOnFailureListener {
             errorConstraint()
             Toast.makeText(this, "Email Failed to Send", Toast.LENGTH_SHORT).show()
             tv_email_verification_error.setText("${it.message}")
@@ -206,76 +206,104 @@ class EmailVerification : AppCompatActivity() {
     fun isEmailValid(email: CharSequence?): Boolean {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
-    val handler2 = Handler()
-    var stopped2 = false
-    private val emailVerificationValid: Runnable = object : Runnable {
-        override fun run() {
-            try{
-                handler.removeCallbacks(validRunnable)
-                val email = et_email_verification_email.text.toString().trim()
-                val usernameQuery = FirebaseDatabase.getInstance().getReference().child("Users").orderByChild("email").equalTo(email)
-                usernameQuery.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        if(snapshot.childrenCount > 0){
-                            iv_email_verification_x.bringToFront()
-                            iv_email_verification_x.alpha = 1F
-                            iv_email_verification_checkmark.alpha = 0f
-                            errorConstraint()
-                            tv_email_verification_error.setText("Email linked to an existing account")
-                            tv_email_verification_error.setTextColor(Color.parseColor("#eb4b4b"))
-                        }
-                        else if (!isEmailValid(email)){
-                            defaultConstraint()
-                        }
-                        else{
-                            defaultConstraint()
-                            iv_email_verification_checkmark.bringToFront()
-                            iv_email_verification_checkmark.alpha = 1F
-                            iv_email_verification_x.alpha = 0F
-                        }
+
+    //stop functions
+    private var stopOnClickEmailCheck = false
+    private var stopLiveEmailCheck = false
+
+    //runner functions
+    private fun runOnClickEmailCheck(){
+        CoroutineScope(Dispatchers.Main).launch {
+            onClickEmailCheckLogic()}
+    }
+    private fun runLiveEmailCheck(){
+        CoroutineScope(Dispatchers.Main).launch {
+            liveEmailCheck()}
+    }
+    private suspend fun liveEmailCheck() {
+        withContext(Dispatchers.IO){
+            liveEmailCheckLogic()
+        }
+    }
+
+    private suspend fun onClickEmailCheckLogic(){
+        while (!stopOnClickEmailCheck){
+            delay(200)
+            val email = et_email_verification_email.text.toString().trim()
+            if (!isEmailValid(email)){
+                if(email.isEmpty()) onEmailEmpty()
+                else {
+                    //MAKES ERROR MESSAGE SAY EMAIL FORMATTED INCORRECTLY ONLY WHEN HITTING NEXT FOR THE FIRST TIME JUST ERASE THE IF STATEMENT TO CHANGE BACK (KEEP THE ELSE CONTENT BUT DELETE ELSE())
+                    if(email != onClickEmail){
+                        onClickEmail = "*"
+                        defaultConstraint()
                     }
-                    override fun onCancelled(error: DatabaseError) {
-                        TODO("Not yet implemented")
-                    }})}
-            finally {
-                if(!stopped2){
-                    handler2.postDelayed(this, 200)} } }
-            }
-    val handler3 = Handler()
-    var stopped3 = false
-    private val validRunnable: Runnable = object : Runnable {
-        override fun run() {
-            try{
-                handler2.removeCallbacks(emailVerificationValid)
-                val email2 = et_email_verification_email.text.toString().trim()
-                if (!isEmailValid(email2)){
-                    if(email2.isEmpty()){
-                        errorConstraint()
-                        iv_email_verification_x.bringToFront()
-                        iv_email_verification_x.alpha = 1F
-                        tv_email_verification_error.setText("Please enter email")
-                        tv_email_verification_error.setTextColor(Color.parseColor("#eb4b4b"))
-                    }
-                    else {
-                        //MAKES ERROR MESSAGE SAY EMAIL FORMATTED INCORRECTLY ONLY WHEN HITTING NEXT FOR THE FIRST TIME JUST ERASE THE IF STATEMENT TO CHANGE BACK (KEEP THE ELSE CONTENT BUT DELETE ELSE())
-                        if(email2 != bruhEmail){
-                            bruhEmail = "*"
-                            defaultConstraint()
-                        }
-                        else{
-                            iv_email_verification_x.bringToFront()
-                            iv_email_verification_x.alpha = 1F
-                            errorConstraint()
-                            tv_email_verification_error.setText("Email formatted incorrectly")
-                            tv_email_verification_error.setTextColor(Color.parseColor("#eb4b4b"))}
-                    }
+                    else onIncorrectEmailFormat()
                 }
-                else{
-                    emailVerificationValid.run()
-                } }
-            finally {
-                if(!stopped3){
-                    handler3.postDelayed(this, 100)} } } }
+            }
+            else{
+                stopOnClickEmailCheck = true
+                stopLiveEmailCheck = false
+                runLiveEmailCheck()
+            }
+        }
+    }
 
+    private suspend fun liveEmailCheckLogic(){
+        while(!stopLiveEmailCheck){
+            delay(200)
 
+            val email = et_email_verification_email.text.toString().trim()
+            val lowerCaseEmail = email.toLowerCase()
+
+            if (!isEmailValid(lowerCaseEmail)) defaultMainThread()
+            else{
+                val emailQuery = FirebaseDatabase.getInstance().getReference().child("Users").orderByChild("email").equalTo(lowerCaseEmail)
+                emailQuery.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+
+                        if(snapshot.childrenCount > 0) { onEmailAlreadyExists() }
+                        else onEmailDoesntExist()
+
+                    }
+                    override fun onCancelled(error: DatabaseError) {}
+                })
+            }}
+    }
+
+    private suspend fun defaultMainThread() {
+        withContext(Dispatchers.Main) {
+            defaultConstraint()
+        }
+    }
+    private fun onEmailDoesntExist() {
+        defaultConstraint()
+        iv_email_verification_checkmark.bringToFront()
+        iv_email_verification_checkmark.alpha = 1F
+        iv_email_verification_x.alpha = 0F
+    }
+    private fun onIncorrectEmailFormat() {
+        errorConstraint()
+        iv_email_verification_x.bringToFront()
+        iv_email_verification_x.alpha = 1F
+        iv_email_verification_checkmark.alpha = 0F
+        tv_email_verification_error.setText("Email formatted incorrectly")
+        tv_email_verification_error.setTextColor(Color.parseColor("#eb4b4b"))
+    }
+    private fun onEmailEmpty() {
+        errorConstraint()
+        iv_email_verification_x.bringToFront()
+        iv_email_verification_x.alpha = 1F
+        iv_email_verification_checkmark.alpha = 0F
+        tv_email_verification_error.setText("Please enter email")
+        tv_email_verification_error.setTextColor(Color.parseColor("#eb4b4b"))
+    }
+    private fun onEmailAlreadyExists() {
+        errorConstraint()
+        iv_email_verification_x.bringToFront()
+        iv_email_verification_x.alpha = 1F
+        iv_email_verification_checkmark.alpha = 0f
+        tv_email_verification_error.setText("Email linked to an existing account")
+        tv_email_verification_error.setTextColor(Color.parseColor("#eb4b4b"))
+    }
 }
