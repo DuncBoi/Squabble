@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/username_constraint"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cobalt"
+    tools:context=".Username">
+
+    <TextView
+        android:id="@+id/tv_username_username_taken"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="32dp"
+        android:fontFamily="@font/arimo"
+        android:textAlignment="viewStart"
+        android:textColor="@color/green"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_username_username" />
+
+    <TextView
+        android:id="@+id/tv_username_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/arimo"
+        android:text="Make a Username"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_username_please_enter_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/arimo"
+        android:text="Username must be no more than 20 characters long.                   (Any capital letters will be lowercased)"
+        android:textAlignment="center"
+        android:textColor="@color/navy"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_username_header" />
+
+    <Button
+        android:id="@+id/b_username_next"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/rounded_button"
+        android:fontFamily="@font/arimo"
+        android:text="Next"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_username_username_taken" />
+
+    <TextView
+        android:id="@+id/tv_username_previous"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:text="Previous"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/b_username_next" />
+
+    <EditText
+        android:id="@+id/et_username_username"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/rounded_edittext_register_login"
+        android:ems="10"
+        android:hint="Username"
+        android:paddingLeft="16dp"
+        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_."
+        android:inputType="textFilter"
+        android:maxLength="21"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_username_please_enter_username" />
+
+    <ImageView
+        android:id="@+id/iv_username_checkmark"
+        android:layout_width="37dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="300dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:alpha="0"
+        app:layout_constraintBottom_toBottomOf="@+id/et_username_username"
+        app:layout_constraintEnd_toEndOf="@+id/et_username_username"
+        app:layout_constraintStart_toStartOf="@+id/et_username_username"
+        app:layout_constraintTop_toTopOf="@+id/et_username_username"
+        app:srcCompat="@drawable/checkmark" />
+
+    <ImageView
+        android:id="@+id/iv_username_x"
+        android:layout_width="37dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="300dp"
+        android:layout_marginEnd="8dp"
+        android:alpha="0"
+        app:layout_constraintBottom_toBottomOf="@+id/et_username_username"
+        app:layout_constraintEnd_toEndOf="@+id/et_username_username"
+        app:layout_constraintStart_toStartOf="@+id/et_username_username"
+        app:layout_constraintTop_toTopOf="@+id/et_username_username"
+        app:srcCompat="@drawable/x" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

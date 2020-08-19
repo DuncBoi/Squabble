@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "372812999648",
+    "firebase_url": "https://realsquabble.firebaseio.com",
+    "project_id": "realsquabble",
+    "storage_bucket": "realsquabble.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:372812999648:android:a3ea146bb6f6776e715985",
+        "android_client_info": {
+          "package_name": "com.duncboi.realsquabble"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "372812999648-7c0v3s7kkeiutiv5vhib75fekjqjun6c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnxMmjDeKugnKytXKvVGhd2gTCiI3TB6s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "372812999648-7c0v3s7kkeiutiv5vhib75fekjqjun6c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

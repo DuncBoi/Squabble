@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cobalt"
+    tools:context=".EmailVerification">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/email_verification_constraint"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/cobalt"
+        tools:context=".Email"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-16dp">
+
+        <ImageView
+            android:id="@+id/iv_email_verification_checkmark"
+            android:layout_width="37dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="300dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:alpha="0"
+            app:layout_constraintBottom_toBottomOf="@+id/et_email_verification_email"
+            app:layout_constraintEnd_toEndOf="@+id/et_email_verification_email"
+            app:layout_constraintStart_toStartOf="@+id/et_email_verification_email"
+            app:layout_constraintTop_toTopOf="@+id/et_email_verification_email"
+            app:srcCompat="@drawable/checkmark" />
+
+        <ImageView
+            android:id="@+id/iv_email_verification_x"
+            android:layout_width="37dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="300dp"
+            android:layout_marginEnd="8dp"
+            android:alpha="0"
+            app:layout_constraintBottom_toBottomOf="@+id/et_email_verification_email"
+            app:layout_constraintEnd_toEndOf="@+id/et_email_verification_email"
+            app:layout_constraintStart_toStartOf="@+id/et_email_verification_email"
+            app:layout_constraintTop_toTopOf="@+id/et_email_verification_email"
+            app:srcCompat="@drawable/x" />
+
+        <TextView
+            android:id="@+id/tv_email_verification_error"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="48dp"
+            android:fontFamily="@font/arimo"
+            android:textAlignment="viewStart"
+            android:textColor="@color/red"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_email_verification_email" />
+
+        <TextView
+            android:id="@+id/tv_email_verification_please_verify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/arimo"
+            android:text="Please verify your email address or change the email "
+            android:textColor="@color/navy"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_email_verification_header" />
+
+        <Button
+            android:id="@+id/b_email_verification_send"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/rounded_button"
+            android:fontFamily="@font/arimo"
+            android:text="Send Email"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_email_verification_error" />
+
+        <TextView
+            android:id="@+id/tv_email_verification_previous"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="Previous"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/b_email_verification_send" />
+
+        <TextView
+            android:id="@+id/tv_email_verification_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/arimo"
+            android:text="Email Verification"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/et_email_verification_email"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/rounded_edittext_register_login"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            android:paddingLeft="16dp"
+            android:paddingRight="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_email_verification_please_verify" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
