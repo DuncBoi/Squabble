@@ -15,6 +15,18 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class RegisterActivity : AppCompatActivity() {
+
+    override fun onStart() {
+        super.onStart()
+        stopLivePasswordCheck = false
+        runLivePasswordCheck()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        stopLivePasswordCheck = true
+        stopOnClickPasswordCheck = true
+    }
     private var onClickPassword: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +36,7 @@ class RegisterActivity : AppCompatActivity() {
         runLivePasswordCheck()
 
         b_password_next.setOnClickListener {
-
+            stopOnClickPasswordCheck = false
             stopLivePasswordCheck = true
             val password = et_password.text.toString().trim()
             onClickPassword = password

@@ -27,11 +27,19 @@ import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
 
 class LoginActivity: AppCompatActivity() {
+    override fun onStart() {
+        super.onStart()
+        val email = intent.getStringExtra("fpEmail")
+        if (email != null){
+            et_login_email.setText(email)
+        }
+    }
     private lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        defaultConstraint()
         emailAndUsernameLiveChecker.run()
 
         auth = Firebase.auth
@@ -58,7 +66,9 @@ class LoginActivity: AppCompatActivity() {
     }
 
     private fun showRecoverPasswordDialog() {
+        val email = et_login_email.text.toString().trim()
         val intent = Intent(this, ForgetPassword::class.java)
+        intent.putExtra("emailToReset", email)
         startActivity(intent)
     }
 

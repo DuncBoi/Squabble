@@ -18,4 +18,16 @@ class LifecycleObserver: LifecycleObserver {
     fun onResumeEvent(){
         Log.i("Moose", "onResume")
     }
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    fun onStopEvent(){
+        Log.i("Moose", "onStop")
+    }
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    fun onPauseEvent(){
+        Log.i("Moose", "onPause")
+    }
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun onDestroyEvent(){
+        Log.i("Moose", "onDestroy")
+    }
 }

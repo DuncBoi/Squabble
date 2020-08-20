@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Patterns
+import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
@@ -21,12 +22,16 @@ import kotlinx.coroutines.Dispatchers.Main
 class Email : AppCompatActivity() {
     private var onClickEmail: String = ""
 
+    override fun onStart() {
+        super.onStart()
+        stopLiveEmailCheck = false
+        runLiveEmailCheck()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_email)
 
         defaultConstraint()
-        runLiveEmailCheck()
 
         //On Click Listeners
         b_email_phonelink.setOnClickListener {
@@ -87,6 +92,7 @@ class Email : AppCompatActivity() {
 
     //constraint functions
     private fun defaultConstraint(){
+        tv_email_login.visibility = View.INVISIBLE
         val set = ConstraintSet()
         val emailLayout = email_constraint
         iv_email_x.alpha = 0F
@@ -99,6 +105,7 @@ class Email : AppCompatActivity() {
         set.applyTo(emailLayout)
     }
     private fun errorConstraint(){
+        tv_email_login.visibility = View.INVISIBLE
         val defaultSet = ConstraintSet()
         val emailLayout = email_constraint
         defaultSet.clone(emailLayout)
@@ -203,6 +210,13 @@ class Email : AppCompatActivity() {
     }
     private fun onEmailAlreadyExists() {
         errorConstraint()
+        tv_email_login.visibility = View.VISIBLE
+        tv_email_login.setOnClickListener {
+            val email = et_email_email.text.toString()
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.putExtra("fpEmail", email)
+            startActivity(intent)
+        }
         iv_email_x.bringToFront()
         iv_email_x.alpha = 1F
         iv_email_checkmark.alpha = 0f

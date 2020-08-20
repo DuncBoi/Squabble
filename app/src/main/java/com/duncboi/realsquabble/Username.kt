@@ -27,12 +27,23 @@ import kotlinx.coroutines.withContext
 
 class Username : AppCompatActivity() {
 
+    override fun onStart() {
+        super.onStart()
+        stopLiveUsernameCheck = false
+        runLiveUsernameCheck()}
+
+    override fun onStop() {
+        super.onStop()
+        stopOnClickUsernameCheck = true
+        stopLiveUsernameCheck = true
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_username)
-        lifecycle.addObserver(LifecycleObserver())
 
-        runLiveUsernameCheck()
+        lifecycle.addObserver(LifecycleObserver())
+        defaultConstraint()
 
         b_username_next.setOnClickListener {
             val username = et_username_username.text.toString().trim()
@@ -56,11 +67,6 @@ class Username : AppCompatActivity() {
         tv_username_previous.setOnClickListener {
             finish()
         }
-    }
-    override fun onStop() {
-        super.onStop()
-        stopOnClickUsernameCheck = true
-        stopLiveUsernameCheck = true
     }
 
     //Constraint Layouts

@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_email.*
 import kotlinx.android.synthetic.main.activity_email_verification.*
 import kotlinx.android.synthetic.main.waiting_for_verification.view.*
 import kotlinx.coroutines.*
@@ -42,6 +43,12 @@ class EmailVerification : AppCompatActivity() {
     }
             }
 
+    override fun onStart() {
+        super.onStart()
+        stopLiveEmailCheck = false
+        runLiveEmailCheck()
+    }
+
     private var onClickEmail: String = ""
     private lateinit var auth: FirebaseAuth
 
@@ -50,7 +57,6 @@ class EmailVerification : AppCompatActivity() {
         setContentView(R.layout.activity_email_verification)
 
         defaultConstraint()
-        runLiveEmailCheck()
         auth = Firebase.auth
 
         val email = intent.getStringExtra("email")
@@ -315,6 +321,13 @@ class EmailVerification : AppCompatActivity() {
         tv_email_verification_error.setTextColor(Color.parseColor("#eb4b4b"))
     }
     private fun onEmailAlreadyExists() {
+        tv_email_verification_login.visibility = View.VISIBLE
+        tv_email_verification_login.setOnClickListener {
+            val email = et_email_verification_email.text.toString()
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.putExtra("fpEmail", email)
+            startActivity(intent)
+        }
         errorConstraint()
         iv_email_verification_x.bringToFront()
         iv_email_verification_x.alpha = 1F
