@@ -20,6 +20,7 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
+        defaultConstraint()
         runLivePasswordCheck()
 
         b_password_next.setOnClickListener {

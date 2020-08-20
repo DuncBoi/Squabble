@@ -1,14 +1,12 @@
 package com.duncboi.realsquabble
 
-import android.app.ProgressDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
 import android.util.Patterns
+import android.view.LayoutInflater
+import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -23,12 +21,18 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_email_verification.*
-import kotlinx.android.synthetic.main.waiting_for_verification.*
+import kotlinx.android.synthetic.main.waiting_for_verification.view.*
 import kotlinx.coroutines.*
-import java.lang.Runnable
+import kotlinx.coroutines.Dispatchers.IO
+import java.lang.Exception
 
 class EmailVerification : AppCompatActivity() {
+
     override fun onStop() {
+        stopOnClickEmailCheck = true
+        stopLiveEmailCheck = true
+        stopEmailVerificationWaiter = true
+
         val user = FirebaseAuth.getInstance().currentUser
         super.onStop()
         if(user != null){
@@ -38,10 +42,9 @@ class EmailVerification : AppCompatActivity() {
     }
             }
 
-    private var progressDialog2: ProgressDialog? = null
-    private var isEmailVerified:Boolean = false
     private var onClickEmail: String = ""
     private lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_email_verification)
@@ -50,31 +53,38 @@ class EmailVerification : AppCompatActivity() {
         runLiveEmailCheck()
         auth = Firebase.auth
 
-        val email2 = intent.getStringExtra("email")
-        val username = intent.getStringExtra("username")
+        val email = intent.getStringExtra("email")
         val password = intent.getStringExtra("password")
-        et_email_verification_email.setText(email2)
+        et_email_verification_email.setText(email)
 
         b_email_verification_send.setOnClickListener {
+
             stopLiveEmailCheck = true
+            stopOnClickEmailCheck = false
             val email = et_email_verification_email.text.toString().trim()
             onClickEmail = email
+
             val emailQuery = FirebaseDatabase.getInstance().getReference().child("Users").orderByChild("email").equalTo(email)
             emailQuery.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
-                }
+                override fun onCancelled(error: DatabaseError) {}
                 override fun onDataChange(snapshot: DataSnapshot) {
+
                     if(isEmailValid(email) && snapshot.childrenCount <= 0){
+
                         if (password != null) {
+
+                            val sendingEmailDialog = sendingEmailDialog()
+                            sendingEmailDialog.show()
+
                             FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password).addOnCompleteListener {
+
                                 if (it.isSuccessful){
-                                    sendEmailVerification()
+                                    sendEmailVerification(sendingEmailDialog)
                                 }
+
                             }.addOnFailureListener {
-                                iv_email_verification_x.alpha = 1F
-                                errorConstraint()
-                                tv_email_verification_error.setText("${it.message}")
+                                sendingEmailDialog.dismiss()
+                                onCreateUserFailed(it)
                             }
                         }
                     }
@@ -83,6 +93,8 @@ class EmailVerification : AppCompatActivity() {
                             runOnClickEmailCheck()
                         }
                         else{
+                            stopLiveEmailCheck = false
+                            stopOnClickEmailCheck = true
                             runLiveEmailCheck()
                         }}
                 }
@@ -90,41 +102,63 @@ class EmailVerification : AppCompatActivity() {
         tv_email_verification_previous.setOnClickListener {
             finish()
         }
+
     }
 
-    private fun sendEmailVerification(){
-        Log.d("Emailverification", "send")
-        val builder =  AlertDialog.Builder(this)
-        builder.setView(R.layout.sending_email)
-        val dialog = builder.create()
-        dialog.show()
+    //dialog functions
+    private fun sendingEmailDialog(): AlertDialog {
+        val sendingEmail = AlertDialog.Builder(this@EmailVerification)
+        sendingEmail.setView(R.layout.sending_email)
+        sendingEmail.setCancelable(false)
+        val sendingEmailDialog = sendingEmail.create()
+        return sendingEmailDialog
+    }
+    private fun waitingForVerificationDialog(): Pair<View, AlertDialog> {
+        val waitingForVerificationBuilder = AlertDialog.Builder(this)
+        val view = LayoutInflater.from(this).inflate(R.layout.waiting_for_verification, null)
+        waitingForVerificationBuilder.setView(view)
+        waitingForVerificationBuilder.setCancelable(false)
+        val waitingForVerificationDialog = waitingForVerificationBuilder.create()
+        return Pair(view, waitingForVerificationDialog)
+    }
+
+    //logic functions
+    private fun sendEmailVerification(sendingEmailDialog: AlertDialog){
         val user = FirebaseAuth.getInstance().currentUser
         user?.sendEmailVerification()?.addOnCompleteListener {
             if(it.isSuccessful) {
-                dialog.dismiss()
-                val waitingForVerificationBuilder =  AlertDialog.Builder(this)
-                waitingForVerificationBuilder.setView(R.layout.waiting_for_verification)
-                val waitingForVerificationDialog = waitingForVerificationBuilder.create()
-//                        stopOnClickEmailCheck = false
-//                        runOnClickEmailCheck()
-//                        user.delete()
+
+                sendingEmailDialog.dismiss()
+                val (view, waitingForVerificationDialog) = waitingForVerificationDialog()
                 waitingForVerificationDialog.show()
+
+                view.b_waiting_for_verification_cancel.setOnClickListener {
+
+                    stopOnClickEmailCheck = false
+                    runOnClickEmailCheck()
+                    user.delete()
+                    waitingForVerificationDialog.dismiss()
+
+                }
             }
-            startRepeating()
-            }?.addOnFailureListener {
-            errorConstraint()
-            Toast.makeText(this, "Email Failed to Send", Toast.LENGTH_SHORT).show()
-            tv_email_verification_error.setText("${it.message}")
+
+            val email = et_email_verification_email.text.toString().trim()
+            val username = intent.getStringExtra("username")
+            val password = intent.getStringExtra("password")
+            runEmailVerificationWaiter(email, password, username)
+
+        }?.addOnFailureListener {
+            sendingEmailDialog.dismiss()
+            onEmailVerificationFailedToSend(it)
         }
     }
-    private fun closeKeyboard(){
-        val view = this.currentFocus
-        if (view != null){
-            val hideMe = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            hideMe.hideSoftInputFromWindow(view.windowToken, 0)
-        }
-        //else
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+    fun isEmailValid(email: CharSequence?): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+    private fun startNextActivity() {
+        val intent = Intent(this, Political::class.java)
+        startActivity(intent)
+        finish()
     }
     private fun uploadUserToDatabase(user: com.duncboi.realsquabble.UserInfo){
         val ref = FirebaseDatabase.getInstance().getReference("Users")
@@ -132,9 +166,8 @@ class EmailVerification : AppCompatActivity() {
         if (userId != null) {
             ref.child(userId).setValue(user).addOnCompleteListener {
                 if (it.isSuccessful){
-                val intent = Intent(this, Political::class.java)
-                startActivity(intent)
-                finish()}
+                    startNextActivity()
+                }
             }.addOnFailureListener {
                 errorConstraint()
                 tv_email_verification_error.setText("${it.message}")
@@ -143,43 +176,15 @@ class EmailVerification : AppCompatActivity() {
 
     }
 
-    fun startRepeating() {
-        emailVerificationRunnable.run()
-    }
-    fun stopRepeating(){
-        handler.removeCallbacks(emailVerificationRunnable)
-    }
-    var stopped = false
-    val handler = Handler()
-    private val emailVerificationRunnable: Runnable = object : Runnable {
-        override fun run() {
-            try{
-                bruh()
-                }
-            finally {
-                if(!stopped){
-                handler.postDelayed(this, 2000)}
-            }
-            }
+    //constraint functions
+    private fun closeKeyboard(){
+        val view = this.currentFocus
+        if (view != null){
+            val hideMe = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            hideMe.hideSoftInputFromWindow(view.windowToken, 0)
         }
-    public fun bruh(){
-        val email = et_email_verification_email.text.toString().trim()
-        val username = intent.getStringExtra("username")
-        val password = intent.getStringExtra("password")
-        Log.d("EmailVerification", "Runnable Waiting")
-        val mAuth = FirebaseAuth.getInstance()
-        mAuth.getCurrentUser()?.reload()
-        val uid = mAuth.currentUser?.uid
-        val emailVerified = mAuth.currentUser?.isEmailVerified
-        val userInfo = UserInfo(username, email, password, uid)
-        if(emailVerified == true){
-            stopped = true
-            Toast.makeText(this, "Email Verified", Toast.LENGTH_LONG).show();
-            progressDialog2?.dismiss()
-            handler.removeCallbacks(emailVerificationRunnable)
-            uploadUserToDatabase(userInfo)
-            Log.d("EmailVerification", "bruh")
-        }
+        //else
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
     }
     private fun defaultConstraint(){
         val set = ConstraintSet()
@@ -203,13 +208,11 @@ class EmailVerification : AppCompatActivity() {
         defaultSet.connect(b_email_verification_send.id, ConstraintSet.TOP, tv_email_verification_error.id, ConstraintSet.BOTTOM, 12)
         defaultSet.applyTo(email_verification_constraint)
     }
-    fun isEmailValid(email: CharSequence?): Boolean {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    }
 
     //stop functions
     private var stopOnClickEmailCheck = false
     private var stopLiveEmailCheck = false
+    private var stopEmailVerificationWaiter = false
 
     //runner functions
     private fun runOnClickEmailCheck(){
@@ -217,15 +220,16 @@ class EmailVerification : AppCompatActivity() {
             onClickEmailCheckLogic()}
     }
     private fun runLiveEmailCheck(){
-        CoroutineScope(Dispatchers.Main).launch {
-            liveEmailCheck()}
+        CoroutineScope(IO).launch {
+            liveEmailCheckLogic()}
     }
-    private suspend fun liveEmailCheck() {
-        withContext(Dispatchers.IO){
-            liveEmailCheckLogic()
+    private fun runEmailVerificationWaiter(email: String, password: String?, username: String?) {
+        CoroutineScope(IO).launch {
+            emailVerificationWaiterLogic(email,password,username)
         }
     }
 
+    //coroutine logic
     private suspend fun onClickEmailCheckLogic(){
         while (!stopOnClickEmailCheck){
             delay(200)
@@ -248,7 +252,6 @@ class EmailVerification : AppCompatActivity() {
             }
         }
     }
-
     private suspend fun liveEmailCheckLogic(){
         while(!stopLiveEmailCheck){
             delay(200)
@@ -270,7 +273,20 @@ class EmailVerification : AppCompatActivity() {
                 })
             }}
     }
+    private suspend fun emailVerificationWaiterLogic(email: String, password: String?, username: String?) {
+        while(!stopEmailVerificationWaiter){
+            delay(200)
+            val mAuth = FirebaseAuth.getInstance()
+            mAuth.getCurrentUser()?.reload()
+            val uid = mAuth.currentUser?.uid
+            val emailVerified = mAuth.currentUser?.isEmailVerified
+            val userInfo = UserInfo(username, email, password, uid)
+            if(emailVerified == true){
+                stopEmailVerificationWaiter = true
+                uploadUserToDatabase(userInfo)}
+        }}
 
+    //error functions
     private suspend fun defaultMainThread() {
         withContext(Dispatchers.Main) {
             defaultConstraint()
@@ -305,5 +321,21 @@ class EmailVerification : AppCompatActivity() {
         iv_email_verification_checkmark.alpha = 0f
         tv_email_verification_error.setText("Email linked to an existing account")
         tv_email_verification_error.setTextColor(Color.parseColor("#eb4b4b"))
+    }
+    private fun onEmailVerificationFailedToSend(it: Exception) {
+        stopOnClickEmailCheck = false
+        runOnClickEmailCheck()
+        closeKeyboard()
+        errorConstraint()
+        Toast.makeText(this, "Email Failed to Send", Toast.LENGTH_SHORT).show()
+        tv_email_verification_error.setText("${it.message}")
+    }
+    private fun onCreateUserFailed(it: Exception) {
+        stopOnClickEmailCheck = false
+        runOnClickEmailCheck()
+        closeKeyboard()
+        iv_email_verification_x.alpha = 1F
+        errorConstraint()
+        tv_email_verification_error.text = "${it.message}"
     }
 }
