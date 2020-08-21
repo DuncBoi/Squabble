@@ -170,7 +170,7 @@ class EmailVerification : AppCompatActivity() {
         val ref = FirebaseDatabase.getInstance().getReference("Users")
         val userId = ref.push().key
         if (userId != null) {
-            ref.child(userId).setValue(user).addOnCompleteListener {
+            ref.child(user.username!!).setValue(user).addOnCompleteListener {
                 if (it.isSuccessful){
                     startNextActivity()
                 }

@@ -1,16 +1,9 @@
 package com.duncboi.realsquabble
 
-import android.app.Dialog
-import android.app.PendingIntent.getActivity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.view.View
-import android.widget.ProgressBar
-import android.widget.RelativeLayout
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

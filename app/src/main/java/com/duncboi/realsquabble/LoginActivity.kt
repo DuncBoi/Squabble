@@ -1,15 +1,14 @@
 package com.duncboi.realsquabble
 
 import android.app.AlertDialog
-import android.app.ProgressDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
-import android.text.TextUtils
 import android.util.Log
+import android.util.Patterns
+import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -22,9 +21,10 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_email_verification.*
+import kotlinx.android.synthetic.main.activity_email.*
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.Main
 
 class LoginActivity: AppCompatActivity() {
     override fun onStart() {
@@ -40,14 +40,44 @@ class LoginActivity: AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         defaultConstraint()
-        emailAndUsernameLiveChecker.run()
+        runLiveUsernameCheck()
 
         auth = Firebase.auth
 
         //Login Button Clicked
         b_login_login.setOnClickListener {
-            loginUser()
-
+            val username = et_login_email.text.toString().trim()
+            val password = et_login_password.text.toString().trim()
+            val lowerCaseUsername = username.toLowerCase()
+            if(!isEmailValid(lowerCaseUsername)){
+            val usernameQuery = FirebaseDatabase.getInstance().reference.child("Users").orderByChild("username").equalTo(lowerCaseUsername)
+                usernameQuery.addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if(snapshot.childrenCount > 0 && lowerCaseUsername.isNotEmpty() && lowerCaseUsername.length <= 50){
+                        val email = snapshot.child("$lowerCaseUsername").child("email").value.toString()
+                        loginUser(email, password)
+                    }
+                    else{
+                        stopOnClickUsernameCheck = false
+                        runOnClickUsernameCheck()
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })}
+            else{
+                val emailQuery = FirebaseDatabase.getInstance().reference.child("Users").orderByChild("email").equalTo(lowerCaseUsername)
+                emailQuery.addListenerForSingleValueEvent(object : ValueEventListener{
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if(snapshot.childrenCount > 0 && lowerCaseUsername.length <= 50){
+                            loginUser(lowerCaseUsername, password)
+                        }
+                    }
+                        override fun onCancelled(error: DatabaseError) {
+                            TODO("Not yet implemented")
+                        }
+                    })}
         }
 
         //Dont have an account? button clicked
@@ -83,37 +113,12 @@ class LoginActivity: AppCompatActivity() {
 //    }
 
     //firebase user login
-    private fun loginUser() {
-        val email = et_login_email.text.toString().trim()
-        val password = et_login_password.text.toString()
-        if (TextUtils.isEmpty(email)) {
-            closeKeyboard()
-        }
-        if (TextUtils.isEmpty(password)) {
-            closeKeyboard()
-        }
-        when {
-            TextUtils.isEmpty(email) -> Toast.makeText(
-                this,
-                "Email is required",
-                Toast.LENGTH_SHORT
-            ).show()
-            TextUtils.isEmpty(password) -> Toast.makeText(
-                this,
-                "Password is required",
-                Toast.LENGTH_SHORT
-            ).show()
-
-            else -> {
-                val progressDialog = ProgressDialog(this@LoginActivity)
-                progressDialog.setMessage("Logging In")
-                progressDialog.setCanceledOnTouchOutside(false)
-                progressDialog.show()
-
+    private fun loginUser(email:String, password: String) {
                 val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
                 mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
+                        Log.d("Moose", "poooooo")
                         val user = FirebaseAuth.getInstance().currentUser
                         if (!user!!.isEmailVerified) {
                             closeKeyboard()
@@ -127,7 +132,6 @@ class LoginActivity: AppCompatActivity() {
                             startActivity(intent)
                             finish()
                         } else {
-                            progressDialog.dismiss()
                             val intent = Intent(this, ProfileActivity::class.java)
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                             startActivity(intent)
@@ -165,26 +169,24 @@ class LoginActivity: AppCompatActivity() {
                             builder.setTitle("Too Many Sign In Attempts")
                             builder.setCancelable(false)
                             builder.setMessage("You have exceeded the maximum number of failed sign in attempts allowed.  Please try again later or reset your password.")
-                            builder.setPositiveButton("Ok", { _: DialogInterface?, _: Int ->
-                            })
+                            builder.setPositiveButton("Ok") { _: DialogInterface?, _: Int ->
+                            }
                             builder.setNegativeButton(
-                                "Reset Password",
-                                { _: DialogInterface?, _: Int ->
-                                    val intent = Intent(this, ForgetPassword::class.java)
-                                    startActivity(intent)
-                                    finish()
-                                })
+                                "Reset Password"
+                            ) { _: DialogInterface?, _: Int ->
+                                val intent = Intent(this, ForgetPassword::class.java)
+                                startActivity(intent)
+                                finish()
+                            }
                             builder.show()
                         } else {
                             Toast.makeText(this, "${it.message}", Toast.LENGTH_SHORT).show()
                             closeKeyboard()
                         }
                         FirebaseAuth.getInstance().signOut()
-                        progressDialog.dismiss()
                     }
-            }
+
         }
-    }
 
     //action bar back button
     @Override
@@ -288,81 +290,139 @@ class LoginActivity: AppCompatActivity() {
         defaultSet.applyTo(loginLayout)
     }
 
-    val handler = Handler()
-    private val emailAndUsernameLiveChecker: Runnable = object : Runnable {
-        override fun run() {
-            try {
-                val email = et_login_email.text.toString().trim()
-                val usernameQuery = FirebaseDatabase.getInstance().getReference().child("Users").orderByChild("username").equalTo(email)
-                usernameQuery.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        if (snapshot.childrenCount > 0) {
-                            Log.d("Login", "bruh")
-                            defaultConstraint()
-                            iv_login_email_checkmark.bringToFront()
-                            iv_login_email_x.alpha = 0F
-                            iv_login_email_checkmark.alpha = 1F
-                            iv_login_password_x.alpha = 0F
-                        }
-                        else{
-                            defaultConstraint()
-                        }
-                    }
-                    override fun onCancelled(error: DatabaseError) {
-                        TODO("Not yet implemented")
-                    }})
-//                val emailQuery = FirebaseDatabase.getInstance().getReference().child("Users").orderByChild("email").equalTo(email)
-//                emailQuery.addListenerForSingleValueEvent(object : ValueEventListener {
-//                    override fun onDataChange(snapshot: DataSnapshot) {
-//                        if (snapshot.childrenCount > 0) {
-//                            defaultConstraint()
-//                            iv_login_email_checkmark.bringToFront()
-//                            iv_login_email_x.alpha = 0F
-//                            iv_login_email_checkmark.alpha = 1F
-//                            iv_login_password_x.alpha = 0F
-//                        }
-//                        else{
-//                            defaultConstraint()
-//                        }
-//                }
-//                        override fun onCancelled(error: DatabaseError) {
-//                            TODO("Not yet implemented")
-//                        }})
-            }
+    private var stopLiveUsernameCheck = false
+    private var stopOnClickUsernameCheck = false
 
-            finally {
-                    handler.postDelayed(this, 200)
+    //Coroutine Runner Functions
+    private fun runLiveUsernameCheck(){
+        CoroutineScope(Dispatchers.Main).launch {
+            liveUsernameCheck()}
+    }
+    private suspend fun liveUsernameCheck() {
+        withContext(Dispatchers.IO){
+            usernameCheckLogic()
+        }
+    }
+    private fun runOnClickUsernameCheck(){
+        CoroutineScope(Dispatchers.Main).launch {
+            onClickUsernameLogic()
+        }}
+
+    //Logic Functions
+    private suspend fun onClickUsernameLogic(){
+        stopLiveUsernameCheck = true
+        while(!stopOnClickUsernameCheck) {
+            delay(100)
+            val username = et_login_email.text.toString().trim()
+            if (username.isEmpty()) {
+                onUsernameEmpty()
+            } else {
+                stopOnClickUsernameCheck = true
+                stopLiveUsernameCheck = false
+                runLiveUsernameCheck()
             }
         }
     }
-    val handler2 = Handler()
-    private val usernameLiveChecker: Runnable = object : Runnable {
-        override fun run() {
-            try {
-                val username = et_login_email.text.toString().trim()
-                val usernameQuery = FirebaseDatabase.getInstance().getReference().child("Users").orderByChild("username").equalTo(username)
+    private suspend fun usernameCheckLogic() {
+        while (!stopLiveUsernameCheck) {
+
+            delay(200)
+
+            val username = et_login_email.text.toString().trim()
+            val password = et_login_password.text.toString().trim()
+            val lowerCaseUsername = username.toLowerCase()
+
+            if (!isEmailValid(lowerCaseUsername)){
+            if(lowerCaseUsername.isEmpty() ) {
+                defaultMainThread()
+            }
+            else if (lowerCaseUsername.length > 50){
+                withContext(Dispatchers.Main){
+                    onUsernameTooLong()}
+            }
+            else{
+                val usernameQuery = FirebaseDatabase.getInstance().reference.child("Users").orderByChild("username").equalTo(lowerCaseUsername)
                 usernameQuery.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        if (snapshot.childrenCount > 0) {
-                            defaultConstraint()
-                            iv_login_email_checkmark.bringToFront()
-                            iv_login_email_x.alpha = 0F
-                            iv_login_email_checkmark.alpha = 1F
-                            iv_login_password_x.alpha = 0F
+                    override fun onDataChange(usernameSnapshot: DataSnapshot) {
+                        if (usernameSnapshot.childrenCount > 0) {
+                            onUsernameExists()
                         }
-                        else{
+                        else {
                             defaultConstraint()
                         }
                     }
-                    override fun onCancelled(error: DatabaseError) {
-                        TODO("Not yet implemented")
-                    }})
-            }
+                    override fun onCancelled(error: DatabaseError) {}
+                })
+            }}
+        else{
+                if(lowerCaseUsername.length > 50){
+                    onEmailTooLong()
+                }
+                else{
+                val emailQuery = FirebaseDatabase.getInstance().getReference().child("Users").orderByChild("email").equalTo(lowerCaseUsername)
+                emailQuery.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
 
-            finally {
-                handler2.postDelayed(this, 200)
+                        if(snapshot.childrenCount > 0) { onEmailAlreadyExists() }
+                        else defaultConstraint()
+
+                    }
+                    override fun onCancelled(error: DatabaseError) {}
+                })}
             }
+        }}
+
+    fun isEmailValid(email: CharSequence?): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+    //Error Functions
+    private suspend fun defaultMainThread() {
+        withContext(Dispatchers.Main) {
+            defaultConstraint()
         }
+    }
+    private suspend fun onEmailTooLong() {
+        withContext(Main){
+        errorConstraint()
+        iv_login_email_x.bringToFront()
+        iv_login_email_checkmark.alpha = 0F
+        iv_login_email_x.alpha = 1F
+        tv_login_email_error.setTextColor(Color.parseColor("#eb4b4b"))
+        tv_login_email_error.text = "Email length too long"}
+    }
+    private fun onUsernameTooLong(){
+        errorConstraint()
+        iv_login_email_x.bringToFront()
+        iv_login_email_checkmark.alpha = 0F
+        iv_login_email_x.alpha = 1F
+        tv_login_email_error.setTextColor(Color.parseColor("#eb4b4b"))
+        tv_login_email_error.text = "Username length too long"
+    }
+    private fun onUsernameExists() {
+        defaultConstraint()
+        iv_login_email_checkmark.bringToFront()
+        iv_login_email_checkmark.alpha = 1F
+        iv_login_email_x.alpha = 0F
+    }
+    private fun onUsernameEmpty() {
+        errorConstraint()
+        iv_login_email_x.bringToFront()
+        iv_login_email_checkmark.alpha = 0F
+        iv_login_email_x.alpha = 1F
+        tv_login_email_error.text = "Please enter email/username"
+        tv_login_email_error.setTextColor(Color.parseColor("#eb4b4b"))
+    }
+    private fun onEmailAlreadyExists() {
+        defaultConstraint()
+        iv_login_email_checkmark.bringToFront()
+        iv_login_email_checkmark.alpha = 1F
+        iv_login_email_x.alpha = 0f
+    }
+    private fun onEmailDoesntExist() {
+        defaultConstraint()
+        iv_login_email_checkmark.bringToFront()
+        iv_login_email_checkmark.alpha = 1F
+        iv_login_email_x.alpha = 0F
     }
 
 }

@@ -106,6 +106,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/rounded_edittext_register_login"
+        android:paddingRight="0dp"
         android:paddingBottom="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -117,10 +118,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@null"
-            android:hint="Password"
-            android:maxLength="20"
             android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_.!#@$%()*&amp;"
+            android:hint="Password"
             android:inputType="textPassword|textFilter|textNoSuggestions"
+            android:maxLength="20"
             android:paddingLeft="16dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
