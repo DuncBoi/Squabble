@@ -24,7 +24,7 @@ class PhoneAuth : AppCompatActivity() {
 
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
             phoneNumber, // Phone number to verify
-            60, // Timeout duration
+            0, // Timeout duration
             TimeUnit.SECONDS, // Unit of timeout
             this, // Activity (for callback binding)
             callbacks) // OnVerificationStateChangedCallbacks

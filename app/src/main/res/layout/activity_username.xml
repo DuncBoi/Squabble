@@ -94,7 +94,7 @@
         android:hint="Username"
         android:paddingLeft="16dp"
         android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_."
-        android:inputType="textFilter"
+        android:inputType="textPassword|textFilter|textNoSuggestions"
         android:maxLength="21"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

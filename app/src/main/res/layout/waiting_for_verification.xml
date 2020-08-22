@@ -1,0 +1,56 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="150dp"
+    android:layout_centerHorizontal="true"
+    android:background="#ffffff"
+    android:baselineAligned="false"
+    android:orientation="horizontal"
+    android:padding="20dp"
+    android:paddingRight="5dp">
+
+    <ProgressBar
+        android:id="@+id/progress_bar_waiting_for_verification"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginEnd="5dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="140dp"
+        android:layout_centerHorizontal="true"
+        android:background="#ffffff"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_waiting_for_verification_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_toEndOf="@+id/progress_bar_waiting_for_verification"
+            android:fontFamily="@font/arimo"
+            android:paddingStart="16dp"
+            android:text="Email Sent"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:textColor="#000000"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_waiting_for_verification_subtext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:paddingStart="16dp"
+            android:text="Waiting for verification link to be clicked"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/b_waiting_for_verification_cancel"
+            android:layout_width="115dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="Cancel" />
+    </LinearLayout>
+</LinearLayout>
+
