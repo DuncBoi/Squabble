@@ -54,7 +54,7 @@ class ForgetPassword : AppCompatActivity() {
 
             stopLiveEmailCheck = true
             stopOnClickEmailCheck = false
-            val email = et_fp_email.text.toString().trim()
+            val email = et_fp_email.text.toString().trim().toLowerCase()
             onClickEmail = email
 
             val emailQuery = FirebaseDatabase.getInstance().getReference().child("Users").orderByChild("email").equalTo(email)
@@ -95,6 +95,8 @@ class ForgetPassword : AppCompatActivity() {
 
         tv_fp_back_to_login.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
+            val email = et_fp_email.text.toString().trim().toLowerCase()
+            intent.putExtra("fpEmail", email)
             startActivity(intent)
             finish()
         }

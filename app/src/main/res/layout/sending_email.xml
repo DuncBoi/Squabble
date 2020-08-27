@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_toEndOf="@+id/progress_bar_waiting_for_verification"
-        android:fontFamily="@font/arimo"
+        android:fontFamily="@font/fredoka_one"
         android:paddingLeft="16dp"
         android:text="Sending verification email"
         android:textAppearance="?android:textAppearanceSmall"

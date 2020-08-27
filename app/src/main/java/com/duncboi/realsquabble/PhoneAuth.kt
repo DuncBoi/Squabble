@@ -2,13 +2,9 @@ package com.duncboi.realsquabble
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.util.Log
-import android.view.View
 import com.google.firebase.FirebaseException
-import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import kotlinx.android.synthetic.main.activity_phone_auth.*
@@ -16,6 +12,7 @@ import java.util.concurrent.TimeUnit
 
 class PhoneAuth : AppCompatActivity() {
     private var verificationIdGlobal: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_phone_auth)
@@ -24,18 +21,19 @@ class PhoneAuth : AppCompatActivity() {
 
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
             phoneNumber, // Phone number to verify
-            0, // Timeout duration
+            60, // Timeout duration
             TimeUnit.SECONDS, // Unit of timeout
             this, // Activity (for callback binding)
             callbacks) // OnVerificationStateChangedCallbacks
     }
         b_phone_sign_in.setOnClickListener {
             val verificationCode = et_phone_verification_code.text.toString().trim()
-        verificationIdGlobal?.let {
+            verificationIdGlobal?.let {
             val credential = PhoneAuthProvider.getCredential(it, verificationCode)
             addPhoneNumber(credential)
         }
     }}
+
     private val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks(){
         override fun onVerificationCompleted(phoneAuthCredential: PhoneAuthCredential) {
             phoneAuthCredential.let {
@@ -45,7 +43,7 @@ class PhoneAuth : AppCompatActivity() {
         }
 
         override fun onVerificationFailed(exception: FirebaseException) {
-            Log.d("phone", "$exception")
+            Log.d("Phone", "$exception")
             TODO("Not yet implemented")
         }
 
@@ -54,6 +52,7 @@ class PhoneAuth : AppCompatActivity() {
             verificationIdGlobal = verificationId
         }
     }
+
     private fun addPhoneNumber(phoneAuthCredential: PhoneAuthCredential){
         FirebaseAuth.getInstance().currentUser?.updatePhoneNumber(phoneAuthCredential)?.addOnCompleteListener {task ->
             if (task.isSuccessful){

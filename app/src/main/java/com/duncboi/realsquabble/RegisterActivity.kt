@@ -8,7 +8,9 @@ import android.os.Bundle
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.constraintlayout.widget.ConstraintSet
+import kotlinx.android.synthetic.main.activity_email.*
 import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.activity_username.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -18,6 +20,10 @@ class RegisterActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        val passwordPassed = intent.getStringExtra("passwordPassed")
+        if (passwordPassed != null) {
+            et_password.setText(passwordPassed)
+        }
         stopLivePasswordCheck = false
         runLivePasswordCheck()
     }
@@ -46,18 +52,26 @@ class RegisterActivity : AppCompatActivity() {
 
         }
         tv_password_previous.setOnClickListener {
-           finish()
+            val emailIntent = Intent(this, Email::class.java)
+            val email = intent.getStringExtra("emailPassed")
+            val username = intent.getStringExtra("usernamePassed")
+            val passwordPassed = et_password.text.toString().trim().toLowerCase()
+            emailIntent.putExtra("usernamePassed", username)
+            emailIntent.putExtra("passwordPassed", passwordPassed)
+            emailIntent.putExtra("emailPassed", email)
+            startActivity(emailIntent)
+            finish()
         }
 
        }
 
     private fun startNextActivity(password: String) {
         val emailVerificationIntent = Intent(this@RegisterActivity, EmailVerification::class.java)
-        val username = intent.getStringExtra("username")
-        val email = intent.getStringExtra("email")
-        emailVerificationIntent.putExtra("username", username)
-        emailVerificationIntent.putExtra("email", email)
-        emailVerificationIntent.putExtra("password", password)
+        val username = intent.getStringExtra("usernamePassed")
+        val email = intent.getStringExtra("emailPassed")
+        emailVerificationIntent.putExtra("usernamePassed", username)
+        emailVerificationIntent.putExtra("emailPassed", email)
+        emailVerificationIntent.putExtra("passwordPassed", password)
         startActivity(emailVerificationIntent)
     }
 

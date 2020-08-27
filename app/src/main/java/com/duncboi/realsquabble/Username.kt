@@ -10,6 +10,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_username.*
+import kotlinx.android.synthetic.main.fragment_edit_username.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
@@ -22,6 +23,10 @@ class Username : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        val usernamePassed = intent.getStringExtra("usernamePassed")
+        if (usernamePassed != null) {
+            et_username_username.setText(usernamePassed)
+        }
         stopLiveUsernameCheck = false
         runLiveUsernameCheck()}
 
@@ -35,7 +40,6 @@ class Username : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_username)
 
-        lifecycle.addObserver(LifecycleObserver())
         defaultConstraint()
 
         b_username_next.setOnClickListener {
@@ -70,8 +74,12 @@ class Username : AppCompatActivity() {
         val usernameLayout = username_constraint
         set.clone(usernameLayout)
         set.clear(tv_username_username_taken.id, ConstraintSet.TOP)
-        set.connect(tv_username_username_taken.id,ConstraintSet.TOP,et_username_username.id,ConstraintSet.TOP)
-        set.connect(b_username_next.id,ConstraintSet.TOP,et_username_username.id,ConstraintSet.BOTTOM, 24)
+        set.connect(tv_username_username_taken.id,
+            ConstraintSet.TOP,et_username_username.id,
+            ConstraintSet.TOP)
+        set.connect(b_username_next.id,
+            ConstraintSet.TOP,et_username_username.id,
+            ConstraintSet.BOTTOM, 24)
         set.connect(tv_username_previous.id, ConstraintSet.TOP,b_username_next.id, ConstraintSet.BOTTOM, 200)
         set.applyTo(usernameLayout)
     }
@@ -88,9 +96,14 @@ class Username : AppCompatActivity() {
 
     //Start Next Activity
     private fun startNextActivity(username: String) {
-        val intent = Intent(this@Username, Email::class.java)
-        intent.putExtra("username", username)
-        startActivity(intent)
+        val emailIntent = Intent(this@Username, Email::class.java)
+        val passwordPassed = intent.getStringExtra("passwordPassed")
+        val emailPassed = intent.getStringExtra("emailPassed")
+        emailIntent.putExtra("passwordPassed", passwordPassed)
+        emailIntent.putExtra("emailPassed", emailPassed)
+        emailIntent.putExtra("usernamePassed", username)
+        startActivity(emailIntent)
+        finish()
     }
 
     //Coroutine stop variables

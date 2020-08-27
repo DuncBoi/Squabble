@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditProfile">
+
+
+    <ImageView
+        android:id="@+id/iv_edit_profile_photo"
+        android:layout_width="115dp"
+        android:layout_height="115dp"
+        android:layout_marginTop="65dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/rounded_select_photo" />
+
+    <TextView
+        android:id="@+id/tv_edit_profile_letter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/fredoka_one"
+        android:textColor="@color/navy"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_edit_profile_photo"
+        app:layout_constraintEnd_toEndOf="@+id/iv_edit_profile_photo"
+        app:layout_constraintStart_toStartOf="@+id/iv_edit_profile_photo"
+        app:layout_constraintTop_toTopOf="@+id/iv_edit_profile_photo" />
+
+    <TextView
+        android:id="@+id/tv_choose_profile_picture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/fredoka_one"
+        android:text="Change profile picture"
+        android:textColor="@color/navy"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_edit_profile_photo" />
+
+    <TextView
+        android:id="@+id/tv_edit_profile_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="42dp"
+        android:layout_marginEnd="285dp"
+        android:fontFamily="@font/fredoka_one"
+        android:text="Name"
+        android:textSize="19sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_choose_profile_picture" />
+
+    <EditText
+        android:id="@+id/et_edit_profile_name"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rounded_edittext_register_login"
+        android:drawableRight="@drawable/pen"
+        android:fontFamily="@font/fredoka_one"
+        android:hint="Name"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textAlignment="viewStart"
+        android:textAllCaps="false"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_edit_profile_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_choose_profile_picture" />
+
+    <TextView
+        android:id="@+id/tv_edit_profile_username"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="285dp"
+        android:fontFamily="@font/fredoka_one"
+        android:text="Username"
+        android:textSize="19sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_edit_profile_name" />
+
+    <Button
+        android:id="@+id/b_edit_profile_username"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rounded_edittext_register_login"
+        android:drawableRight="@drawable/arrow"
+        android:fontFamily="@font/fredoka_one"
+        android:hint="Username"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textAlignment="viewStart"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_edit_profile_username"
+        app:layout_constraintTop_toBottomOf="@+id/et_edit_profile_name" />
+
+    <TextView
+        android:id="@+id/tv_edit_profile_bio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="285dp"
+        android:fontFamily="@font/fredoka_one"
+        android:text="Bio"
+        android:textSize="19sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_edit_profile_username" />
+
+    <Button
+        android:id="@+id/b_edit_profile_bio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rounded_edittext_register_login"
+        android:drawableRight="@drawable/arrow"
+        android:fontFamily="@font/fredoka_one"
+        android:hint="Bio"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textAlignment="viewStart"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_edit_profile_bio"
+        app:layout_constraintTop_toBottomOf="@+id/b_edit_profile_username" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="63dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/b_edit_profile_bio" />
+
+    <TextView
+        android:id="@+id/tv_edit_profile_done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/fredoka_one"
+        android:hint="Done"
+        android:text="Done"
+        android:textColor="@color/googleBlue"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_edit_profile_back_button"
+        android:layout_width="65dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:rotationY="180"
+        android:src="@drawable/arrow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
