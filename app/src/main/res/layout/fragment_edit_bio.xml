@@ -13,7 +13,6 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:fontFamily="@font/fredoka_one"
-        android:text="8989"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/et_edit_bio_bio"
         app:layout_constraintEnd_toEndOf="@+id/et_edit_bio_bio" />

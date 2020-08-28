@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -19,6 +20,8 @@ import com.google.firebase.database.ktx.getValue
 import kotlinx.android.synthetic.main.fragment_default_profile.*
 import kotlinx.android.synthetic.main.fragment_default_profile.view.*
 import kotlinx.android.synthetic.main.fragment_edit_bio.*
+import kotlinx.android.synthetic.main.fragment_edit_profile.*
+import kotlinx.android.synthetic.main.fragment_edit_profile.view.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -33,6 +36,8 @@ private const val ARG_PARAM2 = "param2"
 class default_profile : Fragment() {
     private val args: default_profileArgs by navArgs()
     lateinit var usernamePassed:String
+    lateinit var namePassed:String
+    lateinit var bioPassed:String
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -52,15 +57,15 @@ class default_profile : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_default_profile, container, false)
 
-        val bio = args.bio
-        view.tv_default_profile_bio.setText("$bio")
 
         view.b_edit_profile.setOnClickListener{
                 val bio = tv_default_profile_bio.text.toString().trim()
                 val bundle = Bundle()
-                bundle.putString("bio", bio)
-                val action = default_profileDirections.defaultToEditProfile(usernamePassed, bio)
-                Navigation.findNavController(view).navigate(action)}
+                bundle.putString("bio", bioPassed)
+                bundle.putString("username", usernamePassed)
+                bundle.putString("name", namePassed)
+                findNavController().navigate(R.id.default_to_edit_profile, bundle)
+        }
 
         val currentUserUid = FirebaseAuth.getInstance().currentUser!!.uid
         if(currentUserUid != null){
@@ -69,10 +74,21 @@ class default_profile : Fragment() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (childSnapshot in snapshot.children) {
                     val username = childSnapshot.child("username").getValue<String>().toString()
+                    val name = childSnapshot.child("name").getValue<String>().toString()
+                    val bio = childSnapshot.child("bio").getValue<String>().toString()
                     usernamePassed = username
+                    namePassed = name
+                    bioPassed = bio
                     val firstLetter = username[0]
                     tv_profile_picture_letter.text = "$firstLetter".split(' ').joinToString(" ") { it.capitalize() }
                     tv_default_profile_username.text = "@$username"
+                    if (bio != "null") tv_default_profile_bio.text = "$bio"
+                    else tv_default_profile_bio.text = ""
+                    if (name != ""){
+                        val firstLetter = name[0]
+                        view.tv_profile_picture_letter.text = "$firstLetter".split(' ').joinToString(" ") { it.capitalize() }
+                        view.tv_default_profile_name.text = "$name"}
+                    else tv_default_profile_bio.text = ""
                 }
             }
             override fun onCancelled(error: DatabaseError) {} })}

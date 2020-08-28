@@ -33,6 +33,15 @@
             android:name="bio"
             app:argType="string"
             android:defaultValue="Bio" />
+        <argument
+            android:name="name"
+            app:argType="string"
+            android:defaultValue="name" />
+        <action
+            android:id="@+id/action_editProfile_to_cropper"
+            app:destination="@id/cropper" />
+        <argument android:name="bitmap"
+            android:defaultValue="null" />
     </fragment>
     <fragment
         android:id="@+id/default_profile"
@@ -48,6 +57,14 @@
             android:name="bio"
             app:argType="string"
             android:defaultValue="bio" />
+        <argument
+            android:name="name"
+            app:argType="string"
+            android:defaultValue="name" />
+        <argument
+            android:name="username"
+            app:argType="string"
+            android:defaultValue="username" />
     </fragment>
     <fragment
         android:id="@+id/edit_username"
@@ -64,6 +81,14 @@
             android:name="username"
             app:argType="string"
             android:defaultValue="Username" />
+        <argument
+            android:name="bio"
+            app:argType="string"
+            android:defaultValue="bio" />
+        <argument
+            android:name="name"
+            app:argType="string"
+            android:defaultValue="name" />
     </fragment>
     <fragment
         android:id="@+id/edit_bio"
@@ -79,6 +104,25 @@
             android:name="bio"
             app:argType="string"
             android:defaultValue="bio" />
+        <argument
+            android:name="username"
+            app:argType="string"
+            android:defaultValue="Username" />
+        <argument
+            android:name="name"
+            app:argType="string"
+            android:defaultValue="name" />
+    </fragment>
+    <fragment
+        android:id="@+id/cropper"
+        android:name="com.duncboi.realsquabble.Cropper"
+        android:label="fragment_cropper"
+        tools:layout="@layout/fragment_cropper" >
+        <argument
+            android:name="uri" />
+        <action
+            android:id="@+id/action_cropper_to_editProfile"
+            app:destination="@id/editProfile" />
     </fragment>
 
 </navigation>

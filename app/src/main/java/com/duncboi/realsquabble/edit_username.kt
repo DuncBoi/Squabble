@@ -1,14 +1,20 @@
 package com.duncboi.realsquabble
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -16,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_username.*
 import kotlinx.android.synthetic.main.fragment_default_profile.view.*
+import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import kotlinx.android.synthetic.main.fragment_edit_username.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
@@ -81,19 +88,35 @@ class edit_username : Fragment() {
 
         et_change_username_username.setText(args.username)
 
+        val bio = args.bio
+        val name = args.name
+
         tv_edit_username_done.setOnClickListener {
+            val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(requireView().getWindowToken(), 0)
             stopLiveUsernameCheck = true
-            val action = edit_usernameDirections.editUsernameToEditProfile(et_change_username_username.text.toString().trim().toLowerCase())
-            Navigation.findNavController(view).navigate(action)}
+            val username = et_change_username_username.text.toString().trim()
+            val bundle = Bundle()
+            bundle.putString("bio", bio)
+            Log.d("Moose", "$name")
+            bundle.putString("username", username)
+            bundle.putString("name", name)
+            findNavController().navigate(R.id.edit_username_to_editProfile, bundle)}
 
         iv_change_username_back_button.setOnClickListener{
+            val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(requireView().getWindowToken(), 0)
             stopLiveUsernameCheck = true
-            val action = edit_usernameDirections.editUsernameToEditProfile(args.username)
-            Navigation.findNavController(view).navigate(action)}
+            val bundle = Bundle()
+            bundle.putString("bio", bio)
+            bundle.putString("username", args.username)
+            bundle.putString("name", name)
+            findNavController().navigate(R.id.edit_username_to_editProfile, bundle)}
 
         defaultConstraint()
         runLiveUsernameCheck()
     }
+
     private fun defaultConstraint(){
         tv_edit_username_done.setText("")
         tv_edit_username_done.isEnabled = false

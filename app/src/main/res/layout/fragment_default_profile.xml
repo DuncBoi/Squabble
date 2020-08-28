@@ -40,7 +40,7 @@
         android:layout_width="115dp"
         android:layout_height="115dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="75dp"
+        android:layout_marginTop="60dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/rounded_select_photo" />
@@ -62,39 +62,41 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:fontFamily="@font/fredoka_one"
-        android:textAlignment="viewStart"
+        android:textAlignment="center"
         android:textColor="@color/navy"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_default_profile_name" />
-
-    <TextView
-        android:id="@+id/tv_default_profile_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="200dp"
-        android:layout_marginEnd="32dp"
-        android:fontFamily="@font/fredoka_one"
-        android:hint="Name"
-        android:text="Duncan Greene"
-        android:textSize="30dp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/tv_default_profile_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:fontFamily="@font/fredoka_one"
+        android:hint="Name"
+        android:maxLength="25"
+        android:textAlignment="viewStart"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_profile_picture" />
+
+    <TextView
         android:id="@+id/tv_followers"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
-        android:layout_marginTop="85dp"
+        android:layout_marginTop="70dp"
         android:layout_marginEnd="6dp"
         android:fontFamily="@font/fredoka_one"
         android:text="Followers"
@@ -108,7 +110,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="180dp"
-        android:layout_marginTop="85dp"
+        android:layout_marginTop="70dp"
         android:layout_marginEnd="10dp"
         android:fontFamily="@font/fredoka_one"
         android:text="Following"
@@ -154,7 +156,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="85dp"
+        android:layout_marginTop="70dp"
         android:layout_marginEnd="4dp"
         android:fontFamily="@font/fredoka_one"
         android:text="Posts"
@@ -185,8 +187,19 @@
         android:layout_marginEnd="32dp"
         android:fontFamily="@font/fredoka_one"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_default_profile_username" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_default_profile_name" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

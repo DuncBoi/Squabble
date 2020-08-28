@@ -1,11 +1,13 @@
 package com.duncboi.realsquabble
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
@@ -54,17 +56,30 @@ class edit_bio : Fragment() {
         val bio = args.bio
         view.et_edit_bio_bio.setText("$bio")
 
+        val username = args.username
+        val name = args.name
+
         runBioChecker()
         view.tv_edit_bio_done.setOnClickListener {
+            val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(requireView().getWindowToken(), 0)
             stopBioRunner = true
             val bio = et_edit_bio_bio.text.toString().trim()
             val bundle = Bundle()
             bundle.putString("bio", bio)
+            bundle.putString("username", username)
+            bundle.putString("name", name)
             findNavController().navigate(R.id.edit_bio_to_editProfile, bundle)
         }
         view.iv_edit_bio_back_button.setOnClickListener {
+            val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(requireView().getWindowToken(), 0)
             stopBioRunner = true
-            Navigation.findNavController(view).navigate(R.id.edit_bio_to_editProfile)
+            val bundle = Bundle()
+            bundle.putString("bio", bio)
+            bundle.putString("username", username)
+            bundle.putString("name", name)
+            findNavController().navigate(R.id.edit_bio_to_editProfile, bundle)
         }
         return view
     }
@@ -98,12 +113,23 @@ class edit_bio : Fragment() {
     }
 
     private suspend fun bioRunnerLogic(){
+        var argsBio = args.bio
         while (!stopBioRunner){
             delay(200)
             val length = et_edit_bio_bio.text.toString().trim().length
+            val bio = et_edit_bio_bio.text.toString()
             val bioNumber = 150 - length
             tv_edit_bio_letter_counter.setText("$bioNumber")
-            if (bioNumber < 150){
+            if(bio == argsBio){
+                tv_edit_bio_done.isClickable = true
+                tv_edit_bio_done.setText("Done")
+                et_edit_bio_bio.setPadding(24,24,24,24)
+                et_edit_bio_bio.bringToFront()
+                et_edit_bio_bio.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.pen, 0)
+            }
+            else{
+                argsBio += "||||||||||||"
+                if (bioNumber < 150){
                 tv_edit_bio_letter_counter.bringToFront()
                 et_edit_bio_bio.setPadding(24,31,100,31)
                 et_edit_bio_bio.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
@@ -119,12 +145,12 @@ class edit_bio : Fragment() {
                 }
             }
             else{
-                tv_edit_bio_done.isClickable = false
-                tv_edit_bio_done.setText("")
+                tv_edit_bio_done.isClickable = true
+                tv_edit_bio_done.setText("Done")
                 et_edit_bio_bio.setPadding(24,24,24,24)
                 et_edit_bio_bio.bringToFront()
                 et_edit_bio_bio.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.pen, 0)
             }
-        }
+        }}
     }
 }
