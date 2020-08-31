@@ -1,19 +1,16 @@
 package com.duncboi.realsquabble
 
 import android.app.AlertDialog
-import android.app.ProgressDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintSet
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -22,15 +19,12 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_email.*
-import kotlinx.android.synthetic.main.activity_email_verification.*
+//import kotlinx.android.synthetic.main.activity_email.*
 import kotlinx.android.synthetic.main.activity_forget_password.*
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.sending_email.view.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
-import java.lang.Exception
 
 class ForgetPassword : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
@@ -57,7 +51,7 @@ class ForgetPassword : AppCompatActivity() {
             val email = et_fp_email.text.toString().trim().toLowerCase()
             onClickEmail = email
 
-            val emailQuery = FirebaseDatabase.getInstance().getReference().child("Users").orderByChild("email").equalTo(email)
+            val emailQuery = FirebaseDatabase.getInstance().reference.child("Users").orderByChild("email").equalTo(email)
             emailQuery.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {}
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -94,15 +88,15 @@ class ForgetPassword : AppCompatActivity() {
         }
 
         tv_fp_back_to_login.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            val email = et_fp_email.text.toString().trim().toLowerCase()
-            intent.putExtra("fpEmail", email)
-            startActivity(intent)
-            finish()
+//            val intent = Intent(this, LoginActivity::class.java)
+//            val email = et_fp_email.text.toString().trim().toLowerCase()
+//            intent.putExtra("fpEmail", email)
+//            startActivity(intent)
+//            finish()
         }
     }
 
-    fun isEmailValid(email: CharSequence?): Boolean {
+    fun isEmailValid(email: CharSequence): Boolean {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
@@ -110,7 +104,7 @@ class ForgetPassword : AppCompatActivity() {
     private var stopLiveEmailCheck = false
 
     private fun runOnClickEmailCheck(){
-        CoroutineScope(Dispatchers.Main).launch {
+        CoroutineScope(Main).launch {
             onClickEmailCheckLogic()}
     }
     private fun runLiveEmailCheck(){
@@ -150,7 +144,7 @@ class ForgetPassword : AppCompatActivity() {
 
             if (!isEmailValid(lowerCaseEmail)) defaultMainThread()
             else{
-                val emailQuery = FirebaseDatabase.getInstance().getReference().child("Users").orderByChild("email").equalTo(lowerCaseEmail)
+                val emailQuery = FirebaseDatabase.getInstance().reference.child("Users").orderByChild("email").equalTo(lowerCaseEmail)
                 emailQuery.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
 
@@ -169,9 +163,9 @@ class ForgetPassword : AppCompatActivity() {
         builder.setCancelable(false)
         builder.setMessage("Check your inbox for a password reset link.  After you have reset it, you may use it to log in")
         builder.setPositiveButton("Ok") { _: DialogInterface?, _: Int ->
-            val intent = Intent(this, LoginActivity::class.java)
-            intent.putExtra("fpEmail", email)
-            startActivity(intent)
+//            val intent = Intent(this, LoginActivity::class.java)
+//            intent.putExtra("fpEmail", email)
+//            startActivity(intent)
         }
         builder.show()
     }
@@ -222,7 +216,7 @@ class ForgetPassword : AppCompatActivity() {
         val sendingEmail = androidx.appcompat.app.AlertDialog.Builder(this@ForgetPassword)
         val view = LayoutInflater.from(this).inflate(R.layout.sending_email, null)
         sendingEmail.setView(view)
-        view.tv_sending_email.setText("Sending password reset email")
+        view.tv_sending_email.text = "Sending password reset email"
         sendingEmail.setCancelable(false)
         val sendingEmailDialog = sendingEmail.create()
         return sendingEmailDialog
@@ -243,7 +237,7 @@ class ForgetPassword : AppCompatActivity() {
         iv_fp_x.bringToFront()
         iv_fp_x.alpha = 1F
         iv_fp_checkmark.alpha = 0F
-        tv_fp_error_message.setText("Email formatted incorrectly")
+        tv_fp_error_message.text = "Email formatted incorrectly"
         tv_fp_error_message.setTextColor(Color.parseColor("#eb4b4b"))
     }
     private fun onEmailEmpty() {
@@ -251,7 +245,7 @@ class ForgetPassword : AppCompatActivity() {
         iv_fp_x.bringToFront()
         iv_fp_x.alpha = 1F
         iv_fp_checkmark.alpha = 0F
-        tv_fp_error_message.setText("Please enter email")
+        tv_fp_error_message.text = "Please enter email"
         tv_fp_error_message.setTextColor(Color.parseColor("#eb4b4b"))
     }
     private fun onEmailNotInDatabase() {
@@ -259,7 +253,7 @@ class ForgetPassword : AppCompatActivity() {
         iv_fp_x.bringToFront()
         iv_fp_x.alpha = 1F
         iv_fp_checkmark.alpha = 0f
-        tv_fp_error_message.setText("User does not exist")
+        tv_fp_error_message.text = "User does not exist"
         tv_fp_error_message.setTextColor(Color.parseColor("#eb4b4b"))
     }
 }

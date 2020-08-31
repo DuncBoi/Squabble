@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/registration"
+    app:startDestination="@id/first">
+
+    <fragment
+        android:id="@+id/usernameRegistration"
+        android:name="com.duncboi.realsquabble.registration.UsernameRegistration"
+        android:label="fragment_username_registration"
+        tools:layout="@layout/fragment_username_registration" >
+        <action
+            android:id="@+id/action_usernameRegistration_to_emailRegistration"
+            app:destination="@id/emailRegistration"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+        <argument
+            android:name="username"
+            app:argType="string"
+            android:defaultValue="username" />
+        <argument
+            android:name="email"
+            app:argType="string"
+            android:defaultValue="email" />
+        <argument
+            android:name="password"
+            app:argType="string"
+            android:defaultValue="password" />
+        <action
+            android:id="@+id/action_usernameRegistration_to_first"
+            app:destination="@id/first"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/emailRegistration"
+        android:name="com.duncboi.realsquabble.registration.EmailRegistration"
+        android:label="fragment_email_registration"
+        tools:layout="@layout/fragment_email_registration" >
+        <action
+            android:id="@+id/action_emailRegistration_to_passwordRegistration"
+            app:destination="@id/passwordRegistration"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_emailRegistration_to_usernameRegistration"
+            app:destination="@id/usernameRegistration"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <argument
+            android:name="username"
+            app:argType="string"
+            android:defaultValue="username" />
+        <argument
+            android:name="email"
+            app:argType="string"
+            android:defaultValue="email" />
+        <argument
+            android:name="password"
+            app:argType="string"
+            android:defaultValue="password" />
+        <action
+            android:id="@+id/action_emailRegistration_to_login"
+            app:destination="@id/login"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/passwordRegistration"
+        android:name="com.duncboi.realsquabble.registration.PasswordRegistration"
+        android:label="fragment_password_registration"
+        tools:layout="@layout/fragment_password_registration" >
+        <action
+            android:id="@+id/action_passwordRegistration_to_emailVerificationRegistration"
+            app:destination="@id/emailVerificationRegistration"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_passwordRegistration_to_emailRegistration"
+            app:destination="@id/emailRegistration"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <argument
+            android:name="username"
+            app:argType="string"
+            android:defaultValue="username" />
+        <argument
+            android:name="email"
+            app:argType="string"
+            android:defaultValue="email" />
+        <argument
+            android:name="password"
+            app:argType="string"
+            android:defaultValue="password" />
+    </fragment>
+    <fragment
+        android:id="@+id/emailVerificationRegistration"
+        android:name="com.duncboi.realsquabble.registration.EmailVerificationRegistration"
+        android:label="fragment_email_verification_registration"
+        tools:layout="@layout/fragment_email_verification_registration" >
+        <action
+            android:id="@+id/action_emailVerificationRegistration_to_passwordRegistration"
+            app:destination="@id/passwordRegistration"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <argument
+            android:name="username"
+            app:argType="string"
+            android:defaultValue="username" />
+        <argument
+            android:name="email"
+            app:argType="string"
+            android:defaultValue="email" />
+        <argument
+            android:name="password"
+            app:argType="string"
+            android:defaultValue="password" />
+        <action
+            android:id="@+id/action_emailVerificationRegistration_to_login"
+            app:destination="@id/login" />
+    </fragment>
+    <fragment
+        android:id="@+id/first"
+        android:name="com.duncboi.realsquabble.registration.First"
+        android:label="fragment_first"
+        tools:layout="@layout/fragment_first" >
+        <action
+            android:id="@+id/action_first_to_usernameRegistration"
+            app:destination="@id/usernameRegistration"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_first_to_login"
+            app:destination="@id/login"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/login"
+        android:name="com.duncboi.realsquabble.registration.Login"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_login_to_first"
+            app:destination="@id/first"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_login_to_forgotPassword"
+            app:destination="@id/forgotPassword"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+        <argument
+            android:name="email"
+            app:argType="string"
+            android:defaultValue="email" />
+    </fragment>
+    <fragment
+        android:id="@+id/forgotPassword"
+        android:name="com.duncboi.realsquabble.registration.ForgotPassword"
+        android:label="fragment_forgot_password"
+        tools:layout="@layout/fragment_forgot_password" >
+        <action
+            android:id="@+id/action_forgotPassword_to_login"
+            app:destination="@id/login"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left" />
+    </fragment>
+</navigation>

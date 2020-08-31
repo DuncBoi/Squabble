@@ -6,7 +6,7 @@
     app:startDestination="@id/default_profile">
     <fragment
         android:id="@+id/editProfile"
-        android:name="com.duncboi.realsquabble.EditProfile"
+        android:name="com.duncboi.realsquabble.profile.EditProfile"
         android:label="fragment_edit_profile"
         tools:layout="@layout/fragment_edit_profile" >
         <action
@@ -37,15 +37,10 @@
             android:name="name"
             app:argType="string"
             android:defaultValue="name" />
-        <action
-            android:id="@+id/action_editProfile_to_cropper"
-            app:destination="@id/cropper" />
-        <argument android:name="bitmap"
-            android:defaultValue="null" />
     </fragment>
     <fragment
         android:id="@+id/default_profile"
-        android:name="com.duncboi.realsquabble.default_profile"
+        android:name="com.duncboi.realsquabble.profile.default_profile"
         android:label="fragment_default_profile"
         tools:layout="@layout/fragment_default_profile" >
         <action
@@ -53,22 +48,15 @@
             app:destination="@id/editProfile"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left" />
-        <argument
-            android:name="bio"
-            app:argType="string"
-            android:defaultValue="bio" />
-        <argument
-            android:name="name"
-            app:argType="string"
-            android:defaultValue="name" />
-        <argument
-            android:name="username"
-            app:argType="string"
-            android:defaultValue="username" />
+        <action
+            android:id="@+id/action_default_profile_to_profile_settings"
+            app:destination="@id/profile_settings"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/edit_username"
-        android:name="com.duncboi.realsquabble.edit_username"
+        android:name="com.duncboi.realsquabble.profile.edit_username"
         android:label="fragment_edit_username"
         tools:layout="@layout/fragment_edit_username" >
         <action
@@ -92,7 +80,7 @@
     </fragment>
     <fragment
         android:id="@+id/edit_bio"
-        android:name="com.duncboi.realsquabble.edit_bio"
+        android:name="com.duncboi.realsquabble.profile.edit_bio"
         android:label="fragment_edit_bio"
         tools:layout="@layout/fragment_edit_bio" >
         <action
@@ -114,15 +102,39 @@
             android:defaultValue="name" />
     </fragment>
     <fragment
-        android:id="@+id/cropper"
-        android:name="com.duncboi.realsquabble.Cropper"
-        android:label="fragment_cropper"
-        tools:layout="@layout/fragment_cropper" >
-        <argument
-            android:name="uri" />
+        android:id="@+id/profile_settings"
+        android:name="com.duncboi.realsquabble.profile.profile_settings"
+        android:label="fragment_profile_settings"
+        tools:layout="@layout/fragment_profile_settings" >
         <action
-            android:id="@+id/action_cropper_to_editProfile"
-            app:destination="@id/editProfile" />
+            android:id="@+id/action_profile_settings_to_default_profile"
+            app:destination="@id/default_profile"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_profile_settings_to_change_password"
+            app:destination="@id/change_password" />
+        <action
+            android:id="@+id/action_profile_settings_to_link"
+            app:destination="@id/link" />
+    </fragment>
+    <fragment
+        android:id="@+id/change_password"
+        android:name="com.duncboi.realsquabble.profile.change_password"
+        android:label="fragment_change_password"
+        tools:layout="@layout/fragment_change_password" >
+        <action
+            android:id="@+id/action_change_password_to_profile_settings"
+            app:destination="@id/profile_settings" />
+    </fragment>
+    <fragment
+        android:id="@+id/link"
+        android:name="com.duncboi.realsquabble.profile.link"
+        android:label="fragment_link"
+        tools:layout="@layout/fragment_link" >
+        <action
+            android:id="@+id/action_link_to_profile_settings"
+            app:destination="@id/profile_settings" />
     </fragment>
 
 </navigation>

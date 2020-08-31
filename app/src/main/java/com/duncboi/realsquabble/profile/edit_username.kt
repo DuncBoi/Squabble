@@ -1,57 +1,47 @@
-package com.duncboi.realsquabble
+package com.duncboi.realsquabble.profile
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.duncboi.realsquabble.ForgetPassword
+import com.duncboi.realsquabble.R
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.activity_username.*
-import kotlinx.android.synthetic.main.fragment_default_profile.view.*
-import kotlinx.android.synthetic.main.fragment_edit_profile.*
+import com.google.firebase.database.ktx.getValue
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_edit_username.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [edit_username.newInstance] factory method to
- * create an instance of this fragment.
- */
 class edit_username : Fragment() {
 
     val args: edit_usernameArgs by navArgs()
-
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,25 +53,6 @@ class edit_username : Fragment() {
         return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment edit_username.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            edit_username().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -93,7 +64,7 @@ class edit_username : Fragment() {
 
         tv_edit_username_done.setOnClickListener {
             val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(requireView().getWindowToken(), 0)
+            imm.hideSoftInputFromWindow(requireView().windowToken, 0)
             stopLiveUsernameCheck = true
             val username = et_change_username_username.text.toString().trim()
             val bundle = Bundle()
@@ -105,7 +76,7 @@ class edit_username : Fragment() {
 
         iv_change_username_back_button.setOnClickListener{
             val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(requireView().getWindowToken(), 0)
+            imm.hideSoftInputFromWindow(requireView().windowToken, 0)
             stopLiveUsernameCheck = true
             val bundle = Bundle()
             bundle.putString("bio", bio)
@@ -118,10 +89,11 @@ class edit_username : Fragment() {
     }
 
     private fun defaultConstraint(){
-        tv_edit_username_done.setText("")
+        tv_edit_username_done.text = ""
         tv_edit_username_done.isEnabled = false
         et_change_username_username.bringToFront()
-        et_change_username_username.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.pen, 0);
+        et_change_username_username.setCompoundDrawablesWithIntrinsicBounds(0, 0,
+            R.drawable.pen, 0)
         val set = ConstraintSet()
         val usernameLayout = edit_username_constraint
         set.clone(usernameLayout)
@@ -131,7 +103,7 @@ class edit_username : Fragment() {
         set.applyTo(usernameLayout)
     }
     private fun errorConstraint(){
-        tv_edit_username_done.setText("")
+        tv_edit_username_done.text = ""
         tv_edit_username_done.isEnabled = false
         val defaultSet = ConstraintSet()
         val usernameLayout = edit_username_constraint
@@ -200,28 +172,32 @@ class edit_username : Fragment() {
     }
     private fun onUsernameTooLong(){
         errorConstraint()
-        et_change_username_username.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.x, 0);
+        et_change_username_username.setCompoundDrawablesWithIntrinsicBounds(0, 0,
+            R.drawable.x, 0)
         tv_change_username_error_message.setTextColor(Color.parseColor("#eb4b4b"))
         tv_change_username_error_message.text = "Username length too long"
     }
     private fun onUsernameAvailable(username: String) {
         errorConstraint()
-        tv_edit_username_done.setText("Done")
+        tv_edit_username_done.text = "Done"
         tv_edit_username_done.isEnabled = true
-        et_change_username_username.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.checkmark, 0);
+        et_change_username_username.setCompoundDrawablesWithIntrinsicBounds(0, 0,
+            R.drawable.checkmark, 0)
         tv_change_username_error_message.setTextColor(Color.parseColor("#38c96d"))
         tv_change_username_error_message.text = "@$username is available"
     }
     private fun onUsernameUnavailable(username: String) {
         errorConstraint()
-        et_change_username_username.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.x, 0);
+        et_change_username_username.setCompoundDrawablesWithIntrinsicBounds(0, 0,
+            R.drawable.x, 0)
         tv_change_username_error_message.setTextColor(Color.parseColor("#eb4b4b"))
         tv_change_username_error_message.text = "@$username is unavailable"
     }
     private fun onUsernameEmpty() {
         errorConstraint()
-        et_change_username_username.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.x, 0);
+        et_change_username_username.setCompoundDrawablesWithIntrinsicBounds(0, 0,
+            R.drawable.x, 0)
         tv_change_username_error_message.text = "Please enter username"
         tv_change_username_error_message.setTextColor(Color.parseColor("#eb4b4b"))
     }
-}
+    }

@@ -1,42 +1,55 @@
-package com.duncboi.realsquabble
+package com.duncboi.realsquabble.registration
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.WindowManager
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.constraintlayout.widget.ConstraintSet
-import kotlinx.android.synthetic.main.activity_email.*
-import kotlinx.android.synthetic.main.activity_register.*
-import kotlinx.android.synthetic.main.activity_username.*
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.duncboi.realsquabble.R
+import kotlinx.android.synthetic.main.fragment_password_registration.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class RegisterActivity : AppCompatActivity() {
 
-    override fun onStart() {
-        super.onStart()
-        val passwordPassed = intent.getStringExtra("passwordPassed")
-        if (passwordPassed != null) {
+class PasswordRegistration : Fragment() {
+    private val args: PasswordRegistrationArgs by navArgs()
+    private var onClickPassword: String = ""
+
+
+    override fun onPause() {
+        super.onPause()
+        stopLivePasswordCheck = true
+        stopOnClickPasswordCheck = true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val passwordPassed = args.password
+        if (passwordPassed != "password") {
             et_password.setText(passwordPassed)
         }
         stopLivePasswordCheck = false
         runLivePasswordCheck()
     }
 
-    override fun onStop() {
-        super.onStop()
-        stopLivePasswordCheck = true
-        stopOnClickPasswordCheck = true
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_password_registration, container, false)
     }
-    private var onClickPassword: String = ""
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         defaultConstraint()
         runLivePasswordCheck()
@@ -52,38 +65,33 @@ class RegisterActivity : AppCompatActivity() {
 
         }
         tv_password_previous.setOnClickListener {
-            val emailIntent = Intent(this, Email::class.java)
-            val email = intent.getStringExtra("emailPassed")
-            val username = intent.getStringExtra("usernamePassed")
-            val passwordPassed = et_password.text.toString().trim().toLowerCase()
-            emailIntent.putExtra("usernamePassed", username)
-            emailIntent.putExtra("passwordPassed", passwordPassed)
-            emailIntent.putExtra("emailPassed", email)
-            startActivity(emailIntent)
-            finish()
+            closeKeyboard()
+            val bundle = Bundle()
+            val username = args.username
+            val email = args.email
+            val password = et_password.text.toString().trim()
+            bundle.putString("username", username)
+            bundle.putString("email", email)
+            bundle.putString("password", password)
+            findNavController().navigate(R.id.action_passwordRegistration_to_emailRegistration, bundle)
         }
 
-       }
+    }
 
-    private fun startNextActivity(password: String) {
-        val emailVerificationIntent = Intent(this@RegisterActivity, EmailVerification::class.java)
-        val username = intent.getStringExtra("usernamePassed")
-        val email = intent.getStringExtra("emailPassed")
-        emailVerificationIntent.putExtra("usernamePassed", username)
-        emailVerificationIntent.putExtra("emailPassed", email)
-        emailVerificationIntent.putExtra("passwordPassed", password)
-        startActivity(emailVerificationIntent)
+    private fun startNextActivity(password: String) {val bundle = Bundle()
+        val username = args.username
+        val email = args.email
+        bundle.putString("username", username)
+        bundle.putString("email", email)
+        bundle.putString("password", password)
+        findNavController().navigate(R.id.action_passwordRegistration_to_emailVerificationRegistration, bundle)
     }
 
     private fun closeKeyboard(){
-        val view = this.currentFocus
-        if (view != null){
-            val hideMe = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            hideMe.hideSoftInputFromWindow(view.windowToken, 0)
-        }
-        //else
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
+
     private fun defaultConstraint(){
         val set = ConstraintSet()
         val passwordConstraint = password_constraint
@@ -135,6 +143,8 @@ class RegisterActivity : AppCompatActivity() {
                 if(onClickPassword != password) {
                     onClickPassword = "*"
                     defaultConstraint()
+                    b_password_next.alpha = 0.5f
+                    b_password_next.setBackgroundResource(R.drawable.greyed_out_button)
                 }
                 else onPasswordShort()
 
@@ -143,9 +153,11 @@ class RegisterActivity : AppCompatActivity() {
                 if(onClickPassword != password) {
                     onClickPassword = "*"
                     defaultConstraint()
+                    b_password_next.alpha = 0.5f
+                    b_password_next.setBackgroundResource(R.drawable.greyed_out_button)
                 }
                 else{
-                onPasswordNotStrong()}
+                    onPasswordNotStrong()}
             }
 
             else onStrongPassword()
@@ -156,20 +168,24 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun onPasswordNotStrong() {
         errorConstraint()
+        b_password_next.alpha = 0.5f
+        b_password_next.setBackgroundResource(R.drawable.greyed_out_button)
         iv_password_x.bringToFront()
         iv_password_x.alpha = 1F
         iv_password_checkmark.alpha = 0F
         tv_password_error.setTextColor(Color.parseColor("#eb4b4b"))
-        tv_password_error.setText("Password must contain a mix of letters and numbers")
+        tv_password_error.text = "Password must contain a mix of letters and numbers"
     }
 
     private fun onPasswordShort() {
         errorConstraint()
+        b_password_next.alpha = 0.5f
+        b_password_next.setBackgroundResource(R.drawable.greyed_out_button)
         iv_password_x.bringToFront()
         iv_password_checkmark.alpha = 0F
         iv_password_x.alpha = 1F
         tv_password_error.setTextColor(Color.parseColor("#eb4b4b"))
-        tv_password_error.setText("Password must be at least 6 characters")
+        tv_password_error.text = "Password must be at least 6 characters"
     }
 
     private suspend fun livePasswordCheckLogic(){
@@ -179,14 +195,20 @@ class RegisterActivity : AppCompatActivity() {
             val password = et_password.text.toString().trim()
 
             if (password.length >= 6 && isValidPassword(password)) onStrongPassword()
-            else defaultConstraint()
+            else{
+                defaultConstraint()
+                b_password_next.alpha = 0.5f
+                b_password_next.setBackgroundResource(R.drawable.greyed_out_button)
+            }
 
         }
     }
 
     private fun onStrongPassword() {
         errorConstraint()
-        tv_password_error.setText("Stong password")
+        b_password_next.alpha = 1f
+        b_password_next.setBackgroundResource(R.drawable.rounded_button)
+        tv_password_error.text = "Stong password"
         tv_password_error.setTextColor(Color.parseColor("#38c96d"))
         iv_password_checkmark.bringToFront()
         iv_password_checkmark.alpha = 1F
@@ -202,12 +224,14 @@ class RegisterActivity : AppCompatActivity() {
         } ?: return false
     }
 
-private fun RegisterActivity.onPasswordEmpty() {
-    errorConstraint()
-    iv_password_x.bringToFront()
-    iv_password_x.alpha = 1F
-    iv_password_checkmark.alpha = 0F
-    tv_password_error.setTextColor(Color.parseColor("#eb4b4b"))
-    tv_password_error.setText("Please enter a password")
-}
-}
+    private fun onPasswordEmpty() {
+        errorConstraint()
+        b_password_next.alpha = 0.5f
+        b_password_next.setBackgroundResource(R.drawable.greyed_out_button)
+        iv_password_x.bringToFront()
+        iv_password_x.alpha = 1F
+        iv_password_checkmark.alpha = 0F
+        tv_password_error.setTextColor(Color.parseColor("#eb4b4b"))
+        tv_password_error.text = "Please enter a password"
+    }
+    }

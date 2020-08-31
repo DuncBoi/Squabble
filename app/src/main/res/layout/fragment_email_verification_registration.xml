@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/cobalt"
-    tools:context=".EmailVerification">
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/email_verification_constraint"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/cobalt"
+        android:background="@color/white"
         tools:context=".Email"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="-16dp">
@@ -31,6 +31,24 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/b_email_verification_send" />
+
+        <Button
+            android:id="@+id/b_email_verification_sign_in"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/rounded_button"
+            android:clickable="false"
+            android:fontFamily="@font/fredoka_one"
+            android:text="Sign In"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/b_email_verification_send" />
 
         <ImageView
             android:id="@+id/iv_email_verification_checkmark"
@@ -107,7 +125,6 @@
             android:layout_marginTop="20dp"
             android:fontFamily="@font/fredoka_one"
             android:text="Previous"
-            android:textColor="#FFFFFF"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -120,7 +137,6 @@
             android:layout_marginTop="32dp"
             android:fontFamily="@font/fredoka_one"
             android:text="Email Verification"
-            android:textColor="#FFFFFF"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"

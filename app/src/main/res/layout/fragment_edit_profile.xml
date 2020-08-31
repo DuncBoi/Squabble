@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditProfile">
+    tools:context=".profile.EditProfile">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/civ_edit_profile_picture"
@@ -77,7 +77,7 @@
         android:drawableRight="@drawable/pen"
         android:fontFamily="@font/fredoka_one"
         android:hint="Name"
-        android:paddingLeft="16dp"
+        android:paddingLeft="24dp"
         android:paddingRight="16dp"
         android:textAlignment="viewStart"
         android:textAllCaps="false"

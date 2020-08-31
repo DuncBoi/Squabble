@@ -38,7 +38,7 @@
         <TextView
             android:id="@+id/tv_waiting_for_verification_subtext"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="67dp"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/fredoka_one"
             android:paddingStart="16dp"
