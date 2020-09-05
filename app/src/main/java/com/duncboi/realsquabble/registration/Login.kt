@@ -11,13 +11,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
-import com.duncboi.realsquabble.ForgetPassword
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.duncboi.realsquabble.R
 import com.duncboi.realsquabble.profile.ProfileActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -43,6 +42,8 @@ import kotlinx.coroutines.withContext
 
 class Login : Fragment() {
 
+    private val args: LoginArgs by navArgs()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,15 +52,24 @@ class Login : Fragment() {
         return inflater.inflate(R.layout.fragment_login, container, false)
     }
 
-    var googleSignInClient: GoogleSignInClient? = null
-    private val RC_SIGN_IN = 1000
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onStart() {
+        super.onStart()
+        val email = args.email
+        if (email != "email"){
+            et_login_email.setText(email)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
         stopLiveUsernameCheck = true
         stopOnClickUsernameCheck = true
-        stopPasswordError = true
         stopPasswordEmpty = true
+        stopPasswordError = true
     }
+
+    private var googleSignInClient: GoogleSignInClient? = null
+    private val RC_SIGN_IN = 1000
 
     private var onClickUsername = ""
     private var onClickPassword = ""
@@ -121,9 +131,7 @@ class Login : Fragment() {
 
                 //Dont have an account? button clicked
                 tv_login_backtoregistration.setOnClickListener {
-//            val intent = Intent(this, Username::class.java)
-//            startActivity(intent)
-//            finish()
+                    findNavController().navigate(R.id.action_login_to_usernameRegistration)
                 }
 
                 //forget password button clicked
@@ -203,9 +211,7 @@ class Login : Fragment() {
                     dialog.dismiss()
                 }
                 builder.setNegativeButton("Register"){ _, _ ->
-//            val intent = Intent(this, Username::class.java)
-//            startActivity(intent)
-//            finishAffinity()
+                    findNavController().navigate(R.id.action_login_to_usernameRegistration)
                 }
                 val dialog: AlertDialog = builder.create()
                 dialog.show()
@@ -231,10 +237,10 @@ class Login : Fragment() {
             }
 
             private fun showRecoverPasswordDialog() {
-//                val email = et_login_email.text.toString().trim()
-//                val intent = Intent(this, ForgetPassword::class.java)
-//                intent.putExtra("emailToReset", email)
-//                startActivity(intent)
+                val bundle = Bundle()
+                val email = et_login_email.text.toString().trim()
+                bundle.putString("email", email)
+                findNavController().navigate(R.id.action_login_to_usernameRegistration)
             }
 
             //firebase user login
@@ -257,10 +263,10 @@ class Login : Fragment() {
                                 loggingIndialog.dismiss()
                                 closeKeyboard()
                                 Toast.makeText(activity, "Your email has not been verified, please do so now", Toast.LENGTH_LONG).show()
-//                                val intent = Intent(this, EmailVerification::class.java)
-//                                intent.putExtra("email", email)
-//                                startActivity(intent)
-//                                finish()
+                                val bundle = Bundle()
+                                val email = et_login_email.text.toString().trim()
+                                bundle.putString("email", email)
+                                findNavController().navigate(R.id.action_login_to_emailVerificationRegistration)
                             } else {
                                 val emailQuery = FirebaseDatabase.getInstance().reference.child("Users")
                                     .orderByChild("email").equalTo(email)
@@ -295,9 +301,9 @@ class Login : Fragment() {
             }
 
             private fun startNextActivity() {
-//                val intent = Intent(this, ProfileActivity::class.java)
-//                startActivity(intent)
-//                finishAffinity()
+                val intent = Intent(activity, ProfileActivity::class.java)
+                startActivity(intent)
+                activity?.finish()
             }
 
             private fun loggingInDialog(): androidx.appcompat.app.AlertDialog {
@@ -446,12 +452,10 @@ class Login : Fragment() {
                         builder.setCancelable(false)
                         builder.setMessage("You have exceeded the maximum number of failed sign in attempts allowed.  Please try again later or reset your password.")
                         builder.setPositiveButton("Ok") { _: DialogInterface?, _: Int ->
-//                            finish()
+
                         }
                         builder.setNegativeButton("Reset Password") { _: DialogInterface?, _: Int ->
-//                            val intent = Intent(this, ForgetPassword::class.java)
-//                            startActivity(intent)
-                           // finish()
+                            findNavController().navigate(R.id.action_login_to_forgotPassword)
                         }
                         builder.show()
                     } else {

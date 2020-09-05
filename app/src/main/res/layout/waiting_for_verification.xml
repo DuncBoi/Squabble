@@ -38,19 +38,20 @@
         <TextView
             android:id="@+id/tv_waiting_for_verification_subtext"
             android:layout_width="match_parent"
-            android:layout_height="67dp"
+            android:layout_height="48dp"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/fredoka_one"
             android:paddingStart="16dp"
             android:text="Waiting for verification link to be clicked"
-            android:textSize="18sp" />
+            android:textSize="17sp" />
 
         <Button
             android:id="@+id/b_waiting_for_verification_cancel"
             android:layout_width="115dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="0dp"
             android:fontFamily="@font/fredoka_one"
             android:text="Cancel" />
     </LinearLayout>

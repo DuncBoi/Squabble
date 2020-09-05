@@ -16,7 +16,7 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.duncboi.realsquabble.Political
+import com.duncboi.realsquabble.political.Political
 import com.duncboi.realsquabble.R
 import com.duncboi.realsquabble.UserInfo
 import com.google.firebase.auth.FirebaseAuth

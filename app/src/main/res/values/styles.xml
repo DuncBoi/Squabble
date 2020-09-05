@@ -3,7 +3,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/navy</item>
-        <item name="colorPrimaryDark">@color/navy</item>
+        <item name="colorPrimaryDark">@color/greytext</item>
         <item name="colorAccent">@color/navy</item>
     </style>
     <style name="success_alert_dialog" parent="android:Theme.Dialog">

@@ -14,5 +14,6 @@
     <color name="navy">#bf55ec</color>
     <color name="googleBlue">#4885ed</color>
     <color name="grey">#D3d3d3</color>
+    <color name = "greytext">#8a000000</color>
 
 </resources>

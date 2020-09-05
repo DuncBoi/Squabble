@@ -18,6 +18,7 @@ import androidx.navigation.fragment.navArgs
 import com.duncboi.realsquabble.profile.ProfileActivity
 import com.duncboi.realsquabble.R
 import com.duncboi.realsquabble.UserInfo
+import com.duncboi.realsquabble.political.Political
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -58,9 +59,6 @@ class EmailRegistration : Fragment() {
         stopLiveEmailCheck = true
         stopOnClickEmailCheck = true
     }
-    private var param1: String? = null
-    private var param2: String? = null
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -211,7 +209,7 @@ class EmailRegistration : Fragment() {
         val ref = FirebaseDatabase.getInstance().getReference("Users")
         ref.child(user.username!!).setValue(user).addOnCompleteListener {
             if (it.isSuccessful){
-                val intent = Intent(requireActivity().applicationContext, ProfileActivity::class.java)
+                val intent = Intent(requireActivity().applicationContext, Political::class.java)
                 startActivity(intent)
                 activity?.finish()
             }}.addOnFailureListener {
