@@ -1,14 +1,215 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/score_calculator_constraint"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context=".political.ScoreCalculator">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <ImageView
+        android:id="@+id/iv_score_calculator_nolan_chart"
+        android:layout_width="375dp"
+        android:layout_height="375dp"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/nolan_chart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.65"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/tv_score_calculator_liberal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:fontFamily="@font/fredoka_one"
+        android:text="(Liberal)"
+        app:layout_constraintStart_toStartOf="@+id/iv_score_calculator_nolan_chart"
+        app:layout_constraintTop_toBottomOf="@+id/tv_score_calculator_left" />
+
+    <TextView
+        android:id="@+id/tv_score_calculator_moderate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="176dp"
+        android:fontFamily="@font/fredoka_one"
+        android:text="Moderate"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.522"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_score_calculator_nolan_chart" />
+
+    <TextView
+        android:id="@+id/tv_score_calculator_conservative"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="28dp"
+        android:fontFamily="@font/fredoka_one"
+        android:text="(Conservative)"
+        app:layout_constraintEnd_toEndOf="@+id/iv_score_calculator_nolan_chart"
+        app:layout_constraintTop_toBottomOf="@+id/tv_score_calculator_right" />
+
+    <TextView
+        android:id="@+id/tv_score_calculator_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="164dp"
+        android:fontFamily="@font/fredoka_one"
+        android:text="Left"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/iv_score_calculator_nolan_chart"
+        app:layout_constraintTop_toTopOf="@+id/iv_score_calculator_nolan_chart" />
+
+    <TextView
+        android:id="@+id/tv_score_calculator_authoritartian"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="70dp"
+        android:fontFamily="@font/fredoka_one"
+        android:text="Authoritarian"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_score_calculator_nolan_chart"
+        app:layout_constraintEnd_toEndOf="@+id/iv_score_calculator_nolan_chart"
+        app:layout_constraintStart_toStartOf="@+id/iv_score_calculator_nolan_chart" />
+
+    <TextView
+        android:id="@+id/tv_score_calculator_libertarian"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="84dp"
+        android:fontFamily="@font/fredoka_one"
+        android:text="Libertarian"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.520"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_score_calculator_nolan_chart" />
+
+    <TextView
+        android:id="@+id/tv_score_calculator_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="164dp"
+        android:layout_marginEnd="60dp"
+        android:fontFamily="@font/fredoka_one"
+        android:text="Right"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/iv_score_calculator_nolan_chart"
+        app:layout_constraintTop_toTopOf="@+id/iv_score_calculator_nolan_chart" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="110dp"
+        android:fontFamily="@font/fredoka_one"
+        android:text="Personal Freedom:"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="110dp"
+        android:layout_marginEnd="12dp"
+        android:fontFamily="@font/fredoka_one"
+        android:text="Economic Freedom:"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_score_calculator_personal_freedom_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/fredoka_one"
+        android:textColor="@color/navy"
+        android:textSize="50sp"
+        app:layout_constraintEnd_toEndOf="@+id/textView10"
+        app:layout_constraintStart_toStartOf="@+id/textView10"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+    <TextView
+        android:id="@+id/tv_score_calculator_economic_freedom_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/fredoka_one"
+        android:textColor="@color/navy"
+        android:textSize="50sp"
+        app:layout_constraintEnd_toEndOf="@+id/textView12"
+        app:layout_constraintStart_toStartOf="@+id/textView12"
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="141dp"
+        android:fontFamily="@font/fredoka_one"
+        android:text="Plotted on Graph:"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graph"
+        android:layout_width="310dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="8dp"
+        android:rotation="315"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_score_calculator_nolan_chart"
+        app:layout_constraintEnd_toEndOf="@+id/iv_score_calculator_nolan_chart"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="@+id/iv_score_calculator_nolan_chart"
+        app:layout_constraintTop_toTopOf="@+id/iv_score_calculator_nolan_chart"
+        app:layout_constraintVertical_bias="0.644" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/fredoka_one"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/fredoka_one"
+        android:text="You are:"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_score_calculator_subtext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/fredoka_one"
+        android:textColor="@color/navy"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

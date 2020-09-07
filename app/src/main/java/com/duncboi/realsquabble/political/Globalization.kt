@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import com.duncboi.realsquabble.Constants
 import com.duncboi.realsquabble.Constants.rand
 import com.duncboi.realsquabble.R
-import kotlinx.android.synthetic.main.fragment_freedom_of_speech.*
+import kotlinx.android.synthetic.main.fragment_globalization.*
 
-class FreedomOfSpeech : Fragment() {
+class Globalization : Fragment() {
 
     private val answer0: String = "0"
     private val answer5: String = "5"
@@ -22,37 +22,37 @@ class FreedomOfSpeech : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_freedom_of_speech, container, false)
+        return inflater.inflate(R.layout.fragment_globalization, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tv_freedom_of_speech_question_number.text = "${Constants.questionNumber +1}/${Constants.fragmentList.size}"
+        tv_globalization_question_number.text = "${Constants.questionNumber +1}/${Constants.fragmentList.size}"
         val randomNumber = Constants.randomAnswers(
             randomNumber,
-            rb_freedom_of_speech_answer1,
-            rb_freedom_of_speech_answer2,
-            rb_freedom_of_speech_answer3,
+            rb_globalization_answer1,
+            rb_globalization_answer2,
+            rb_globalization_answer3,
             answer0,
             answer5,
             answer10
         )
 
-        b_freedom_of_speech_next.setOnClickListener {
-            if (rb_freedom_of_speech_answer1.isChecked || rb_freedom_of_speech_answer2.isChecked || rb_freedom_of_speech_answer3.isChecked) {
+        b_globalization_next.setOnClickListener {
+            if (rb_globalization_answer1.isChecked || rb_globalization_answer2.isChecked || rb_globalization_answer3.isChecked) {
                 val answer = Constants.checkAnswers(
                     randomNumber,
-                    rb_freedom_of_speech_answer1,
-                    rb_freedom_of_speech_answer2,
-                    rb_freedom_of_speech_answer3
+                    rb_globalization_answer1,
+                    rb_globalization_answer2,
+                    rb_globalization_answer3
                 )
                 activity?.let { it1 ->
                     Constants.nextFragment(
                         it1,
-                        "Freedom of Speech",
+                        "Globalization",
                         answer,
-                        "social",
+                        "economic",
                         Constants.questionNumber + 1
                     )
                 }
@@ -60,16 +60,16 @@ class FreedomOfSpeech : Fragment() {
             else{
                 Constants.stopRadioRunner = false
                 Constants.runRadioChecker(
-                    rb_freedom_of_speech_answer1,
-                    rb_freedom_of_speech_answer2,
-                    rb_freedom_of_speech_answer3,
-                    tv_freedom_of_speech_error,
-                    iv_freedom_of_speech_error
+                    rb_globalization_answer1,
+                    rb_globalization_answer2,
+                    rb_globalization_answer3,
+                    tv_globalization_error,
+                    iv_globalization_error
                 )
             }
         }
 
-        b_freedom_of_speech_previous.setOnClickListener {
+        b_globalization_previous.setOnClickListener {
             activity?.let { it1 -> Constants.previousFragment(it1) }
         }
 

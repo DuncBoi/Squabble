@@ -14,7 +14,6 @@
         android:layout_marginTop="24dp"
         android:src="@drawable/nolan_chart"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.473"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
 

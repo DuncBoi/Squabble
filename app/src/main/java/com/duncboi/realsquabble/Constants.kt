@@ -3,52 +3,50 @@ package com.duncboi.realsquabble
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.net.Uri
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.duncboi.realsquabble.political.*
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.getValue
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_edit_profile.*
-import kotlinx.android.synthetic.main.fragment_email_verification_registration.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 object Constants {
 
-    val politicalIntro = PoliticalIntro()
-    val gunControl = GunControl()
-    val economicFreedom = EconomicFreedom()
-    val freedomOfSpeech = FreedomOfSpeech()
-    val drugs = Drugs()
-    val environment = Environment()
-    val immigration = Immigration()
-    val religion = Religion()
-    val discrimination = discrimination()
-    val nation = Nation()
-    val scoreCalculator = ScoreCalculator()
+    private val gunControl = GunControl()
+    private val economicFreedom = EconomicFreedom()
+    private val freedomOfSpeech = FreedomOfSpeech()
+    private val drugs = Drugs()
+    private val environment = Environment()
+    private val immigration = Immigration()
+    private val religion = Religion()
+    private val discrimination = discrimination()
+    private val nation = Nation()
+    private val scoreCalculator = ScoreCalculator()
+    private val businessRegulation = BusinessRegulation()
+    private val governmentPerformance = GovernmentPerformance()
+    private val taxes = Taxes()
+    private val poverty = Poverty()
+    private val healthcare = Healthcare()
+    private val globalization = Globalization()
+    private val foreignPolicy = ForeignPolicy()
+    private val politicalIntro = PoliticalIntro()
 
     var questionNumber = 0
-    var economicScore = 0
-    var socialScore = 0
 
     //make sure this will be different every time
-    val fragmentList = arrayListOf(gunControl, discrimination, economicFreedom, freedomOfSpeech, drugs, environment, immigration, religion, nation).shuffled()
+    val fragmentList = arrayListOf(gunControl, discrimination, economicFreedom, freedomOfSpeech, drugs, environment, immigration, religion, nation, businessRegulation, governmentPerformance, taxes, poverty, healthcare, globalization, foreignPolicy).shuffled()
+
         fun rand(start: Int, end: Int): Int {
         require(start <= end) { "Illegal Argument" }
         return (start..end).random()
@@ -59,7 +57,7 @@ object Constants {
             val fragment = Constants.fragmentList[questionNumber - 1]
             questionNumber--
             activity.supportFragmentManager.beginTransaction()
-                .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+                .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                 .replace(R.id.root_container, fragment)
                 .commitAllowingStateLoss()
         }
@@ -87,7 +85,7 @@ object Constants {
         }
     }
 
-    fun nextFragment(activity: FragmentActivity, questionHeader: String, answer: Int, type: String, questionNum: Int) {
+    fun nextFragment(activity: FragmentActivity, questionHeader: String, answer: Double, type: String, questionNum: Int) {
         if (questionNumber +1 < fragmentList.size) {
             val nextFragment = fragmentList[questionNumber+1]
             questionNumber++
@@ -104,10 +102,14 @@ object Constants {
             builder.setCancelable(false)
             builder.setNegativeButton("Cancel"){ _: DialogInterface, _: Int -> }
             builder.setPositiveButton("Submit"){ _: DialogInterface, _: Int ->
-                activity.supportFragmentManager.beginTransaction()
-                    .replace(R.id.root_container, scoreCalculator)
-                    .commitAllowingStateLoss()
-            }
+                uploadToDatabase(questionHeader, answer, type, questionNum)
+                CoroutineScope(Main).launch {
+                    delay(100)
+                    activity.supportFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                        .replace(R.id.root_container, scoreCalculator)
+                        .commitAllowingStateLoss()
+            }}
             builder.create().show()
         }
     }
@@ -134,54 +136,45 @@ object Constants {
         return randomNumber
     }
 
-    fun checkAnswers(randomNumber: Int, rb1: RadioButton, rb2: RadioButton, rb3:RadioButton): Int {
+    fun checkAnswers(randomNumber: Int, rb1: RadioButton, rb2: RadioButton, rb3:RadioButton): Double {
         when (randomNumber) {
             1 -> {
                 when {
                     rb1.isChecked -> {
-                        return 0
-                        Constants.socialScore += 0
+                        return 0.0
                     }
                     rb2.isChecked -> {
-                        return 5
-                        Constants.socialScore += 5}
+                        return 6.25}
                     rb3.isChecked -> {
-                        return 10
-                        Constants.socialScore += 10
+                        return 12.5
                 }
             }}
             2 -> {
                 when {
                     rb1.isChecked -> {
-                        return 10
-                        Constants.socialScore += 10
+                        return 12.5
                     }
                     rb2.isChecked -> {
-                        return 0
-                        Constants.socialScore += 0}
+                        return 0.0}
                     rb3.isChecked -> {
-                        return 5
-                        Constants.socialScore += 5
+                        return 6.25
                     }
                 }
             }
             3 -> {
                 when {
                     rb1.isChecked -> {
-                        return 5
-                        Constants.socialScore += 5
+                        return 6.25
                     }
                     rb2.isChecked -> {
-                        return 10
-                        Constants.socialScore += 10}
+                        return 12.5}
                     rb3.isChecked -> {
-                        return 0
-                        Constants.socialScore += 0
+                        return 0.0
                     }
                 }
             }
         }
-        return -1
+        return 0.0
     }
 
     var stopRadioRunner = false
@@ -206,7 +199,7 @@ object Constants {
             }
         }
     }
-    private fun uploadToDatabase(questionHeader: String, answer: Int, type: String, questionNumber: Int){
+    private fun uploadToDatabase(questionHeader: String, answer: Double, type: String, questionNumber: Int){
         CoroutineScope(IO).launch {
         val uid = FirebaseAuth.getInstance().currentUser?.uid
         val emailQuery = FirebaseDatabase.getInstance().reference.child("Users").orderByChild("uid").equalTo(uid)

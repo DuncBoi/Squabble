@@ -1,7 +1,6 @@
 package com.duncboi.realsquabble.political
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,15 +13,9 @@ import com.duncboi.realsquabble.Constants.questionNumber
 import com.duncboi.realsquabble.Constants.rand
 import com.duncboi.realsquabble.Constants.randomAnswers
 import com.duncboi.realsquabble.Constants.runRadioChecker
-import com.duncboi.realsquabble.Constants.socialScore
 import com.duncboi.realsquabble.Constants.stopRadioRunner
 import com.duncboi.realsquabble.R
-import kotlinx.android.synthetic.main.fragment_discrimination.*
 import kotlinx.android.synthetic.main.fragment_gun_control.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 
 class GunControl : Fragment() {

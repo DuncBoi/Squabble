@@ -1,18 +1,12 @@
 package com.duncboi.realsquabble.political
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.duncboi.realsquabble.Constants
-import com.duncboi.realsquabble.Constants.economicFreedom
-import com.duncboi.realsquabble.Constants.economicScore
 import com.duncboi.realsquabble.Constants.fragmentList
-import com.duncboi.realsquabble.Constants.gunControl
 import com.duncboi.realsquabble.Constants.questionNumber
-import com.duncboi.realsquabble.Constants.socialScore
 import com.duncboi.realsquabble.R
 import kotlinx.android.synthetic.main.fragment_political_intro.*
 
@@ -31,8 +25,7 @@ class PoliticalIntro : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         questionNumber = 0
-        economicScore = 0
-        socialScore = 0
+
         b_political_into_start_quiz.setOnClickListener {
             val nextFragment = fragmentList[questionNumber]
             nextFragment(nextFragment)
@@ -40,8 +33,8 @@ class PoliticalIntro : Fragment() {
     }
 
     private fun nextFragment(nextFragment: Fragment) {
-        Log.d("Moose", "$questionNumber")
         activity?.supportFragmentManager!!.beginTransaction()
+            .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
             .replace(R.id.root_container, nextFragment)
             .commitAllowingStateLoss()
     }

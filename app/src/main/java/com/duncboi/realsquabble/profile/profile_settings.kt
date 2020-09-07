@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.duncboi.realsquabble.R
+import com.duncboi.realsquabble.political.Political
 import com.duncboi.realsquabble.registration.Registration
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -51,6 +52,12 @@ class profile_settings : Fragment() {
 
         view.tv_profile_settings_anonymous_mode.setOnClickListener {
             anonymousLogic()
+        }
+
+        view.b_settings_retake_quiz.setOnClickListener {
+            val intent = Intent(activity, Political::class.java)
+            startActivity(intent)
+            activity?.finish()
         }
 
         view.b_profile_settings_logout.setOnClickListener {

@@ -1,9 +1,6 @@
 package com.duncboi.realsquabble.political
 
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +9,6 @@ import com.duncboi.realsquabble.Constants
 import com.duncboi.realsquabble.Constants.checkAnswers
 import com.duncboi.realsquabble.Constants.fragmentList
 import com.duncboi.realsquabble.Constants.nextFragment
-import com.duncboi.realsquabble.Constants.politicalIntro
 import com.duncboi.realsquabble.Constants.previousFragment
 import com.duncboi.realsquabble.Constants.questionNumber
 import com.duncboi.realsquabble.Constants.rand
@@ -20,14 +16,12 @@ import com.duncboi.realsquabble.Constants.randomAnswers
 import com.duncboi.realsquabble.Constants.runRadioChecker
 import com.duncboi.realsquabble.R
 import kotlinx.android.synthetic.main.fragment_discrimination.*
-import kotlinx.android.synthetic.main.fragment_discrimination.*
-import kotlinx.android.synthetic.main.fragment_gun_control.*
 
 class discrimination : Fragment() {
 
-    private val answer0: String = "peepoo"
-    private val answer5: String = "peepoo"
-    private val answer10: String = "peepoo"
+    private val answer0: String = "0"
+    private val answer5: String = "5"
+    private val answer10: String = "10"
     private val randomNumber = rand(1,3)
 
     override fun onCreateView(

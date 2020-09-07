@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".political.Immigration">
+    tools:context=".political.Taxes">
 
     <ImageView
-        android:id="@+id/iv_immigration_icon_circle"
+        android:id="@+id/iv_taxes_icon_circle"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="45dp"
@@ -17,20 +17,20 @@
         app:srcCompat="@drawable/icon_circle" />
 
     <TextView
-        android:id="@+id/tv_immigration_header"
+        android:id="@+id/tv_taxes_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/fredoka_one"
-        android:text="Immigration"
+        android:text="Taxes"
         android:textColor="#000000"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_immigration_icon_circle" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_taxes_icon_circle" />
 
     <RadioGroup
-        android:id="@+id/rg_immigration"
+        android:id="@+id/rg_taxes"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -38,10 +38,10 @@
         android:layout_marginEnd="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_immigration_error">
+        app:layout_constraintTop_toBottomOf="@+id/tv_taxes_error">
 
         <RadioButton
-            android:id="@+id/rb_immigration_answer1"
+            android:id="@+id/rb_taxes_answer1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/fredoka_one"
@@ -50,7 +50,7 @@
             android:textSize="16sp" />
 
         <RadioButton
-            android:id="@+id/rb_immigration_answer2"
+            android:id="@+id/rb_taxes_answer2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="45dp"
@@ -60,7 +60,7 @@
             android:textSize="16sp" />
 
         <RadioButton
-            android:id="@+id/rb_immigration_answer3"
+            android:id="@+id/rb_taxes_answer3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="45dp"
@@ -71,7 +71,7 @@
     </RadioGroup>
 
     <Button
-        android:id="@+id/b_immigration_next"
+        android:id="@+id/b_taxes_next"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="45dp"
@@ -83,10 +83,10 @@
         android:text="Next"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rg_immigration" />
+        app:layout_constraintTop_toBottomOf="@+id/rg_taxes" />
 
     <Button
-        android:id="@+id/b_immigration_previous"
+        android:id="@+id/b_taxes_previous"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -98,22 +98,22 @@
         android:text="Previous"
         android:textAlignment="center"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toStartOf="@+id/b_immigration_next"
+        app:layout_constraintEnd_toStartOf="@+id/b_taxes_next"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rg_immigration" />
+        app:layout_constraintTop_toBottomOf="@+id/rg_taxes" />
 
     <ImageView
-        android:id="@+id/iv_immigration_icon"
+        android:id="@+id/iv_taxes_icon"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_immigration_icon_circle"
-        app:layout_constraintEnd_toEndOf="@+id/iv_immigration_icon_circle"
-        app:layout_constraintStart_toStartOf="@+id/iv_immigration_icon_circle"
-        app:layout_constraintTop_toTopOf="@+id/iv_immigration_icon_circle"
-        app:srcCompat="@drawable/immigration" />
+        app:layout_constraintBottom_toBottomOf="@+id/iv_taxes_icon_circle"
+        app:layout_constraintEnd_toEndOf="@+id/iv_taxes_icon_circle"
+        app:layout_constraintStart_toStartOf="@+id/iv_taxes_icon_circle"
+        app:layout_constraintTop_toTopOf="@+id/iv_taxes_icon_circle"
+        app:srcCompat="@drawable/taxes" />
 
     <TextView
-        android:id="@+id/tv_immigration_error"
+        android:id="@+id/tv_taxes_error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -122,26 +122,26 @@
         android:textColor="@color/red"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_immigration_header" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_taxes_header" />
 
     <TextView
-        android:id="@+id/tv_immigration_question_number"
+        android:id="@+id/tv_taxes_question_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="75dp"
         android:fontFamily="@font/fredoka_one"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/iv_immigration_icon_circle"
+        app:layout_constraintStart_toEndOf="@+id/iv_taxes_icon_circle"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/iv_immigration_error"
+        android:id="@+id/iv_taxes_error"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="71dp"
         android:visibility="invisible"
-        app:layout_constraintEnd_toStartOf="@+id/iv_immigration_icon_circle"
+        app:layout_constraintEnd_toStartOf="@+id/iv_taxes_icon_circle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_error_24" />
