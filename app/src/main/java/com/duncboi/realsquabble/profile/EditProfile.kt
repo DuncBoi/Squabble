@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,13 +22,18 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.duncboi.realsquabble.R
+import com.google.android.gms.tasks.Continuation
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageTask
+import com.google.firebase.storage.UploadTask
 import com.squareup.picasso.Picasso
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
@@ -46,6 +52,10 @@ class EditProfile : Fragment() {
     private lateinit var imageUri: Uri
     private val args: EditProfileArgs by navArgs()
 
+    override fun onPause() {
+        super.onPause()
+        stopNameRunner = true
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,6 +79,7 @@ class EditProfile : Fragment() {
             override fun onCancelled(error: DatabaseError) {} })
 
         val username = args.username
+        val time = args.usernameTime
         view.b_edit_profile_username.text = username
 
         val firstLetter = username?.get(0)
@@ -97,6 +108,7 @@ class EditProfile : Fragment() {
             stopNameRunner = true
             val bundle = Bundle()
             bundle.putString("bio", bio)
+            bundle.putLong("usernameTime", time)
             bundle.putString("username", username)
             bundle.putString("name", name)
             findNavController().navigate(R.id.edit_profile_to_default, bundle)
@@ -113,6 +125,7 @@ class EditProfile : Fragment() {
             emailQuery.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for (childSnapshot in snapshot.children) {
+                        if (time != 0L) childSnapshot.child("usernameTime").ref.setValue("$time")
                         childSnapshot.child("username").ref.setValue("$username")
                         childSnapshot.child("name").ref.setValue("$name")
                         childSnapshot.child("bio").ref.setValue("$bio").addOnCompleteListener {
@@ -138,6 +151,7 @@ class EditProfile : Fragment() {
             val username = b_edit_profile_username.text.toString().trim()
             val bundle = Bundle()
             bundle.putString("bio", bio)
+            bundle.putLong("usernameTime", time)
             bundle.putString("username", username)
             bundle.putString("name", name)
             findNavController().navigate(R.id.editProfile_to_edit_username, bundle)
@@ -248,71 +262,60 @@ class EditProfile : Fragment() {
         startActivityForResult(intent, 1)
     }
 
-    @RequiresApi(Build.VERSION_CODES.P)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(requestCode == 0 && resultCode == RESULT_OK){
+        if (requestCode == 0 && resultCode == RESULT_OK) {
             val uri = data?.data
-            CropImage.activity(uri).setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(1,1).start(
-                this.requireContext(), this)
+            CropImage.activity(uri).setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(1, 1)
+                .start(
+                    this.requireContext(), this
+                )
         }
         if (requestCode == 1 && resultCode == RESULT_OK) {
             val uri = data?.data
-            CropImage.activity(uri).setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(1,1).start(
-                this.requireContext(), this)
+            CropImage.activity(uri).setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(1, 1)
+                .start(
+                    this.requireContext(), this
+                )
         }
-        if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            pb_edit_profile_upload_picture.visibility = View.VISIBLE
             val result = CropImage.getActivityResult(data)
-            if (resultCode == RESULT_OK){
-                val uri = result.uri
-                val emailQuery = FirebaseDatabase.getInstance().reference.child("Users").orderByChild("uid").equalTo(FirebaseAuth.getInstance().currentUser?.uid)
-                emailQuery.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        for (childSnapshot in snapshot.children) {
-                            childSnapshot.child("uri").ref.setValue("$uri")
-                        }}
-                    override fun onCancelled(error: DatabaseError) {} })
-                val source = activity?.contentResolver?.let { ImageDecoder.createSource(it, uri!!) }
-                val bitmap = ImageDecoder.decodeBitmap(source!!)
-                uploadImageAndSaveUri(bitmap)
-            }
-        }
-    }
-    private fun uploadImageAndSaveUri(bitmap: Bitmap){
-        val baos = ByteArrayOutputStream()
-        val emailQuery = FirebaseDatabase.getInstance().reference.child("Users").orderByChild("uid").equalTo(FirebaseAuth.getInstance().currentUser?.uid)
-        emailQuery.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                for (childSnapshot in snapshot.children) {
-                    val username = childSnapshot.child("username").getValue<String>().toString()
-                    val storageRef = FirebaseStorage.getInstance().reference.child("profilePictures/${username}")
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-                    val image = baos.toByteArray()
-                    val upload = storageRef.putBytes(image)
+            if (resultCode == RESULT_OK) {
+                val fileUri = result.uri
+                val storageReference =
+                    FirebaseStorage.getInstance().reference.child("Profile Pictures")
+                val filePath =
+                    storageReference.child("${FirebaseAuth.getInstance().currentUser!!.uid}.jpg")
 
-                    pb_edit_profile_upload_picture.visibility = View.VISIBLE
+                var uploadTask: StorageTask<*>
+                uploadTask = filePath.putFile(fileUri!!)
 
-                    upload.addOnCompleteListener { uploadTask ->
-                        pb_edit_profile_upload_picture.visibility = View.INVISIBLE
-                        if(uploadTask.isSuccessful){
-                            storageRef.downloadUrl.addOnCompleteListener { urlTask ->
-                                urlTask.result?.let {
-                                    imageUri = it
-                                    civ_edit_profile_picture.setImageBitmap(bitmap)
-                                    iv_edit_profile_photo.alpha = 0f
-                                    tv_edit_profile_letter.alpha = 0f
-                                }
-                            }
-                        }
-                        else{
-                            uploadTask.exception?.let {
-                                Toast.makeText(activity, "${it.message}", Toast.LENGTH_LONG).show()
-                            }
+                uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
+                    if (!task.isSuccessful) {
+                        task.exception?.let {
+                            throw it
                         }
                     }
-            }}
-            override fun onCancelled(error: DatabaseError) {} })
+                    return@Continuation filePath.downloadUrl
+                }).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val downloadUri = task.result
+                        val url = downloadUri.toString()
+                        FirebaseDatabase.getInstance().reference.child("Users")
+                            .child("${FirebaseAuth.getInstance().currentUser!!.uid}")
+                            .child("uri").ref.setValue("$url").addOnCompleteListener {
+                                if (it.isSuccessful) {
+                                    Picasso.get().load(url).placeholder(R.drawable.profile_icon)
+                                        .into(civ_edit_profile_picture)
+                                    pb_edit_profile_upload_picture.visibility = View.INVISIBLE
+                                }
+                            }
+                    }
+                }
+            }
+        }
 
     }
 

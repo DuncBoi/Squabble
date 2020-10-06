@@ -110,7 +110,7 @@
         app:layout_constraintEnd_toEndOf="@+id/iv_poverty_icon_circle"
         app:layout_constraintStart_toStartOf="@+id/iv_poverty_icon_circle"
         app:layout_constraintTop_toTopOf="@+id/iv_poverty_icon_circle"
-        app:srcCompat="@drawable/hands_linked" />
+        app:srcCompat="@drawable/poverty" />
 
     <TextView
         android:id="@+id/tv_poverty_error"

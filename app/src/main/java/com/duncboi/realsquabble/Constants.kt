@@ -20,6 +20,12 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.lang.Math.round
+import java.lang.StringBuilder
+import java.math.RoundingMode
+import java.text.DecimalFormat
+import kotlin.math.pow
+import kotlin.math.roundToInt
 
 object Constants {
 
@@ -40,7 +46,19 @@ object Constants {
     private val healthcare = Healthcare()
     private val globalization = Globalization()
     private val foreignPolicy = ForeignPolicy()
-    private val politicalIntro = PoliticalIntro()
+    var groupUsers = ArrayList<String>()
+
+    val BASE_URL = "https://api.urlmeta.org"
+    val API_KEY = "c6b76099eda8465aac148a69ad95b13c"
+
+    val newsService: NewsService
+        get() = RetroFitClient.getClient(BASE_URL).create(NewsService::class.java)
+
+    fun getNewsApi(source: String): String{
+        val apiUrl = StringBuilder("https://newsapi.org/v2/everything?sources=").append(source).append("&apiKey=").append(API_KEY).toString()
+        return apiUrl
+    }
+
 
     var questionNumber = 0
 
@@ -69,17 +87,15 @@ object Constants {
             builder.setNegativeButton("Cancel"){ _: DialogInterface, _: Int -> }
             builder.setPositiveButton("Exit"){ _: DialogInterface, _: Int ->
                 val uid = FirebaseAuth.getInstance().currentUser?.uid
-                val emailQuery = FirebaseDatabase.getInstance().reference.child("Users").orderByChild("uid").equalTo(uid)
-                emailQuery.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onCancelled(error: DatabaseError) {}
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        for (childSnapshot in snapshot.children) {
-                            childSnapshot.child("Question Answers").ref.removeValue()
-                        }
-                    }})
-                val intent = Intent(activity, Political::class.java)
-                activity.finish()
-                activity.startActivity(intent)
+                FirebaseDatabase.getInstance().reference.child("Users").child(uid!!).child("Question Answers").ref.removeValue().addOnCompleteListener {
+                    if (it.isSuccessful){
+                        val intent = Intent(activity, Political::class.java)
+                        activity.finish()
+                        activity.startActivity(intent)}
+                    else{
+                        //display error
+                    }
+                }
             }
             builder.create().show()
         }
@@ -201,17 +217,31 @@ object Constants {
     }
     private fun uploadToDatabase(questionHeader: String, answer: Double, type: String, questionNumber: Int){
         CoroutineScope(IO).launch {
-        val uid = FirebaseAuth.getInstance().currentUser?.uid
-        val emailQuery = FirebaseDatabase.getInstance().reference.child("Users").orderByChild("uid").equalTo(uid)
-        emailQuery.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(error: DatabaseError) {}
-            override fun onDataChange(snapshot: DataSnapshot) {
-                for (childSnapshot in snapshot.children) {
-                    childSnapshot.child("Question Answers").child("$questionHeader").child("number").ref.setValue("$questionNumber")
-                    childSnapshot.child("Question Answers").child("$questionHeader").child("type").ref.setValue("$type")
-                    childSnapshot.child("Question Answers").child("$questionHeader").child("answer points").ref.setValue("$answer")
-                }
-            }
-        })
+            val uid = FirebaseAuth.getInstance().currentUser!!.uid
+            FirebaseDatabase.getInstance().reference.child("Users").child(uid).child("Question Answers").child("$questionHeader").child("number").ref.setValue("$questionNumber")
+            FirebaseDatabase.getInstance().reference.child("Users").child(uid).child("Question Answers").child("$questionHeader").child("type").ref.setValue("$type")
+            FirebaseDatabase.getInstance().reference.child("Users").child(uid).child("Question Answers").child("$questionHeader").child("answer points").ref.setValue("$answer")
 }}
+
+     fun wrap_number(num: Double): String{
+        if (num < 1000){
+            return "$num"
+        }
+        else if (num < 1000000) {
+            val poo = num / 1000
+            val coo = roundOffDecimal(poo)
+            return "${coo}k"
+        }
+         else{
+            val poo = num / 1000000
+            val coo = roundOffDecimal(poo)
+            return "${coo}M"
+        }
+    }
+
+    fun roundOffDecimal(number: Double): Double? {
+        val df = DecimalFormat("#.#")
+        df.roundingMode = RoundingMode.CEILING
+        return df.format(number).toDouble()
+    }
 }

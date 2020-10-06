@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/comment_holder"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/civ_comment_profile_pic"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/profile_icon"
+        app:civ_border_color="@color/navy"
+        app:civ_border_width="2dp" />
+
+    <TextView
+        android:id="@+id/tv_comment_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_comment_username"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@id/civ_comment_profile_pic"
+        android:background="@drawable/rounded_edittext_register_login"
+        android:fontFamily="@font/fredoka_one"
+        android:padding="4dp"
+        android:textAlignment="viewStart"
+        android:textColor="@android:color/black"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_comment_view_replies"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_comment_text"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@id/civ_comment_profile_pic"
+        android:fontFamily="@font/fredoka_one"
+        android:gravity="bottom"
+        android:textAllCaps="false"
+        android:textColor="@color/googleBlue"
+        android:textSize="12sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_comment_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/civ_comment_profile_pic"
+        android:layout_alignEnd="@+id/civ_comment_profile_pic"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:fontFamily="@font/fredoka_one"
+        android:textAlignment="center"
+        android:textColor="@color/greytext"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tv_comment_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/civ_comment_profile_pic"
+        android:layout_marginStart="4dp"
+        android:layout_toEndOf="@+id/civ_comment_profile_pic"
+        android:fontFamily="@font/fredoka_one"
+        android:textSize="11sp" />
+
+</RelativeLayout>

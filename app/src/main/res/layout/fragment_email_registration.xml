@@ -1,27 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/email_constraint"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     >
-
-    <TextView
-        android:id="@+id/tv_email_login"
-        style="@style/Widget.AppCompat.TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
-        android:fontFamily="@font/fredoka_one"
-        android:text="Sign In"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/b_email_next" />
 
     <TextView
         android:id="@+id/tv_email_please_enter_email2"
@@ -129,13 +114,17 @@
         android:id="@+id/tv_email_previous"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="75dp"
         android:fontFamily="@font/fredoka_one"
+        android:paddingLeft="30dp"
+        android:paddingTop="30dp"
+        android:paddingRight="30dp"
+        android:paddingBottom="30dp"
         android:text="Previous"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_email_login" />
+        app:layout_constraintTop_toBottomOf="@+id/b_email_google" />
 
     <TextView
         android:id="@+id/tv_email_header"
@@ -145,7 +134,6 @@
         android:fontFamily="@font/fredoka_one"
         android:text="Register an Email"
         android:textSize="24sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -202,5 +190,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/b_email_google"
         app:layout_constraintTop_toBottomOf="@+id/b_email_next" />
+
+    <ProgressBar
+        android:id="@+id/pb_email_progress"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="37dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="300dp"
+        android:layout_marginEnd="8dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/et_email_email"
+        app:layout_constraintEnd_toEndOf="@+id/et_email_email"
+        app:layout_constraintStart_toStartOf="@+id/et_email_email"
+        app:layout_constraintTop_toTopOf="@+id/et_email_email" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

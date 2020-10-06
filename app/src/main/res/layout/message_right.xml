@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ_message_left_profile_picture"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignBottom="@+id/tv_show_text_message"
+            android:layout_marginStart="5dp"
+            android:layout_marginBottom="-5dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_message_right_seen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_show_text_message"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:fontFamily="@font/fredoka_one"
+             />
+
+        <TextView
+            android:id="@+id/tv_show_text_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/outgoing_message"
+            android:fontFamily="@font/fredoka_one"
+            android:paddingStart="15dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="25dp"
+            android:paddingBottom="8dp"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_right_card_view"
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+            app:cardCornerRadius="8dp"
+            android:layout_margin="5dp"
+            android:elevation="10dp"
+            android:layout_alignParentEnd="true"
+            android:visibility="gone"
+            >
+            <ImageView
+                android:id="@+id/iv_right_message_image"
+                android:layout_width="150dp"
+                android:layout_height="200dp"
+                android:layout_alignParentEnd="true"
+                android:visibility="gone"
+            />
+        </androidx.cardview.widget.CardView>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

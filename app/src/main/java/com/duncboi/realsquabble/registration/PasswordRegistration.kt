@@ -3,6 +3,8 @@ package com.duncboi.realsquabble.registration
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,22 +14,24 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.duncboi.realsquabble.R
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_password_registration.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.android.synthetic.main.fragment_username_registration.*
+import kotlinx.coroutines.*
+import java.lang.Error
 
 
 class PasswordRegistration : Fragment() {
     private val args: PasswordRegistrationArgs by navArgs()
-    private var onClickPassword: String = ""
+    private var job: Job? = null
 
 
     override fun onPause() {
         super.onPause()
-        stopLivePasswordCheck = true
-        stopOnClickPasswordCheck = true
+        job?.cancel()
     }
 
     override fun onResume() {
@@ -36,8 +40,6 @@ class PasswordRegistration : Fragment() {
         if (passwordPassed != "password") {
             et_password.setText(passwordPassed)
         }
-        stopLivePasswordCheck = false
-        runLivePasswordCheck()
     }
 
     override fun onCreateView(
@@ -52,18 +54,61 @@ class PasswordRegistration : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         defaultConstraint()
-        runLivePasswordCheck()
+
+        et_password.addTextChangedListener(object: TextWatcher {
+            private var searchFor = ""
+
+            override fun afterTextChanged(p0: Editable?) {}
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                val searchText = p0.toString().trim().toLowerCase()
+                if (searchText == searchFor)
+                    return
+                searchFor = searchText
+                defaultConstraint()
+                job = CoroutineScope(Dispatchers.Main).launch {
+                    delay(1000)
+                    if (searchText != searchFor)
+                        return@launch
+                        if (searchText == "") {
+                            onPasswordEmpty()
+                        }
+                        else if (searchText.length >= 6 && isValidPassword(searchText)) {
+                            onStrongPassword()
+                        }
+
+                }
+            }
+        })
 
         b_password_next.setOnClickListener {
-            stopOnClickPasswordCheck = false
-            stopLivePasswordCheck = true
             val password = et_password.text.toString().trim()
-            onClickPassword = password
+            val isPasswordMix = isValidPassword(password)
 
-            if (password.isEmpty() || password.length < 6 || !isValidPassword(password)) runOnClickPasswordCheck()
-            else startNextActivity(password)
+            if(password.isEmpty()) {
+                errorConstraint()
+                onPasswordEmpty()}
+            else if (password.length < 6) {
+                errorConstraint()
+                onPasswordShort()
+            }
+            else if(!isPasswordMix) {
+                errorConstraint()
+                onPasswordNotStrong()
+                b_password_next.alpha = 0.5f
+                b_password_next.setBackgroundResource(R.drawable.greyed_out_button)
+                }
+            else{
+                errorConstraint()
+                onStrongPassword()
+                startNextActivity(password)
+            }
+
 
         }
+
         tv_password_previous.setOnClickListener {
             closeKeyboard()
             val bundle = Bundle()
@@ -93,6 +138,8 @@ class PasswordRegistration : Fragment() {
     }
 
     private fun defaultConstraint(){
+        b_password_next.setBackgroundResource(R.drawable.greyed_out_button)
+        b_password_next.alpha = 0.5f
         val set = ConstraintSet()
         val passwordConstraint = password_constraint
         iv_password_x.alpha = 0F
@@ -115,56 +162,6 @@ class PasswordRegistration : Fragment() {
         defaultSet.applyTo(passwordLayout)
     }
 
-    //stop functions
-    private var stopOnClickPasswordCheck = false
-    private var stopLivePasswordCheck = false
-
-    //runner functions
-    private fun runOnClickPasswordCheck(){
-        CoroutineScope(Dispatchers.Main).launch {
-            onClickPasswordCheckLogic()}
-    }
-    private fun runLivePasswordCheck(){
-        CoroutineScope(Dispatchers.Main).launch {
-            livePasswordCheckLogic()}
-    }
-
-    private suspend fun onClickPasswordCheckLogic(){
-        while (!stopOnClickPasswordCheck){
-            delay (100)
-
-            val password = et_password.text.toString().trim()
-            val isPasswordMix = isValidPassword(password)
-
-            if(password.isEmpty()) onPasswordEmpty()
-
-            else if (password.length < 6){
-
-                if(onClickPassword != password) {
-                    onClickPassword = "*"
-                    defaultConstraint()
-                    b_password_next.alpha = 0.5f
-                    b_password_next.setBackgroundResource(R.drawable.greyed_out_button)
-                }
-                else onPasswordShort()
-
-            }
-            else if(!isPasswordMix) {
-                if(onClickPassword != password) {
-                    onClickPassword = "*"
-                    defaultConstraint()
-                    b_password_next.alpha = 0.5f
-                    b_password_next.setBackgroundResource(R.drawable.greyed_out_button)
-                }
-                else{
-                    onPasswordNotStrong()}
-            }
-
-            else onStrongPassword()
-
-
-        }
-    }
 
     private fun onPasswordNotStrong() {
         errorConstraint()
@@ -186,22 +183,6 @@ class PasswordRegistration : Fragment() {
         iv_password_x.alpha = 1F
         tv_password_error.setTextColor(Color.parseColor("#eb4b4b"))
         tv_password_error.text = "Password must be at least 6 characters"
-    }
-
-    private suspend fun livePasswordCheckLogic(){
-
-        while (!stopLivePasswordCheck) {
-            delay (100)
-            val password = et_password.text.toString().trim()
-
-            if (password.length >= 6 && isValidPassword(password)) onStrongPassword()
-            else{
-                defaultConstraint()
-                b_password_next.alpha = 0.5f
-                b_password_next.setBackgroundResource(R.drawable.greyed_out_button)
-            }
-
-        }
     }
 
     private fun onStrongPassword() {

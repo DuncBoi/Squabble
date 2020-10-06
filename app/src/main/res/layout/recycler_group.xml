@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="125dp"
+    android:layout_marginTop="8dp"
+    android:background="@drawable/rounded_edittext_register_login">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/civ_recycler_group_image"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/tv_recycler_group_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/civ_recycler_group_image"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@+id/civ_recycler_group_image"
+        android:fontFamily="@font/fredoka_one"
+        android:textColor="@android:color/black"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tv_recycler_group_location"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/civ_recycler_group_image"
+        android:layout_alignStart="@+id/civ_recycler_group_image"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_edittext_register_login"
+        android:drawableLeft="@drawable/location_icon"
+        android:drawablePadding="8dp"
+        android:fontFamily="@font/fredoka_one"
+        android:gravity="center_vertical"
+        android:padding="8dp" />
+
+    <TextView
+        android:id="@+id/tv_recycler_group_alignment"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/civ_recycler_group_image"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_toEndOf="@+id/tv_recycler_group_location"
+        android:background="@drawable/rounded_edittext_register_login"
+        android:drawablePadding="8dp"
+        android:fontFamily="@font/fredoka_one"
+        android:gravity="center_vertical"
+        android:paddingLeft="40dp"
+        android:paddingRight="4dp" />
+
+    <ImageView
+        android:id="@+id/iv_recycler_group_single_alignment"
+        android:layout_width="25dp"
+        android:layout_height="15dp"
+        android:layout_alignStart="@+id/tv_recycler_group_alignment"
+        android:layout_alignTop="@+id/tv_recycler_group_alignment"
+        android:layout_alignBottom="@+id/tv_recycler_group_alignment"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp" />
+
+    <ImageView
+        android:id="@+id/iv_recycler_group_double_alignment_1"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignStart="@+id/tv_recycler_group_alignment"
+        android:layout_alignTop="@+id/tv_recycler_group_alignment"
+        android:layout_marginLeft="10dp"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/iv_recycler_group_double_alignment_2"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignStart="@+id/tv_recycler_group_alignment"
+        android:layout_alignBottom="@+id/tv_recycler_group_alignment"
+        android:layout_marginLeft="10dp"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/iv_recycler_group_trending_up"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignBottom="@+id/tv_recycler_group_name"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_toEndOf="@+id/tv_recycler_group_name"
+        android:background="@drawable/rounded_edittext_register_login"
+        android:padding="4dp"
+        android:src="@drawable/trending_up_icon"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_recycler_group_members"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_recycler_group_name"
+        android:layout_alignBottom="@+id/civ_recycler_group_image"
+        android:layout_marginLeft="8dp"
+        android:layout_toEndOf="@+id/civ_recycler_group_image"
+        android:layout_toRightOf="@id/tv_recycler_group_location"
+        android:fontFamily="@font/fredoka_one"
+        android:gravity="center_vertical" />
+
+
+    <ImageView
+        android:id="@+id/iv_recycler_group_arrow"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_above="@+id/tv_recycler_group_alignment"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="8dp"
+        app:srcCompat="@drawable/arrow" />
+
+
+</RelativeLayout>

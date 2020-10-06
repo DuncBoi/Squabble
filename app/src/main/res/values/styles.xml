@@ -10,5 +10,13 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
+    <style name="Widget.BottomNavigationView"
+        parent="Widget.Design.BottomNavigationView">
+        <item name="fontFamily">@font/fredoka_one</item>
+    </style>
+    <style name="PagerTabStripText">
+        <item name="fontFamily">@font/fredoka_one</item>
+    </style>
+
 
 </resources>

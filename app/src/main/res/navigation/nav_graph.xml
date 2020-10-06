@@ -37,6 +37,10 @@
             android:name="name"
             app:argType="string"
             android:defaultValue="name" />
+        <argument
+            android:name="usernameTime"
+            app:argType="long"
+            android:defaultValue="0L" />
     </fragment>
     <fragment
         android:id="@+id/default_profile"
@@ -51,6 +55,11 @@
         <action
             android:id="@+id/action_default_profile_to_profile_settings"
             app:destination="@id/profile_settings"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_default_profile_to_directMessanger"
+            app:destination="@id/directMessanger"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left" />
     </fragment>
@@ -77,6 +86,10 @@
             android:name="name"
             app:argType="string"
             android:defaultValue="name" />
+        <argument
+            android:name="usernameTime"
+            app:argType="long"
+            android:defaultValue="0L" />
     </fragment>
     <fragment
         android:id="@+id/edit_bio"
@@ -100,6 +113,10 @@
             android:name="name"
             app:argType="string"
             android:defaultValue="name" />
+        <argument
+            android:name="usernameTime"
+            app:argType="long"
+            android:defaultValue="0L" />
     </fragment>
     <fragment
         android:id="@+id/profile_settings"
@@ -135,6 +152,408 @@
         <action
             android:id="@+id/action_link_to_profile_settings"
             app:destination="@id/profile_settings" />
+    </fragment>
+    <fragment
+        android:id="@+id/defaultMessenger"
+        android:name="com.duncboi.realsquabble.messenger.DefaultMessenger"
+        android:label="fragment_default_messenger"
+        tools:layout="@layout/fragment_default_messenger" >
+        <action
+            android:id="@+id/action_defaultMessenger_to_directMessanger"
+            app:destination="@id/directMessanger"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_defaultMessenger_to_DM"
+            app:destination="@id/DM"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_defaultMessenger_to_createGroup"
+            app:destination="@id/createGroup"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_defaultMessenger_to_web_view"
+            app:destination="@id/web_view"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/videoChat"
+        android:name="com.duncboi.realsquabble.VideoChat"
+        android:label="fragment_video_chat"
+        tools:layout="@layout/fragment_video_chat" >
+        <action
+            android:id="@+id/action_videoChat_to_topicDescription"
+            app:destination="@id/topicDescription"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_videoChat_to_createTopic"
+            app:destination="@id/createTopic"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/directMessanger"
+        android:name="com.duncboi.realsquabble.DirectMessanger"
+        android:label="fragment_direct_messanger"
+        tools:layout="@layout/fragment_direct_messanger" >
+        <action
+            android:id="@+id/action_directMessanger_to_DM"
+            app:destination="@id/DM"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_directMessanger_to_otherProfile"
+            app:destination="@id/otherProfile"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_directMessanger_to_default_profile"
+            app:destination="@id/default_profile"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <argument
+            android:name="type"
+            app:argType="string"
+            android:defaultValue="dm" />
+        <action
+            android:id="@+id/action_directMessanger_to_createGroup"
+            app:destination="@id/createGroup"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_directMessanger_to_defaultMessenger"
+            app:destination="@id/defaultMessenger"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_directMessanger_to_groupDescription"
+            app:destination="@id/groupDescription"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/DM"
+        android:name="com.duncboi.realsquabble.DM"
+        android:label="fragment_d_m"
+        tools:layout="@layout/fragment_d_m" >
+        <action
+            android:id="@+id/action_DM_to_directMessanger"
+            app:destination="@id/directMessanger"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_DM_to_defaultMessenger"
+            app:destination="@id/defaultMessenger"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_DM_to_otherProfile"
+            app:destination="@id/otherProfile"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+        <argument
+            android:name="uid"
+            app:argType="string"
+            android:defaultValue="uid" />
+    </fragment>
+    <fragment
+        android:id="@+id/otherProfile"
+        android:name="com.duncboi.realsquabble.OtherProfile"
+        android:label="fragment_other_profile"
+        tools:layout="@layout/fragment_other_profile" >
+        <action
+            android:id="@+id/action_otherProfile_to_DM"
+            app:destination="@id/DM"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <argument
+            android:name="uid"
+            app:argType="string"
+            android:defaultValue="uid" />
+        <action
+            android:id="@+id/action_otherProfile_to_directMessanger"
+            app:destination="@id/directMessanger"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_otherProfile_to_topicDescription"
+            app:destination="@id/topicDescription"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <argument
+            android:name="type"
+            app:argType="string"
+            android:defaultValue="dm" />
+    </fragment>
+    <fragment
+        android:id="@+id/createGroup"
+        android:name="com.duncboi.realsquabble.CreateGroup"
+        android:label="fragment_create_group"
+        tools:layout="@layout/fragment_create_group" >
+        <action
+            android:id="@+id/action_createGroup_to_defaultMessenger"
+            app:destination="@id/defaultMessenger"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_createGroup_to_directMessanger"
+            app:destination="@id/directMessanger"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_createGroup_to_groupDescription"
+            app:destination="@id/groupDescription"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/topicDescription"
+        android:name="com.duncboi.realsquabble.TopicDescription"
+        android:label="fragment_topic_description"
+        tools:layout="@layout/fragment_topic_description" >
+        <action
+            android:id="@+id/action_topicDescription_to_videoChat"
+            app:destination="@id/videoChat"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <argument
+            android:name="topic"
+            app:argType="string"
+            android:defaultValue="topic" />
+        <action
+            android:id="@+id/action_topicDescription_to_otherProfile"
+            app:destination="@id/otherProfile"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_topicDescription_to_queue"
+            app:destination="@id/queue"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+        <argument
+            android:name="type"
+            app:argType="string"
+            android:defaultValue="type" />
+        <action
+            android:id="@+id/action_topicDescription_to_createTopic"
+            app:destination="@id/createTopic"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/queue"
+        android:name="com.duncboi.realsquabble.Queue"
+        android:label="fragment_queue"
+        tools:layout="@layout/fragment_queue" >
+        <action
+            android:id="@+id/action_queue_to_topicDescription"
+            app:destination="@id/topicDescription"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <argument
+            android:name="answer"
+            app:argType="string"
+            android:defaultValue="answer" />
+        <argument
+            android:name="topic"
+            app:argType="string"
+            android:defaultValue="topic" />
+        <action
+            android:id="@+id/action_queue_to_actualVideo"
+            app:destination="@id/actualVideo"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/actualVideo"
+        android:name="com.duncboi.realsquabble.ActualVideo"
+        android:label="fragment_actual_video"
+        tools:layout="@layout/fragment_actual_video" >
+        <argument
+            android:name="code"
+            app:argType="string"
+            android:defaultValue="code" />
+        <argument
+            android:name="otherUid"
+            app:argType="string"
+            android:defaultValue="uid" />
+        <argument
+            android:name="headline"
+            app:argType="string"
+            android:defaultValue="headline" />
+        <argument
+            android:name="answer"
+            app:argType="string"
+            android:defaultValue="answer" />
+        <action
+            android:id="@+id/action_actualVideo_to_topicDescription"
+            app:destination="@id/topicDescription" />
+    </fragment>
+    <fragment
+        android:id="@+id/createTopic"
+        android:name="com.duncboi.realsquabble.CreateTopic"
+        android:label="fragment_create_topic"
+        tools:layout="@layout/fragment_create_topic" >
+        <action
+            android:id="@+id/action_createTopic_to_videoChat"
+            app:destination="@id/videoChat"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_createTopic_to_topicDescription"
+            app:destination="@id/topicDescription"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+        <argument
+            android:name="topic"
+            app:argType="string"
+            android:defaultValue="topic" />
+        <argument
+            android:name="type"
+            app:argType="string"
+            android:defaultValue="type" />
+    </fragment>
+    <fragment
+        android:id="@+id/groupDescription"
+        android:name="com.duncboi.realsquabble.GroupDescription"
+        android:label="fragment_group_description"
+        tools:layout="@layout/fragment_group_description" >
+        <action
+            android:id="@+id/action_groupDescription_to_createGroup"
+            app:destination="@id/createGroup"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_groupDescription_to_directMessanger"
+            app:destination="@id/directMessanger"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <argument
+            android:name="groupId"
+            app:argType="string"
+            android:defaultValue="groupId" />
+        <action
+            android:id="@+id/action_groupDescription_to_findGroup"
+            app:destination="@id/findGroup"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_groupDescription_to_defaultMessenger"
+            app:destination="@id/defaultMessenger"
+            app:enterAnim="@anim/fragment_close_enter"
+            app:exitAnim="@anim/fragment_close_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/createPost"
+        android:name="com.duncboi.realsquabble.CreatePost"
+        android:label="fragment_create_post"
+        tools:layout="@layout/fragment_create_post" >
+        <action
+            android:id="@+id/action_createPost_to_groupHolder"
+            app:destination="@id/groupHolder"
+            app:enterAnim="@anim/fragment_close_enter"
+            app:exitAnim="@anim/fragment_close_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/findGroup"
+        android:name="com.duncboi.realsquabble.FindGroup"
+        android:label="fragment_find_group"
+        tools:layout="@layout/fragment_find_group" >
+        <action
+            android:id="@+id/action_findGroup_to_groupDescription"
+            app:destination="@id/groupDescription"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_findGroup_to_groupHolder"
+            app:destination="@id/groupHolder"
+            app:enterAnim="@anim/fragment_close_enter"
+            app:exitAnim="@anim/fragment_close_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/web_view"
+        android:name="com.duncboi.realsquabble.web_view"
+        android:label="fragment_web_view"
+        tools:layout="@layout/fragment_web_view" >
+        <action
+            android:id="@+id/action_web_view_to_defaultMessenger"
+            app:destination="@id/defaultMessenger"
+            app:enterAnim="@anim/fragment_close_enter"
+            app:exitAnim="@anim/fragment_close_exit" />
+        <argument
+            android:name="url"
+            app:argType="string"
+            android:defaultValue="url" />
+        <action
+            android:id="@+id/action_web_view_to_groupHolder"
+            app:destination="@id/groupHolder"
+            app:enterAnim="@anim/fragment_close_enter"
+            app:exitAnim="@anim/fragment_close_exit" />
+        <action
+            android:id="@+id/action_web_view_to_trending"
+            app:destination="@id/trending"
+            app:enterAnim="@anim/fragment_close_enter"
+            app:exitAnim="@anim/fragment_close_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/trending"
+        android:name="com.duncboi.realsquabble.Trending"
+        android:label="fragment_trending"
+        tools:layout="@layout/fragment_trending" >
+        <action
+            android:id="@+id/action_trending_to_web_view"
+            app:destination="@id/web_view"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/groupHolder"
+        android:name="com.duncboi.realsquabble.GroupHolder"
+        android:label="fragment_group_holder"
+        tools:layout="@layout/fragment_group_holder" >
+        <action
+            android:id="@+id/action_groupHolder_to_web_view"
+            app:destination="@id/web_view"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_groupHolder_to_createPost"
+            app:destination="@id/createPost"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_groupHolder_to_findGroup"
+            app:destination="@id/findGroup"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_groupHolder_to_commentView"
+            app:destination="@id/commentView"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/commentView"
+        android:name="com.duncboi.realsquabble.CommentView"
+        android:label="fragment_comment_view"
+        tools:layout="@layout/fragment_comment_view" >
+        <action
+            android:id="@+id/action_commentView_to_groupHolder"
+            app:destination="@id/groupHolder"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <argument
+            android:name="groupId"
+            app:argType="string"
+            android:defaultValue="groupId" />
+        <argument
+            android:name="postId"
+            app:argType="string"
+            android:defaultValue="postId" />
     </fragment>
 
 </navigation>

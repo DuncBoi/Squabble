@@ -16,4 +16,10 @@
     <color name="grey">#D3d3d3</color>
     <color name = "greytext">#8a000000</color>
 
+    <color name="Libertarian">#e6be8a </color>
+    <color name="Liberal">#82c8E2</color>
+    <color name="Conservative">#ff625e</color>
+    <color name="Moderate">#77DD77</color>
+    <color name="Authoritarian">#c9c0bb</color>
+
 </resources>

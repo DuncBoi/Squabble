@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +20,7 @@ import androidx.navigation.fragment.navArgs
 import com.duncboi.realsquabble.profile.ProfileActivity
 import com.duncboi.realsquabble.R
 import com.duncboi.realsquabble.UserInfo
+import com.duncboi.realsquabble.messenger.Users
 import com.duncboi.realsquabble.political.Political
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -32,14 +35,18 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_email_registration.*
+import kotlinx.android.synthetic.main.fragment_username_registration.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.Main
 
 
 class EmailRegistration : Fragment() {
 
     private val args: EmailRegistrationArgs by navArgs()
 
-    private var onClickEmail: String = ""
+    private var job: Job? = null
+    private var job2: Job? = null
+    private var job3: Job? = null
     private var googleSignInClient: GoogleSignInClient? = null
     private val RC_SIGN_IN = 1000
     private lateinit var auth: FirebaseAuth
@@ -50,14 +57,13 @@ class EmailRegistration : Fragment() {
         if(emailPassed != "null" && emailPassed != "email"){
             et_email_email.setText(emailPassed)
         }
-        stopLiveEmailCheck = false
-        runLiveEmailCheck()
     }
 
     override fun onPause() {
         super.onPause()
-        stopLiveEmailCheck = true
-        stopOnClickEmailCheck = true
+        job?.cancel()
+        job2?.cancel()
+        job3?.cancel()
     }
 
     override fun onCreateView(
@@ -70,22 +76,85 @@ class EmailRegistration : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         defaultConstraint()
         auth = Firebase.auth
-        createRequest()
+
+        et_email_email.addTextChangedListener(object: TextWatcher {
+            private var searchFor = ""
+
+            override fun afterTextChanged(p0: Editable?) {}
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                val searchText = p0.toString().trim().toLowerCase()
+                if (searchText == searchFor)
+                    return
+                searchFor = searchText
+                defaultConstraint()
+                if (searchText == "") {
+                     job2 = CoroutineScope(Main).launch {
+                        defaultConstraint()
+                        pb_email_progress.visibility = View.INVISIBLE
+                        delay(3000)
+                         if(searchText != searchFor)
+                             return@launch
+                        onEmailEmpty()
+                    }
+                }
+                else if (!isEmailValid(searchText)){
+                     job3 = CoroutineScope(Main).launch {
+                        defaultConstraint()
+                        pb_email_progress.visibility = View.INVISIBLE
+                        delay(3000)
+                         if(searchText != searchFor)
+                             return@launch
+                        onIncorrectEmailFormat()
+                    }
+                }
+                else {
+                    pb_email_progress.visibility = View.VISIBLE
+                    job = CoroutineScope(Main).launch {
+                    delay(1000)
+                    if (searchText != searchFor)
+                        return@launch
+                        val usernameQuery = FirebaseDatabase.getInstance().reference.child("Users")
+                            .orderByChild("email").equalTo(searchText)
+                        usernameQuery.addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                if (snapshot.childrenCount > 0) {
+                                    onEmailAlreadyExists()
+                                    pb_email_progress.visibility = View.INVISIBLE}
+                                else {
+                                    onEmailDoesntExist()
+                                    pb_email_progress.visibility = View.INVISIBLE
+                                }
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {}
+                        })
+                    }
+                }
+            }
+        })
+
         b_email_google.setOnClickListener {
+            createRequest()
             signInGoogle()
         }
 
         //On Click Listeners
-        b_email_phone.setOnClickListener {}
+        b_email_phone.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("username", "${args.username}")
+            findNavController().navigate(R.id.action_emailRegistration_to_phoneAuthentication, bundle)
+        }
 
         b_email_next.setOnClickListener {
 
-            stopLiveEmailCheck = true
             val email = et_email_email.text.toString().trim()
             val lowerCaseEmail = email.toLowerCase()
-            onClickEmail = email
 
             val emailQuery = FirebaseDatabase.getInstance().reference.child("Users").orderByChild("email").equalTo(lowerCaseEmail)
             emailQuery.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -99,14 +168,13 @@ class EmailRegistration : Fragment() {
                         findNavController().navigate(R.id.action_emailRegistration_to_passwordRegistration, bundle)
                     }
                     else{
-                        if (!isEmailValid(lowerCaseEmail)){
-                            stopOnClickEmailCheck = false
-                            runOnClickEmailCheck()
+                        if (lowerCaseEmail.isEmpty()){
+                            onEmailEmpty()
                         }
-                        else{
-                            stopLiveEmailCheck = false
-                            runLiveEmailCheck()
-                        }}
+                        else if (!isEmailValid(lowerCaseEmail)){
+                            onIncorrectEmailFormat()
+                        }
+                        }
                 }
             })
         }
@@ -163,12 +231,7 @@ class EmailRegistration : Fragment() {
                                     loadingDialog?.dismiss()
                                     val username = args.username
                                     val uid = currentUser?.uid
-                                    val user = UserInfo(
-                                        username,
-                                        email,
-                                        "google",
-                                        uid
-                                    )
+                                    val user = Users("", "", "", "OFF", "$email", "", "$uid", "$username", "", "", "google", "OFFLINE", "0", "")
                                     uploadUserToDatabase(user)
                                 }
                             }
@@ -205,9 +268,9 @@ class EmailRegistration : Fragment() {
         dialog.show()
     }
 
-    private fun uploadUserToDatabase(user: UserInfo){
+    private fun uploadUserToDatabase(user: Users){
         val ref = FirebaseDatabase.getInstance().getReference("Users")
-        ref.child(user.username!!).setValue(user).addOnCompleteListener {
+        ref.child(user.getUid()!!).setValue(user).addOnCompleteListener {
             if (it.isSuccessful){
                 val intent = Intent(requireActivity().applicationContext, Political::class.java)
                 startActivity(intent)
@@ -255,6 +318,8 @@ class EmailRegistration : Fragment() {
         b_email_sign_in.isClickable = false
         b_email_next.visibility = View.VISIBLE
         b_email_sign_in.visibility = View.INVISIBLE
+        b_email_next.setBackgroundResource(R.drawable.greyed_out_button)
+        b_email_next.alpha = 0.5f
         val set = ConstraintSet()
         val emailLayout = email_constraint
         iv_email_x.alpha = 0F
@@ -263,7 +328,7 @@ class EmailRegistration : Fragment() {
         set.clear(tv_email_error.id, ConstraintSet.TOP)
         set.connect(tv_email_error.id, ConstraintSet.TOP,et_email_email.id, ConstraintSet.TOP)
         set.connect(b_email_next.id, ConstraintSet.TOP,et_email_email.id, ConstraintSet.BOTTOM, 24)
-        set.connect(tv_email_previous.id, ConstraintSet.TOP,b_email_next.id, ConstraintSet.BOTTOM, 200)
+        set.connect(tv_email_previous.id, ConstraintSet.TOP,b_email_next.id, ConstraintSet.BOTTOM, 150)
         set.applyTo(emailLayout)
     }
     private fun errorConstraint(){
@@ -281,78 +346,7 @@ class EmailRegistration : Fragment() {
         defaultSet.applyTo(emailLayout)
     }
 
-    //stop functions
-    private var stopOnClickEmailCheck = false
-    private var stopLiveEmailCheck = false
-
-    //runner functions
-    private fun runOnClickEmailCheck(){
-        CoroutineScope(Dispatchers.Main).launch {
-            onClickEmailCheckLogic()}
-    }
-    private fun runLiveEmailCheck(){
-        CoroutineScope(Dispatchers.Main).launch {
-            liveEmailCheck()}
-    }
-    private suspend fun liveEmailCheck() {
-        withContext(Dispatchers.IO){
-            liveEmailCheckLogic()
-        }
-    }
-
-    //logic functions
-    private suspend fun liveEmailCheckLogic(){
-        while(!stopLiveEmailCheck){
-            delay(200)
-
-            val email = et_email_email.text.toString().trim()
-            val lowerCaseEmail = email.toLowerCase()
-
-            if (!isEmailValid(lowerCaseEmail)) defaultMainThread()
-            else{
-                val emailQuery = FirebaseDatabase.getInstance().reference.child("Users").orderByChild("email").equalTo(lowerCaseEmail)
-                emailQuery.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-
-                        if(snapshot.childrenCount > 0) { onEmailAlreadyExists() }
-                        else onEmailDoesntExist()
-
-                    }
-                    override fun onCancelled(error: DatabaseError) {}
-                })
-            }}
-    }
-    private suspend fun onClickEmailCheckLogic(){
-        while (!stopOnClickEmailCheck){
-            delay(200)
-            val email = et_email_email.text.toString().trim()
-            if (!isEmailValid(email)){
-                if(email.isEmpty()) onEmailEmpty()
-                else {
-                    //MAKES ERROR MESSAGE SAY EMAIL FORMATTED INCORRECTLY ONLY WHEN HITTING NEXT FOR THE FIRST TIME JUST ERASE THE IF STATEMENT TO CHANGE BACK (KEEP THE ELSE CONTENT BUT DELETE ELSE())
-                    if(email != onClickEmail){
-                        onClickEmail = "*"
-                        defaultConstraint()
-                    }
-                    else onIncorrectEmailFormat()
-                }
-            }
-            else{
-                stopOnClickEmailCheck = true
-                stopLiveEmailCheck = false
-                runLiveEmailCheck()
-            }
-        }
-    }
-
     //error functions
-    private suspend fun defaultMainThread() {
-        withContext(Dispatchers.Main) {
-            defaultConstraint()
-            b_email_next.setBackgroundResource(R.drawable.greyed_out_button)
-            b_email_next.alpha = 0.5f
-        }
-    }
     private fun onEmailDoesntExist() {
         defaultConstraint()
         b_email_next.setBackgroundResource(R.drawable.rounded_button)
@@ -363,6 +357,7 @@ class EmailRegistration : Fragment() {
     }
     private fun onIncorrectEmailFormat() {
         errorConstraint()
+        b_email_next.isClickable = false
         b_email_next.setBackgroundResource(R.drawable.greyed_out_button)
         b_email_next.alpha = 0.5f
         iv_email_x.bringToFront()
@@ -373,6 +368,7 @@ class EmailRegistration : Fragment() {
     }
     private fun onEmailEmpty() {
         errorConstraint()
+        b_email_next.isClickable = false
         b_email_next.setBackgroundResource(R.drawable.greyed_out_button)
         b_email_next.alpha = 0.5f
         iv_email_x.bringToFront()

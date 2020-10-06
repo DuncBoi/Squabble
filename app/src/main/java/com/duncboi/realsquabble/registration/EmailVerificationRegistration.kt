@@ -19,6 +19,7 @@ import androidx.navigation.fragment.navArgs
 import com.duncboi.realsquabble.political.Political
 import com.duncboi.realsquabble.R
 import com.duncboi.realsquabble.UserInfo
+import com.duncboi.realsquabble.messenger.Users
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -184,9 +185,9 @@ class EmailVerificationRegistration : Fragment() {
         startActivity(intent)
         activity?.finish()
     }
-    private fun uploadUserToDatabase(user: UserInfo){
+    private fun uploadUserToDatabase(user: Users){
         val ref = FirebaseDatabase.getInstance().getReference("Users")
-        ref.child(user.username!!).setValue(user).addOnCompleteListener {
+        ref.child(user.getUid()!!).setValue(user).addOnCompleteListener {
             if (it.isSuccessful){
                 startNextActivity()
             }
@@ -302,12 +303,13 @@ class EmailVerificationRegistration : Fragment() {
             mAuth.currentUser?.reload()
             val uid = mAuth.currentUser?.uid
             val emailVerified = mAuth.currentUser?.isEmailVerified
-            val userInfo =
-                UserInfo(username, email, password, uid)
+            val user = Users("", "", "", "OFF", "$email", "", "$uid", "$username", "", "", "$password", "OFFLINE", "0", "")
             if(emailVerified == true){
                 waitingForVerificationDialog.dismiss()
                 stopEmailVerificationWaiter = true
-                uploadUserToDatabase(userInfo)}
+                uploadUserToDatabase(user)
+
+            }
         }}
 
     //error functions

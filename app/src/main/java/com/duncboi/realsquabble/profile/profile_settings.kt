@@ -30,17 +30,17 @@ class profile_settings : Fragment() {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_profile_settings, container, false)
 
-        val emailQuery = FirebaseDatabase.getInstance().reference.child("Users").orderByChild("uid").equalTo(FirebaseAuth.getInstance().currentUser!!.uid)
-        emailQuery.addListenerForSingleValueEvent(object : ValueEventListener {
+        val reference = FirebaseDatabase.getInstance().reference.child("Users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("anonymous")
+        reference.addValueEventListener(object : ValueEventListener{
+            override fun onCancelled(error: DatabaseError) {}
             override fun onDataChange(snapshot: DataSnapshot) {
-                for (childSnapshot in snapshot.children) {
-                    val anonymous = childSnapshot.child("anonymous").getValue<String>().toString()
-                    if (anonymous == "ON") s_profile_settings_anonymous_switch.isChecked = true
-                    else if (anonymous == "OFF") s_profile_settings_anonymous_switch.isChecked = false
-                    else s_profile_settings_anonymous_switch.isChecked = false
+                val anonymous = snapshot.getValue<String>().toString()
+                if (anonymous == "ON") s_profile_settings_anonymous_switch.isChecked = true
+                else if (anonymous == "OFF") s_profile_settings_anonymous_switch.isChecked = false
+                else s_profile_settings_anonymous_switch.isChecked = false
+            }
+        })
 
-                }}
-            override fun onCancelled(error: DatabaseError) {} })
 
         view.iv_profile_settings_back_button.setOnClickListener {
             findNavController().navigate(R.id.action_profile_settings_to_default_profile)
@@ -77,45 +77,24 @@ class profile_settings : Fragment() {
     }
 
     private fun anonymousLogic(){
+        val anonRef  = FirebaseDatabase.getInstance().reference.child("Users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("anonymous").ref
         if(s_profile_settings_anonymous_switch.isChecked){
             s_profile_settings_anonymous_switch.isChecked = false
-            val emailQuery = FirebaseDatabase.getInstance().reference.child("Users").orderByChild("uid").equalTo(FirebaseAuth.getInstance().currentUser!!.uid)
-            emailQuery.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    for (childSnapshot in snapshot.children) {
-                        childSnapshot.child("anonymous").ref.setValue("OFF")
-                    }}
-                override fun onCancelled(error: DatabaseError) {} })
+            anonRef.setValue("OFF")
         }
         else{
             s_profile_settings_anonymous_switch.isChecked = true
-            val emailQuery = FirebaseDatabase.getInstance().reference.child("Users").orderByChild("uid").equalTo(FirebaseAuth.getInstance().currentUser!!.uid)
-            emailQuery.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    for (childSnapshot in snapshot.children) {
-                        childSnapshot.child("anonymous").ref.setValue("ON")
-                    }}
-                override fun onCancelled(error: DatabaseError) {} })
+            anonRef.setValue("ON")
         }
     }
     private fun anonymousLogic2(){
+        val anonRef  = FirebaseDatabase.getInstance().reference.child("Users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("anonymous").ref
         if(!s_profile_settings_anonymous_switch.isChecked){
-            val emailQuery = FirebaseDatabase.getInstance().reference.child("Users").orderByChild("uid").equalTo(FirebaseAuth.getInstance().currentUser!!.uid)
-            emailQuery.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    for (childSnapshot in snapshot.children) {
-                        childSnapshot.child("anonymous").ref.setValue("OFF")
-                    }}
-                override fun onCancelled(error: DatabaseError) {} })
+            anonRef.setValue("OFF")
         }
         else{
-            val emailQuery = FirebaseDatabase.getInstance().reference.child("Users").orderByChild("uid").equalTo(FirebaseAuth.getInstance().currentUser!!.uid)
-            emailQuery.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    for (childSnapshot in snapshot.children) {
-                        childSnapshot.child("anonymous").ref.setValue("ON")
-                    }}
-                override fun onCancelled(error: DatabaseError) {} })
+            anonRef.setValue("ON")
+
         }
     }
 }

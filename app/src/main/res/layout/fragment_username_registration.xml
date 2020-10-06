@@ -32,7 +32,6 @@
         android:fontFamily="@font/fredoka_one"
         android:text="Make a Username"
         android:textSize="24sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -73,6 +72,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="75dp"
         android:fontFamily="@font/fredoka_one"
+        android:paddingLeft="30dp"
+        android:paddingTop="30dp"
+        android:paddingRight="30dp"
+        android:paddingBottom="30dp"
         android:text="Previous"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -124,5 +127,18 @@
         app:layout_constraintStart_toStartOf="@+id/et_username_username"
         app:layout_constraintTop_toTopOf="@+id/et_username_username"
         app:srcCompat="@drawable/x" />
+
+    <ProgressBar
+        android:id="@+id/pb_username_progress_bar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="37dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="300dp"
+        android:layout_marginEnd="8dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/et_username_username"
+        app:layout_constraintEnd_toEndOf="@+id/et_username_username"
+        app:layout_constraintStart_toStartOf="@+id/et_username_username"
+        app:layout_constraintTop_toTopOf="@+id/et_username_username" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

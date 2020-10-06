@@ -1,19 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/title_home" />
 
     <item
-        android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/title_dashboard" />
+        android:id="@+id/trending"
+        android:icon="@drawable/home_icon"
+        android:title="Trending"
+        />
 
     <item
-        android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/title_notifications" />
+        android:id="@+id/groupHolder"
+        android:icon="@drawable/group_icon"
+        android:title="Group"
+        />
+
+    <item
+        android:id="@+id/videoChat"
+        android:icon="@drawable/video_chat_icon"
+        android:title="Video Chat" />
+
+    <item
+        android:id="@+id/defaultMessenger"
+        android:icon="@drawable/chat_icon"
+        android:title="Chat" />
+
+    <item
+        android:id="@+id/default_profile"
+        android:icon="@drawable/profile_icon"
+        android:title="Profile" />
 
 </menu>
