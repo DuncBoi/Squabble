@@ -4,19 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DirectMessanger">
+    tools:context=".HolderClass.DirectMessanger">
 
 
     <EditText
         android:id="@+id/et_direct_messenger_search_bar"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rounded_edittext_register_login"
+        android:drawableLeft="@drawable/ic_baseline_search_24"
+        android:drawablePadding="4dp"
         android:ems="10"
-        android:hint="Search"
+        android:fontFamily="@font/fredoka_one"
+        android:hint="Search Users"
         android:inputType="textPersonName"
+        android:paddingLeft="8dp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/b_direct_messenger_create_group"
         app:layout_constraintStart_toEndOf="@+id/iv_direct_message_back"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,14 +43,14 @@
 
     <ImageView
         android:id="@+id/iv_direct_message_back"
-        android:layout_width="60dp"
-        android:layout_height="50dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:src="@drawable/arrow_back"
         app:borderWidth="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/et_direct_messenger_search_bar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/et_direct_messenger_search_bar" />
 
     <Button
         android:id="@+id/b_direct_messenger_create_group"

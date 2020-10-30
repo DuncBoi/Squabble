@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".profile.edit_username"
-    android:id="@+id/edit_username_constraint">
+    tools:context=".profile.edit_username">
 
 
     <TextView
@@ -15,6 +14,7 @@
         android:layout_marginTop="24dp"
         android:fontFamily="@font/fredoka_one"
         android:text="Change Username"
+        android:textColor="@android:color/black"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,9 +24,9 @@
         android:id="@+id/et_change_username_username"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/rounded_edittext_register_login"
         android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_."
         android:drawableRight="@drawable/pen"
@@ -49,12 +49,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="32dp"
         android:fontFamily="@font/fredoka_one"
         android:text="(You may only change your username once every month.) "
         android:textAlignment="center"
-        android:textColor="@color/navy"
+        android:textColor="@color/greytext"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -78,25 +78,24 @@
         android:id="@+id/tv_edit_username_done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="16dp"
         android:fontFamily="@font/fredoka_one"
         android:hint="Done"
         android:textColor="@color/googleBlue"
         android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_change_username_header"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/tv_change_username_header" />
 
     <ImageView
         android:id="@+id/iv_change_username_back_button"
-        android:layout_width="65dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:rotation="180"
-        android:src="@drawable/arrow"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/arrow_back"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_change_username_header"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/tv_change_username_header" />
 
     <ProgressBar
         android:id="@+id/pb_edit_username_progress"
@@ -113,9 +112,9 @@
         android:id="@+id/tv_edit_username_time_left_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/rounded_edittext_register_login"
         android:fontFamily="@font/fredoka_one"
         android:padding="8dp"

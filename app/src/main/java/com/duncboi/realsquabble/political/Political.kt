@@ -3,8 +3,6 @@ package com.duncboi.realsquabble.political
 import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import com.duncboi.realsquabble.Constants
 import com.duncboi.realsquabble.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase

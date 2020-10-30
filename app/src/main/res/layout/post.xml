@@ -9,18 +9,21 @@
     android:padding="10dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/civ_post_profile_pic"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/iv_post_upvote">
+        android:id="@+id/civ_post_profile_pic"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/iv_post_upvote"
+        app:civ_border_width="1dp"
+        app:civ_border_color="@color/Libertarian"
+        android:src="@drawable/group_icon">
 
-        </de.hdodenhof.circleimageview.CircleImageView>
+    </de.hdodenhof.circleimageview.CircleImageView>
 
     <ImageView
         android:id="@+id/iv_post_comment_media"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_below="@+id/content_post_layout"
         android:layout_alignEnd="@+id/iv_post_downvote"
         android:layout_alignParentStart="true"
@@ -28,19 +31,19 @@
         android:visibility="visible"
         app:srcCompat="@drawable/comment_icon" />
 
-        <ImageView
-            android:id="@+id/iv_post_downvote"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_below="@+id/tv_post_vote_count"
-            app:srcCompat="@drawable/down_arrow" />
+    <ImageView
+        android:id="@+id/iv_post_downvote"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_below="@+id/tv_post_vote_count"
+        app:srcCompat="@drawable/down_arrow" />
 
-        <ImageView
-            android:id="@+id/iv_post_upvote"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:rotation="180"
-            app:srcCompat="@drawable/up_arrow" />
+    <ImageView
+        android:id="@+id/iv_post_upvote"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:rotation="180"
+        app:srcCompat="@drawable/up_arrow" />
 
     <TextView
         android:id="@+id/tv_post_vote_count"
@@ -52,7 +55,7 @@
         android:fontFamily="@font/fredoka_one"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="12sp" />
+        android:textSize="14sp" />
 
         <TextView
             android:id="@+id/tv_post_group_name"
@@ -68,8 +71,8 @@
 
     <ImageView
         android:id="@+id/iv_post_downvote_selected"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_alignStart="@+id/iv_post_downvote"
         android:layout_alignTop="@+id/iv_post_downvote"
         android:layout_alignEnd="@+id/iv_post_downvote"
@@ -79,11 +82,12 @@
 
     <ImageView
         android:id="@+id/iv_post_upvote_selected"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_alignStart="@+id/iv_post_upvote"
         android:layout_alignEnd="@+id/iv_post_upvote"
         android:rotation="180"
+        android:scaleType="fitCenter"
         android:visibility="invisible"
         app:srcCompat="@drawable/arrow_pressed" />
 
@@ -129,58 +133,70 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/fredoka_one"
-            android:textColor="#000000" />
+            android:textColor="#000000"
+            android:textSize="16sp" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_post_news_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_post_description"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:visibility="gone"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="-1dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_post_news_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter" />
+
+        </androidx.cardview.widget.CardView>
+
+        <ImageView
+            android:id="@+id/iv_post_news_icon"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignTop="@+id/cv_post_news_card"
+            android:layout_alignEnd="@+id/cv_post_news_card"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:visibility="gone" />
 
         <RelativeLayout
             android:id="@+id/news_content_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_post_description"
-            android:layout_marginTop="10dp"
+            android:layout_height="70dp"
+            android:layout_below="@id/cv_post_news_card"
+            android:layout_alignStart="@+id/cv_post_news_card"
+            android:layout_alignEnd="@+id/cv_post_news_card"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/rounded_edittext_register_login"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
-
-            <ImageView
-                android:id="@+id/iv_post_news_holder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/cv_post_news_card"
-                android:layout_alignTop="@+id/cv_post_news_card"
-                android:layout_alignEnd="@+id/tv_post_headline"
-                android:layout_alignBottom="@+id/cv_post_news_card"
-                app:srcCompat="@drawable/rounded_edittext_register_login" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cv_post_news_card"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginBottom="5dp"
-                android:elevation="10dp"
-                android:visibility="visible"
-                app:cardCornerRadius="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:id="@+id/iv_post_news_image"
-                    android:layout_width="75dp"
-                    android:layout_height="75dp" />
-
-            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/tv_post_news_source"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/iv_post_news_holder"
-                android:layout_marginLeft="8dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="8dp"
                 android:layout_marginBottom="8dp"
-                android:layout_toEndOf="@+id/cv_post_news_card"
                 android:fontFamily="@font/fredoka_one"
+                android:gravity="center"
                 android:lineSpacingExtra="12sp"
                 android:textColor="@color/navy"
                 android:textSize="12sp" />
@@ -189,52 +205,64 @@
                 android:id="@+id/tv_post_headline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/cv_post_news_card"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="4dp"
-                android:layout_toEndOf="@+id/cv_post_news_card"
-                android:layout_toRightOf="@id/cv_post_news_card"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="6dp"
+                android:layout_marginBottom="6dp"
+                android:layout_toStartOf="@id/imageView6969420"
                 android:ellipsize="end"
                 android:fontFamily="@font/fredoka_one"
                 android:maxLines="2"
-                android:paddingRight="6dp"
                 android:textSize="14sp" />
 
             <ImageView
-                android:id="@+id/imageView8"
+                android:id="@+id/imageView6969420"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_post_headline"
+                android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="2dp"
-                android:layout_marginRight="15dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginRight="8dp"
                 android:src="@drawable/arrow" />
-
-            <ImageView
-                android:id="@+id/iv_post_news_icon"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_alignBottom="@+id/tv_post_news_source"
-                android:layout_marginStart="8dp"
-                android:layout_toEndOf="@+id/tv_post_news_source" />
 
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/media_content_layout"
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_post_description"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
             android:visibility="gone">
 
-            <ImageView
-                android:id="@+id/iv_media_content_picture"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            <ProgressBar
+                android:id="@+id/pb_media_content_progress"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="140dp" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_recycler_topics_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:adjustViewBounds="true"
+                android:elevation="10dp"
+                android:scaleType="fitCenter"
+                app:cardCornerRadius="8dp">
+
+                <ImageView
+                    android:id="@+id/iv_media_content_picture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitStart" />
+            </androidx.cardview.widget.CardView>
 
         </RelativeLayout>
 
@@ -246,9 +274,33 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/iv_post_comment_media"
         android:layout_alignBottom="@+id/iv_post_comment_media"
-        android:layout_marginLeft="8dp"
+        android:layout_toStartOf="@+id/tv_post_by_text"
         android:layout_toEndOf="@+id/iv_post_comment_media"
         android:fontFamily="@font/fredoka_one"
         android:gravity="center" />
+
+    <TextView
+        android:id="@+id/tv_post_number_of_comments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/iv_post_comment_media"
+        android:layout_alignTop="@+id/iv_post_comment_media"
+        android:layout_alignEnd="@+id/iv_post_comment_media"
+        android:layout_alignBottom="@+id/iv_post_comment_media"
+        android:layout_centerInParent="false"
+        android:layout_centerVertical="false"
+        android:fontFamily="@font/fredoka_one"
+        android:gravity="center"
+        android:paddingBottom="5dp"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:id="@+id/iv_post_link_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:visibility="gone"
+        app:srcCompat="@drawable/link" />
 
 </RelativeLayout>

@@ -6,30 +6,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".profile.edit_bio">
 
-    <TextView
-        android:id="@+id/tv_edit_bio_letter_counter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:fontFamily="@font/fredoka_one"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/et_edit_bio_bio"
-        app:layout_constraintEnd_toEndOf="@+id/et_edit_bio_bio" />
-
     <EditText
         android:id="@+id/et_edit_bio_bio"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="24dp"
         android:background="@drawable/rounded_edittext_register_login"
         android:drawableRight="@drawable/pen"
         android:ems="10"
-        android:maxLength="400"
         android:fontFamily="@font/fredoka_one"
         android:hint="Bio"
+        android:maxLength="400"
         android:paddingLeft="16dp"
         android:paddingTop="10dp"
         android:paddingRight="16dp"
@@ -45,36 +34,47 @@
         android:id="@+id/tv_edit_bio_done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         android:fontFamily="@font/fredoka_one"
         android:hint="Done"
         android:textColor="@color/googleBlue"
         android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_edit_bio_header"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/tv_edit_bio_header" />
 
     <ImageView
         android:id="@+id/iv_edit_bio_back_button"
-        android:layout_width="65dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:rotationY="180"
-        android:src="@drawable/arrow"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/arrow_back"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_edit_bio_header"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/tv_edit_bio_header" />
 
     <TextView
         android:id="@+id/tv_edit_bio_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="85dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="@font/fredoka_one"
         android:text="Edit Bio"
+        android:textColor="@android:color/black"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_edit_bio_letter_counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/fredoka_one"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/et_edit_bio_bio"
+        app:layout_constraintEnd_toEndOf="@+id/et_edit_bio_bio" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

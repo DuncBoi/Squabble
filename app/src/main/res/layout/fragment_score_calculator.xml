@@ -18,15 +18,17 @@
         app:layout_constraintVertical_bias="0.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/score_calc_constraint"
+            android:id="@+id/alignment_view_constraint"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/iv_score_calc_subtext"
-                android:layout_width="375dp"
+                android:layout_width="0dp"
                 android:layout_height="73dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
                 android:src="@drawable/political_backrounds"
                 android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -35,31 +37,20 @@
 
             <ImageView
                 android:id="@+id/imageView3"
-                android:layout_width="375dp"
+                android:layout_width="0dp"
                 android:layout_height="60dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
                 android:src="@drawable/political_backrounds"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
             <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/political_backrounds"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView13" />
-
-            <ImageView
                 android:id="@+id/iv_score_calculator_nolan_chart"
-                android:layout_width="375dp"
-                android:layout_height="375dp"
+                android:layout_width="355dp"
+                android:layout_height="355dp"
                 android:layout_marginTop="16dp"
                 android:src="@drawable/nolan_chart"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -68,7 +59,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
             <TextView
-                android:id="@+id/tv_score_calculator_liberal"
+                android:id="@+id/tv_score_calc_liberal_lean"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="52dp"
@@ -78,7 +69,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_score_calculator_left" />
 
             <TextView
-                android:id="@+id/tv_score_calculator_moderate"
+                android:id="@+id/tv_score_calc_moderate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="176dp"
@@ -91,7 +82,7 @@
                 app:layout_constraintTop_toTopOf="@+id/iv_score_calculator_nolan_chart" />
 
             <TextView
-                android:id="@+id/tv_score_calculator_conservative"
+                android:id="@+id/tv_score_calc_conservative_lean"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="28dp"
@@ -113,7 +104,7 @@
                 app:layout_constraintTop_toTopOf="@+id/iv_score_calculator_nolan_chart" />
 
             <TextView
-                android:id="@+id/tv_score_calculator_authoritartian"
+                android:id="@+id/tv_score_calc_authoritarian"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="70dp"
@@ -125,7 +116,7 @@
                 app:layout_constraintStart_toStartOf="@+id/iv_score_calculator_nolan_chart" />
 
             <TextView
-                android:id="@+id/tv_score_calculator_libertarian"
+                android:id="@+id/tv_score_calc_libertarian"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="84dp"
@@ -133,7 +124,6 @@
                 android:text="Libertarian"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.520"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/iv_score_calculator_nolan_chart" />
 
@@ -149,31 +139,58 @@
                 app:layout_constraintEnd_toEndOf="@+id/iv_score_calculator_nolan_chart"
                 app:layout_constraintTop_toTopOf="@+id/iv_score_calculator_nolan_chart" />
 
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/fredoka_one"
-                android:text="Personal Freedom:"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/imageView4"
-                app:layout_constraintTop_toTopOf="@+id/imageView4" />
 
-            <TextView
-                android:id="@+id/textView12"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/imageView4"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:fontFamily="@font/fredoka_one"
-                android:text="Economic Freedom:"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/imageView4"
-                app:layout_constraintTop_toTopOf="@+id/imageView4" />
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/rounded_edittext_register_login"
+                android:src="@drawable/political_backrounds"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView13" >
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline24"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:fontFamily="@font/fredoka_one"
+                    android:text="Personal Freedom:"
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline24"
+                    app:layout_constraintStart_toStartOf="@+id/imageView4"
+                    app:layout_constraintTop_toTopOf="@+id/imageView4" />
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:fontFamily="@font/fredoka_one"
+                    android:text="Economic Freedom:"
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@+id/imageView4"
+                    app:layout_constraintStart_toStartOf="@+id/guideline24"
+                    app:layout_constraintTop_toTopOf="@+id/imageView4" />
 
             <TextView
                 android:id="@+id/tv_score_calculator_personal_freedom_score"
@@ -181,7 +198,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/fredoka_one"
                 android:textColor="@color/navy"
-                android:textSize="50sp"
+                android:textSize="40sp"
                 app:layout_constraintEnd_toEndOf="@+id/textView10"
                 app:layout_constraintStart_toStartOf="@+id/textView10"
                 app:layout_constraintTop_toBottomOf="@+id/textView10" />
@@ -192,10 +209,11 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/fredoka_one"
                 android:textColor="@color/navy"
-                android:textSize="50sp"
+                android:textSize="40sp"
                 app:layout_constraintEnd_toEndOf="@+id/textView12"
                 app:layout_constraintStart_toStartOf="@+id/textView12"
                 app:layout_constraintTop_toBottomOf="@+id/textView12" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/textView15"
@@ -211,8 +229,8 @@
 
             <com.jjoe64.graphview.GraphView
                 android:id="@+id/graph"
-                android:layout_width="310dp"
-                android:layout_height="300dp"
+                android:layout_width="298dp"
+                android:layout_height="285dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="8dp"
                 android:rotation="315"
@@ -268,14 +286,12 @@
                 android:id="@+id/iv_score_calculator_party_icon"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginStart="324dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="12dp"
                 android:layout_marginBottom="8dp"
                 android:src="@drawable/arrow_white"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView3"
                 app:layout_constraintEnd_toEndOf="@+id/imageView3"
-                app:layout_constraintStart_toStartOf="@+id/imageView3"
                 app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
             <TextView
@@ -305,6 +321,12 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/iv_score_calculator_nolan_chart" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="left" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

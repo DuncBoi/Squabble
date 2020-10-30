@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_edittext_register_login"
     android:padding="10dp">
@@ -11,53 +11,49 @@
         android:id="@+id/cv_recycler_user_profile_pic"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_centerVertical="true"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/profile_icon"
-        app:civ_border_color="@color/navy"
-        app:civ_border_width="2dp" />
+        android:background="@drawable/profile_icon" />
 
     <TextView
         android:id="@+id/tv_recycler_name"
         android:layout_width="225dp"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/cv_recycler_user_profile_pic"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="16dp"
         android:layout_toEndOf="@id/cv_recycler_user_profile_pic"
         android:layout_toRightOf="@id/cv_recycler_user_profile_pic"
         android:ellipsize="end"
         android:fontFamily="@font/fredoka_one"
         android:maxLines="1"
-        android:text="Name"
         android:textSize="18sp" />
 
     <TextView
         android:id="@+id/tv_recycler_username"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_recycler_name"
+        android:layout_alignEnd="@+id/tv_recycler_name"
+        android:layout_alignBottom="@+id/cv_recycler_user_profile_pic"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="3dp"
         android:layout_toEndOf="@id/cv_recycler_user_profile_pic"
-        android:layout_toRightOf="@id/cv_recycler_user_profile_pic"
+        android:ellipsize="end"
         android:fontFamily="@font/fredoka_one"
-        android:text="Username"
-        android:textColor="@color/navy"
-        android:textSize="12sp" />
-
-    <ImageView
-        android:id="@+id/iv_recycler_political_banner"
-        android:layout_width="40dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="350dp"
-        android:layout_marginTop="10dp" />
+        android:maxLines="1"
+        android:textColor="@color/greytext"
+        android:textSize="12sp"
+        android:textStyle="italic" />
 
     <ImageView
         android:id="@+id/iv_recycler_status"
         android:layout_width="15dp"
         android:layout_height="15dp"
-        android:layout_marginLeft="44dp"
-        android:layout_marginTop="45dp" />
+        android:layout_alignEnd="@+id/cv_recycler_user_profile_pic"
+        android:layout_alignBottom="@+id/cv_recycler_user_profile_pic"
+        android:layout_marginBottom="4dp" />
 
     <CheckBox
         android:id="@+id/cb_user_recycler"
@@ -65,8 +61,17 @@
         android:layout_height="30dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="17dp"
-        android:clickable="false"
         android:layout_toRightOf="@id/tv_recycler_name"
-        android:visibility="gone"/>
+        android:clickable="false"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_recycler_user_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:fontFamily="@font/fredoka_one"
+        android:textSize="12sp" />
 
 </RelativeLayout>

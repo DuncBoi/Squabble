@@ -5,16 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.duncboi.realsquabble.Constants
-import com.duncboi.realsquabble.Constants.rand
+import com.duncboi.realsquabble.political.Constants.rand
 import com.duncboi.realsquabble.R
 import kotlinx.android.synthetic.main.fragment_business_regulation.*
 
 class BusinessRegulation : Fragment() {
 
-    private val answer0: String = "0"
-    private val answer5: String = "5"
-    private val answer10: String = "10"
+    private val answer0: String = "Large companies should be taxed at heavy rates, despite the impact on job opportunities"
+    private val answer5: String = "Large companies should be taxed only slightly more than other companies"
+    private val answer10: String = "Every company should pay a minimal amount of taxes"
     private val randomNumber = rand(1,3)
 
     override fun onCreateView(

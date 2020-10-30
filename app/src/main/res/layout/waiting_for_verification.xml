@@ -22,7 +22,6 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_waiting_for_verification_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -36,7 +35,6 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tv_waiting_for_verification_subtext"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="8dp"

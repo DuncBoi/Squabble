@@ -5,16 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.duncboi.realsquabble.Constants
-import com.duncboi.realsquabble.Constants.rand
+import com.duncboi.realsquabble.political.Constants.rand
 import com.duncboi.realsquabble.R
 import kotlinx.android.synthetic.main.fragment_freedom_of_speech.*
 
 class FreedomOfSpeech : Fragment() {
 
-    private val answer0: String = "0"
-    private val answer5: String = "5"
-    private val answer10: String = "10"
+    private val answer0: String = "The government should have the ability to censor any message considered \"hateful\""
+    private val answer5: String = "The government should censor only misleading information"
+    private val answer10: String = "The government should not censor any opinions no matter the case"
     private val randomNumber = rand(1,3)
 
     override fun onCreateView(

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FindGroup">
+    tools:context=".HolderClass.FindGroup">
 
     <EditText
         android:id="@+id/et_find_group_search"
@@ -12,7 +12,7 @@
         android:layout_height="40dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/rounded_edittext_register_login"
         android:drawableLeft="@drawable/ic_baseline_search_24"
         android:drawablePadding="4dp"
@@ -22,7 +22,7 @@
         android:inputType="textPersonName"
         android:paddingLeft="8dp"
         android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/iv_find_group_filter"
+        app:layout_constraintEnd_toStartOf="@+id/iv_create_group_create_group"
         app:layout_constraintStart_toEndOf="@+id/iv_find_group_back"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,20 +41,61 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cb_find_group_joinable_groups" />
+
+    <CheckBox
+        android:id="@+id/cb_find_group_joinable_groups"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/extra_round_edittext_register_login"
+        android:fontFamily="@font/fredoka_one"
+        android:padding="8dp"
+        android:text="Groups I can join"
+        android:textColor="@color/greytext"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_find_group_search" />
+
+    <CheckBox
+        android:id="@+id/cb_find_group_loaction"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/extra_round_edittext_register_login"
+        android:fontFamily="@font/fredoka_one"
+        android:padding="8dp"
+        android:text="Groups near me"
+        android:textColor="@color/greytext"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/et_find_group_search" />
 
     <ImageView
-        android:id="@+id/iv_find_group_filter"
+        android:id="@+id/iv_create_group_create_group"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:src="@drawable/filter_icon"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/create_group_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/et_find_group_search"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/et_find_group_search" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".5" />
 </androidx.constraintlayout.widget.ConstraintLayout>

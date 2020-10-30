@@ -3,6 +3,7 @@ package com.duncboi.realsquabble.political
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,24 +27,15 @@ import kotlinx.coroutines.Dispatchers.Main
 import java.lang.Math.abs
 
 
-class ScoreCalculator : Fragment() {
+class ScoreCalculator() : Fragment() {
     //make xyValueArray global
     private lateinit var xySeries: PointsGraphSeries<DataPoint>
     private var economicScore = 0.0
     private var socialScore = 0.0
     private var questionCounter = 0
-    private var politicalCategory = ""
 
-    val uid = FirebaseAuth.getInstance().currentUser?.uid
-    private val emailQuery = FirebaseDatabase.getInstance().reference.child("Users").orderByChild("uid")
-    private var listener: ValueEventListener? = null
-    private var listener2: ValueEventListener? = null
-
-    override fun onPause() {
-        super.onPause()
-        if (listener != null) emailQuery.equalTo(uid).removeEventListener(listener!!)
-        if (listener2 != null) emailQuery.removeEventListener(listener2!!)
-    }
+    val uid = FirebaseAuth.getInstance().currentUser!!.uid
+    private val emailQuery = FirebaseDatabase.getInstance().reference.child("Users").child(uid)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -82,13 +74,12 @@ class ScoreCalculator : Fragment() {
     }
 
     private fun getData() {
-        listener = emailQuery.equalTo(uid).addValueEventListener(object : ValueEventListener {
+         emailQuery.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {}
             override fun onDataChange(snapshot: DataSnapshot) {
-                for (childSnapshot in snapshot.children) {
-                    val snapshot2 = childSnapshot.child("Question Answers")
+                    val snapshot2 = snapshot.child("Question Answers")
+                questionCounter = snapshot2.childrenCount.toInt()
                     for (snap in snapshot2.children) {
-                        questionCounter++
                         if (snap.child("type").getValue<String>()
                                 .toString() == "social"
                         ) {
@@ -103,7 +94,6 @@ class ScoreCalculator : Fragment() {
                         }
                     }
                 }
-            }
         })
     }
 
@@ -125,6 +115,8 @@ class ScoreCalculator : Fragment() {
                 calculating.dismiss()
                 plotPoint(economicScore, socialScore)
                 showScore()
+            }
+        else{
             }
 
     }
@@ -323,14 +315,13 @@ class ScoreCalculator : Fragment() {
                 }
             }
         }
-        listener2 = emailQuery.addValueEventListener(object : ValueEventListener {
+         emailQuery.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {}
             override fun onDataChange(snapshot: DataSnapshot) {
-                for (childSnapshot in snapshot.children) {
-                    childSnapshot.child("category").ref.setValue(textView16.text.toString().trim())
-                    childSnapshot.child("economicScore").ref.setValue("$economicScore")
-                    childSnapshot.child("socialScore").ref.setValue("$socialScore")
-                }
+                snapshot.child("category").ref.setValue(textView16.text.toString().trim())
+                snapshot.child("economicScore").ref.setValue("$economicScore")
+                snapshot.child("socialScore").ref.setValue("$socialScore")
+                snapshot.child("alignmentTime").ref.setValue("${System.currentTimeMillis()}")
             }
         })
         tv_score_calculator_personal_freedom_score.text = "$socialScore%"
@@ -356,7 +347,7 @@ class ScoreCalculator : Fragment() {
         imageView3.visibility = View.INVISIBLE
         iv_score_calc_subtext.visibility = View.VISIBLE
         val set = ConstraintSet()
-        val scoreCalculator = score_calc_constraint
+        val scoreCalculator = alignment_view_constraint
         set.clone(scoreCalculator)
         set.clear(tv_score_calculator_subtext.id, ConstraintSet.TOP)
         set.connect(tv_score_calculator_subtext.id, ConstraintSet.BOTTOM, iv_score_calc_subtext.id, ConstraintSet.BOTTOM, 10)

@@ -3,17 +3,37 @@ package com.duncboi.realsquabble.profile
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
-import com.duncboi.realsquabble.R
+import com.duncboi.realsquabble.*
+import com.duncboi.realsquabble.Adapters.PostAdapter
+import com.duncboi.realsquabble.HolderClass.ActualTrending
+import com.duncboi.realsquabble.HolderClass.Group
+import com.duncboi.realsquabble.HolderClass.PartyGroup
+import com.duncboi.realsquabble.HolderClass.VideoChat
+import com.duncboi.realsquabble.notifications.Token
+import com.duncboi.realsquabble.political.Political
 import com.duncboi.realsquabble.registration.Registration
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.iid.FirebaseInstanceId
 
-class ProfileActivity : AppCompatActivity() {
+
+class ProfileActivity : AppCompatActivity(), PostAdapter.onLoadMoreItemsListener {
+
+    interface MyInterface {
+        fun myAction()
+    }
 
     override fun onPause() {
         super.onPause()
@@ -28,45 +48,50 @@ class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
-        verifyUserIsLoggedIn()
+
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
         val navView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
-        val navController = Navigation.findNavController(this, R.id.fragment)
-
+        val navController = Navigation.findNavController(this@ProfileActivity, R.id.fragment)
         NavigationUI.setupWithNavController(navView, navController)
-
+        updateToken(FirebaseInstanceId.getInstance().token, FirebaseAuth.getInstance().currentUser!!.uid)
         }
-
-
-    //user stays logged in after app restart
-    private fun verifyUserIsLoggedIn() {
-        val user = FirebaseAuth.getInstance().currentUser
-        // if user is not email verified and user is not null then delete them from auth
-        if(user != null){
-            if (user.phoneNumber != null){
-            }
-            else if (!user.isEmailVerified){
-                FirebaseAuth.getInstance().currentUser!!.delete()
-                val intent = Intent(this, Registration::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
-        }
-        }
-        else{
-            val intent = Intent(this, Registration::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
-            finish()
-        }
-    }
 
     private fun status(status: String){
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null){
-            FirebaseDatabase.getInstance().reference.child("Users").child(user.uid).child("status").ref.setValue("$status")
+            FirebaseDatabase.getInstance().reference.child("Users").child(user.uid).child("status").ref.setValue(
+                "$status"
+            )
         }
     }
 
+    private fun updateToken(token: String?, currentUser: String){
+        val ref = FirebaseDatabase.getInstance().reference.child("Tokens")
+        val token1 = Token(token!!)
+        ref.child(currentUser).setValue(token1)
+    }
+
+    override fun onLoadMoreItems(nav: String){
+        Log.d("MooseCock", "$nav")
+        if (nav == "group") {
+            setListener(Group())
+            listener?.myAction()
+        }
+        else if (nav == "party"){
+            setListener(PartyGroup())
+            listener?.myAction()
+        }
+        else{
+            setListener(ActualTrending())
+            listener?.myAction()
+        }
+    }
+
+    private var listener: MyInterface? = null
+
+    private fun setListener(listener: MyInterface?) {
+        this.listener = listener
+    }
 }

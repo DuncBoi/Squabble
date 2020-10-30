@@ -5,16 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.duncboi.realsquabble.Constants
-import com.duncboi.realsquabble.Constants.rand
+import com.duncboi.realsquabble.political.Constants.rand
 import com.duncboi.realsquabble.R
 import kotlinx.android.synthetic.main.fragment_religion.*
 
 class Religion : Fragment() {
 
-    private val answer0: String = "0"
-    private val answer5: String = "5"
-    private val answer10: String = "10"
+    private val answer0: String = "Abortion should be unlawful and considered murder"
+    private val answer5: String = "Abortion should be legal but not receive funding from the government"
+    private val answer10: String = "Abortion should be legal everywhere"
     private val randomNumber = rand(1,3)
 
 

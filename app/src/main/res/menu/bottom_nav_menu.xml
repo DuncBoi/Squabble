@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    
     <item
         android:id="@+id/trending"
         android:icon="@drawable/home_icon"
@@ -17,7 +17,7 @@
     <item
         android:id="@+id/videoChat"
         android:icon="@drawable/video_chat_icon"
-        android:title="Video Chat" />
+        android:title="Debate" />
 
     <item
         android:id="@+id/defaultMessenger"

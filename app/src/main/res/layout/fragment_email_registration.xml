@@ -2,74 +2,51 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/email_constraint"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    >
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/tv_email_please_enter_email2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:fontFamily="@font/fredoka_one"
         android:text="(Email must be shorter than 50 characters)"
         android:textAlignment="center"
-        android:textColor="@color/navy"
+        android:textColor="@color/greytext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_email_please_enter_email" />
 
-    <ImageView
-        android:id="@+id/iv_email_checkmark"
-        android:layout_width="37dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="300dp"
-        android:layout_marginEnd="8dp"
-        android:alpha="0"
-        app:layout_constraintBottom_toBottomOf="@+id/et_email_email"
-        app:layout_constraintEnd_toEndOf="@+id/et_email_email"
-        app:layout_constraintStart_toStartOf="@+id/et_email_email"
-        app:layout_constraintTop_toTopOf="@+id/et_email_email"
-        app:srcCompat="@drawable/checkmark" />
-
-    <ImageView
-        android:id="@+id/iv_email_x"
-        android:layout_width="37dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="300dp"
-        android:layout_marginEnd="8dp"
-        android:alpha="0"
-        app:layout_constraintBottom_toBottomOf="@+id/et_email_email"
-        app:layout_constraintEnd_toEndOf="@+id/et_email_email"
-        app:layout_constraintStart_toStartOf="@+id/et_email_email"
-        app:layout_constraintTop_toTopOf="@+id/et_email_email"
-        app:srcCompat="@drawable/x" />
-
     <TextView
         android:id="@+id/tv_email_error"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="48dp"
+        android:layout_marginEnd="32dp"
         android:fontFamily="@font/fredoka_one"
         android:textAlignment="viewStart"
         android:textColor="@color/red"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/et_email_email"
         app:layout_constraintTop_toBottomOf="@+id/et_email_email" />
 
     <TextView
         android:id="@+id/tv_email_please_enter_email"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:fontFamily="@font/fredoka_one"
         android:text="You will be requested to verify this email later"
-        android:textColor="@color/navy"
+        android:textAlignment="center"
+        android:textColor="@color/greytext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_email_header" />
@@ -133,6 +110,7 @@
         android:layout_marginTop="32dp"
         android:fontFamily="@font/fredoka_one"
         android:text="Register an Email"
+        android:textColor="#000000"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -160,10 +138,10 @@
 
     <Button
         android:id="@+id/b_email_google"
-        android:layout_width="170dp"
+        android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
+        android:layout_marginRight="2dp"
         android:background="@drawable/google_background"
         android:drawableLeft="@drawable/google_icon"
         android:fontFamily="@font/fredoka_one"
@@ -171,15 +149,16 @@
         android:text="Register with Google"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="@+id/b_email_next"
         app:layout_constraintTop_toBottomOf="@+id/b_email_next" />
 
     <Button
         android:id="@+id/b_email_phone"
-        android:layout_width="170dp"
+        android:layout_width="0dp"
         android:layout_height="50dp"
+        android:layout_marginLeft="2dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
         android:background="@drawable/phone_auth_background"
         android:drawableLeft="@drawable/phone_icon"
         android:fontFamily="@font/fredoka_one"
@@ -187,21 +166,48 @@
         android:text="Register with Phone"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/b_email_google"
+        app:layout_constraintEnd_toEndOf="@+id/b_email_next"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/b_email_next" />
 
     <ProgressBar
         android:id="@+id/pb_email_progress"
         style="?android:attr/progressBarStyle"
-        android:layout_width="37dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="300dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="10dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/et_email_email"
         app:layout_constraintEnd_toEndOf="@+id/et_email_email"
-        app:layout_constraintStart_toStartOf="@+id/et_email_email"
         app:layout_constraintTop_toTopOf="@+id/et_email_email" />
+
+    <ImageView
+        android:id="@+id/iv_email_checkmark"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="10dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/et_email_email"
+        app:layout_constraintEnd_toEndOf="@+id/et_email_email"
+        app:layout_constraintTop_toTopOf="@+id/et_email_email"
+        app:srcCompat="@drawable/checkmark" />
+
+    <ImageView
+        android:id="@+id/iv_email_x"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="10dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/et_email_email"
+        app:layout_constraintEnd_toEndOf="@+id/et_email_email"
+        app:layout_constraintTop_toTopOf="@+id/et_email_email"
+        app:srcCompat="@drawable/x" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.50" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

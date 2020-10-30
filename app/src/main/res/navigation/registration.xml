@@ -2,7 +2,6 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/registration_nav_graph"
     app:startDestination="@id/first">
 
     <fragment
@@ -14,7 +13,9 @@
             android:id="@+id/action_usernameRegistration_to_emailRegistration"
             app:destination="@id/emailRegistration"
             app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left" />
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
         <argument
             android:name="username"
             app:argType="string"
@@ -27,13 +28,6 @@
             android:name="password"
             app:argType="string"
             android:defaultValue="password" />
-        <action
-            android:id="@+id/action_usernameRegistration_to_first"
-            app:destination="@id/first"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right"
-            app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/emailRegistration"
@@ -44,12 +38,9 @@
             android:id="@+id/action_emailRegistration_to_passwordRegistration"
             app:destination="@id/passwordRegistration"
             app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left" />
-        <action
-            android:id="@+id/action_emailRegistration_to_usernameRegistration"
-            app:destination="@id/usernameRegistration"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right" />
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
         <argument
             android:name="username"
             app:argType="string"
@@ -71,7 +62,9 @@
             android:id="@+id/action_emailRegistration_to_phoneAuthentication"
             app:destination="@id/phoneAuthentication"
             app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left" />
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/passwordRegistration"
@@ -82,12 +75,9 @@
             android:id="@+id/action_passwordRegistration_to_emailVerificationRegistration"
             app:destination="@id/emailVerificationRegistration"
             app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left" />
-        <action
-            android:id="@+id/action_passwordRegistration_to_emailRegistration"
-            app:destination="@id/emailRegistration"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right" />
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
         <argument
             android:name="username"
             app:argType="string"
@@ -106,11 +96,6 @@
         android:name="com.duncboi.realsquabble.registration.EmailVerificationRegistration"
         android:label="fragment_email_verification_registration"
         tools:layout="@layout/fragment_email_verification_registration" >
-        <action
-            android:id="@+id/action_emailVerificationRegistration_to_passwordRegistration"
-            app:destination="@id/passwordRegistration"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right" />
         <argument
             android:name="username"
             app:argType="string"
@@ -136,7 +121,9 @@
             android:id="@+id/action_first_to_usernameRegistration"
             app:destination="@id/usernameRegistration"
             app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left" />
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
         <action
             android:id="@+id/action_first_to_login"
             app:destination="@id/login"
@@ -149,15 +136,12 @@
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
-            android:id="@+id/action_login_to_first"
-            app:destination="@id/first"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right" />
-        <action
             android:id="@+id/action_login_to_forgotPassword"
             app:destination="@id/forgotPassword"
             app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left" />
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
         <argument
             android:name="email"
             app:argType="string"
@@ -166,24 +150,25 @@
             android:id="@+id/action_login_to_usernameRegistration"
             app:destination="@id/usernameRegistration" />
         <action
-            android:id="@+id/action_login_to_emailVerificationRegistration"
-            app:destination="@id/emailVerificationRegistration" />
-        <action
             android:id="@+id/action_login_to_phoneAuthentication"
             app:destination="@id/phoneAuthentication"
             app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left" />
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_login_to_emailVerificationRegistration"
+            app:destination="@id/emailVerificationRegistration"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/forgotPassword"
         android:name="com.duncboi.realsquabble.registration.ForgotPassword"
         android:label="fragment_forgot_password"
         tools:layout="@layout/fragment_forgot_password" >
-        <action
-            android:id="@+id/action_forgotPassword_to_login"
-            app:destination="@id/login"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@anim/slide_out_left" />
         <argument
             android:name="email"
             app:argType="string"
@@ -191,42 +176,41 @@
     </fragment>
     <fragment
         android:id="@+id/phoneAuthentication"
-        android:name="com.duncboi.realsquabble.PhoneAuthentication"
+        android:name="com.duncboi.realsquabble.registration.PhoneAuthentication"
         android:label="fragment_phone_authentication"
         tools:layout="@layout/fragment_phone_authentication" >
-        <action
-            android:id="@+id/action_phoneAuthentication_to_login"
-            app:destination="@id/login"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right" />
-        <action
-            android:id="@+id/action_phoneAuthentication_to_emailRegistration"
-            app:destination="@id/emailRegistration"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right" />
         <action
             android:id="@+id/action_phoneAuthentication_to_verificationCode"
             app:destination="@id/verificationCode"
             app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left" />
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
         <argument
             android:name="username"
-            app:argType="string" />
+            app:argType="string"
+            android:defaultValue="username" />
         <argument
             android:name="phoneNumber"
             app:argType="string"
             android:defaultValue="phonenumber" />
+        <argument
+            android:name="from"
+            app:argType="string"
+            android:defaultValue="from" />
+        <action
+            android:id="@+id/action_phoneAuthentication_to_usernameRegistration"
+            app:destination="@id/usernameRegistration"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/verificationCode"
-        android:name="com.duncboi.realsquabble.VerificationCode"
+        android:name="com.duncboi.realsquabble.registration.VerificationCode"
         android:label="fragment_verification_code"
         tools:layout="@layout/fragment_verification_code" >
-        <action
-            android:id="@+id/action_verificationCode_to_phoneAuthentication"
-            app:destination="@id/phoneAuthentication"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right" />
         <argument
             android:name="verificationid"
             app:argType="string"

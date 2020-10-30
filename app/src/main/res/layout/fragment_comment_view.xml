@@ -4,39 +4,90 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CommentView">
+    tools:context=".HolderClass.CommentView">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/comment_recycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_margin="8dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toTopOf="@+id/et_comment_view_comment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView44">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <ImageView
+        android:id="@+id/imageView33"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/extra_round_edittext_register_login"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/comment_recycler" />
 
     <EditText
         android:id="@+id/et_comment_view_comment"
         android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:background="@drawable/rounded_edittext_register_login"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:ems="10"
         android:fontFamily="@font/fredoka_one"
-        android:hint="Comment"
-        android:inputType="textImeMultiLine"
-        android:paddingLeft="16dp"
-        android:textSize="14sp"
+        android:hint="Comment..."
+        android:inputType="textMultiLine"
+        android:maxLength="300"
+        android:textColor="@color/greytext"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/b_comment_view_send"
+        app:layout_constraintStart_toStartOf="@+id/imageView33" />
 
-    <Button
+    <ImageView
         android:id="@+id/b_comment_view_send"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:rotation="315"
+        android:src="@drawable/send_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_comment_view_back"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView44"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Send"
-        app:layout_constraintBottom_toBottomOf="@+id/et_comment_view_comment"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:fontFamily="@font/fredoka_one"
+        android:text="Comments"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_comment_view_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_comment_view_back" />
+
+    <ProgressBar
+        android:id="@+id/pb_comment_view_progress"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,23 +5,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.duncboi.realsquabble.Constants
-import com.duncboi.realsquabble.Constants.checkAnswers
-import com.duncboi.realsquabble.Constants.fragmentList
-import com.duncboi.realsquabble.Constants.nextFragment
-import com.duncboi.realsquabble.Constants.previousFragment
-import com.duncboi.realsquabble.Constants.questionNumber
-import com.duncboi.realsquabble.Constants.rand
-import com.duncboi.realsquabble.Constants.randomAnswers
-import com.duncboi.realsquabble.Constants.runRadioChecker
+import com.duncboi.realsquabble.political.Constants.checkAnswers
+import com.duncboi.realsquabble.political.Constants.fragmentList
+import com.duncboi.realsquabble.political.Constants.nextFragment
+import com.duncboi.realsquabble.political.Constants.previousFragment
+import com.duncboi.realsquabble.political.Constants.questionNumber
+import com.duncboi.realsquabble.political.Constants.rand
+import com.duncboi.realsquabble.political.Constants.randomAnswers
+import com.duncboi.realsquabble.political.Constants.runRadioChecker
 import com.duncboi.realsquabble.R
 import kotlinx.android.synthetic.main.fragment_discrimination.*
 
 class discrimination : Fragment() {
 
-    private val answer0: String = "0"
-    private val answer5: String = "5"
-    private val answer10: String = "10"
+    private val answer0: String = "The government should award tax money to underrepresented groups"
+    private val answer5: String = "Institutions offering benefits to underrepresented groups should receive rewards"
+    private val answer10: String = "Benefits imposed by the government based on race, gender, etc. is wrong"
     private val randomNumber = rand(1,3)
 
     override fun onCreateView(

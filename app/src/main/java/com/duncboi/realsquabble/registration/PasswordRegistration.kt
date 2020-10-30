@@ -25,22 +25,8 @@ import java.lang.Error
 
 
 class PasswordRegistration : Fragment() {
+
     private val args: PasswordRegistrationArgs by navArgs()
-    private var job: Job? = null
-
-
-    override fun onPause() {
-        super.onPause()
-        job?.cancel()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val passwordPassed = args.password
-        if (passwordPassed != "password") {
-            et_password.setText(passwordPassed)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,7 +42,6 @@ class PasswordRegistration : Fragment() {
         defaultConstraint()
 
         et_password.addTextChangedListener(object: TextWatcher {
-            private var searchFor = ""
 
             override fun afterTextChanged(p0: Editable?) {}
 
@@ -64,21 +49,14 @@ class PasswordRegistration : Fragment() {
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 val searchText = p0.toString().trim().toLowerCase()
-                if (searchText == searchFor)
-                    return
-                searchFor = searchText
-                defaultConstraint()
-                job = CoroutineScope(Dispatchers.Main).launch {
-                    delay(1000)
-                    if (searchText != searchFor)
-                        return@launch
-                        if (searchText == "") {
-                            onPasswordEmpty()
-                        }
-                        else if (searchText.length >= 6 && isValidPassword(searchText)) {
-                            onStrongPassword()
-                        }
-
+                if (searchText == "") {
+                    onPasswordEmpty()
+                }
+                else if (searchText.length >= 6 && isValidPassword(searchText)) {
+                    onStrongPassword()
+                }
+                else{
+                    defaultConstraint()
                 }
             }
         })
@@ -111,14 +89,7 @@ class PasswordRegistration : Fragment() {
 
         tv_password_previous.setOnClickListener {
             closeKeyboard()
-            val bundle = Bundle()
-            val username = args.username
-            val email = args.email
-            val password = et_password.text.toString().trim()
-            bundle.putString("username", username)
-            bundle.putString("email", email)
-            bundle.putString("password", password)
-            findNavController().navigate(R.id.action_passwordRegistration_to_emailRegistration, bundle)
+            findNavController().popBackStack()
         }
 
     }
@@ -140,26 +111,12 @@ class PasswordRegistration : Fragment() {
     private fun defaultConstraint(){
         b_password_next.setBackgroundResource(R.drawable.greyed_out_button)
         b_password_next.alpha = 0.5f
-        val set = ConstraintSet()
-        val passwordConstraint = password_constraint
-        iv_password_x.alpha = 0F
-        iv_password_checkmark.alpha = 0F
-        set.clone(passwordConstraint)
-        set.clear(tv_password_error.id, ConstraintSet.TOP)
-        set.connect(tv_password_error.id, ConstraintSet.TOP,passwordTIL.id, ConstraintSet.TOP)
-        set.connect(b_password_next.id, ConstraintSet.TOP,passwordTIL.id, ConstraintSet.BOTTOM, 24)
-        set.connect(tv_password_previous.id, ConstraintSet.TOP,b_password_next.id, ConstraintSet.BOTTOM, 200)
-        set.applyTo(passwordConstraint)
+        tv_password_error.visibility = View.GONE
+        tv_password_error.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
     }
+
     private fun errorConstraint(){
-        val defaultSet = ConstraintSet()
-        val passwordLayout = password_constraint
-        defaultSet.clone(passwordLayout)
-        defaultSet.clear(b_password_next.id, ConstraintSet.TOP)
-        defaultSet.clear(tv_password_error.id, ConstraintSet.TOP)
-        defaultSet.connect(tv_password_error.id, ConstraintSet.TOP, passwordTIL.id, ConstraintSet.BOTTOM, 6)
-        defaultSet.connect(b_password_next.id, ConstraintSet.TOP, tv_password_error.id, ConstraintSet.BOTTOM, 12)
-        defaultSet.applyTo(passwordLayout)
+        tv_password_error.visibility = View.VISIBLE
     }
 
 
@@ -167,22 +124,18 @@ class PasswordRegistration : Fragment() {
         errorConstraint()
         b_password_next.alpha = 0.5f
         b_password_next.setBackgroundResource(R.drawable.greyed_out_button)
-        iv_password_x.bringToFront()
-        iv_password_x.alpha = 1F
-        iv_password_checkmark.alpha = 0F
-        tv_password_error.setTextColor(Color.parseColor("#eb4b4b"))
-        tv_password_error.text = "Password must contain a mix of letters and numbers"
+        tv_password_error.setTextColor(Color.parseColor("#D60B05"))
+        tv_password_error.text = "Password must contain a mix of both letters and numbers"
+        tv_password_error.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_error_24, 0);
     }
 
     private fun onPasswordShort() {
         errorConstraint()
         b_password_next.alpha = 0.5f
         b_password_next.setBackgroundResource(R.drawable.greyed_out_button)
-        iv_password_x.bringToFront()
-        iv_password_checkmark.alpha = 0F
-        iv_password_x.alpha = 1F
-        tv_password_error.setTextColor(Color.parseColor("#eb4b4b"))
+        tv_password_error.setTextColor(Color.parseColor("#D60B05"))
         tv_password_error.text = "Password must be at least 6 characters"
+        tv_password_error.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_error_24, 0);
     }
 
     private fun onStrongPassword() {
@@ -190,10 +143,8 @@ class PasswordRegistration : Fragment() {
         b_password_next.alpha = 1f
         b_password_next.setBackgroundResource(R.drawable.rounded_button)
         tv_password_error.text = "Stong password"
-        tv_password_error.setTextColor(Color.parseColor("#38c96d"))
-        iv_password_checkmark.bringToFront()
-        iv_password_checkmark.alpha = 1F
-        iv_password_x.alpha = 0F
+        tv_password_error.setTextColor(Color.parseColor("#0D7B39"))
+        tv_password_error.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.checkmark, 0);
     }
 
     fun isValidPassword(password: String?) : Boolean {
@@ -209,10 +160,8 @@ class PasswordRegistration : Fragment() {
         errorConstraint()
         b_password_next.alpha = 0.5f
         b_password_next.setBackgroundResource(R.drawable.greyed_out_button)
-        iv_password_x.bringToFront()
-        iv_password_x.alpha = 1F
-        iv_password_checkmark.alpha = 0F
-        tv_password_error.setTextColor(Color.parseColor("#eb4b4b"))
+        tv_password_error.setTextColor(Color.parseColor("#D60B05"))
         tv_password_error.text = "Please enter a password"
+        tv_password_error.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_error_24, 0);
     }
     }

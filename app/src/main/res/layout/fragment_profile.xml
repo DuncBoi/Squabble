@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".PagerDescriptionClasses.Profile">
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_profile_bio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/rounded_edittext_register_login"
+                android:fontFamily="@font/fredoka_one"
+                android:padding="8dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_profile_bio_text" />
+
+            <TextView
+                android:id="@+id/tv_profile_group_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/fredoka_one"
+                android:text="Group:"
+                android:textSize="18sp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_profile_alignment_holder" />
+
+            <RelativeLayout
+                android:id="@+id/rl_profile_group_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/rounded_edittext_register_login"
+                android:padding="8dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_profile_group_text">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/civ_profile_image"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:src="@drawable/group_icon"
+                    app:civ_border_color="@color/Libertarian"
+                    app:civ_border_width="1dp" />
+
+                <TextView
+                    android:id="@+id/tv_profile_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/civ_profile_image"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_toEndOf="@+id/civ_profile_image"
+                    android:fontFamily="@font/fredoka_one"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tv_profile_location"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/civ_profile_image"
+                    android:layout_alignStart="@+id/civ_profile_image"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_toStartOf="@+id/iv_profilesingle_alignment"
+                    android:background="@drawable/rounded_edittext_register_login"
+                    android:drawableLeft="@drawable/location_icon"
+                    android:drawablePadding="8dp"
+                    android:fontFamily="@font/fredoka_one"
+                    android:gravity="center_vertical"
+                    android:padding="8dp" />
+
+                <TextView
+                    android:id="@+id/tv_profile_alignment"
+                    android:layout_width="150dp"
+                    android:layout_height="0dp"
+                    android:layout_alignTop="@+id/tv_profile_location"
+                    android:layout_alignBottom="@+id/tv_profile_location"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/rounded_edittext_register_login"
+                    android:drawablePadding="8dp"
+                    android:fontFamily="@font/fredoka_one"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="40dp"
+                    android:paddingRight="4dp" />
+
+                <ImageView
+                    android:id="@+id/iv_profilesingle_alignment"
+                    android:layout_width="25dp"
+                    android:layout_height="15dp"
+                    android:layout_alignStart="@+id/tv_profile_alignment"
+                    android:layout_alignTop="@+id/tv_profile_alignment"
+                    android:layout_alignBottom="@+id/tv_profile_alignment"
+                    android:layout_marginLeft="6dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignStart="@+id/tv_profile_alignment"
+                    android:layout_alignTop="@+id/tv_profile_alignment"
+                    android:layout_marginLeft="10dp"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignStart="@+id/tv_profile_alignment"
+                    android:layout_alignBottom="@+id/tv_profile_alignment"
+                    android:layout_marginLeft="10dp"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignBottom="@+id/tv_profile_name"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_toEndOf="@+id/tv_profile_name"
+                    android:background="@drawable/rounded_edittext_register_login"
+                    android:padding="4dp"
+                    android:src="@drawable/trending_up_icon"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_profile_members"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_profile_name"
+                    android:layout_alignBottom="@+id/civ_profile_image"
+                    android:layout_marginLeft="8dp"
+                    android:layout_toEndOf="@+id/civ_profile_image"
+                    android:layout_toRightOf="@id/tv_profile_location"
+                    android:fontFamily="@font/fredoka_one"
+                    android:gravity="center_vertical" />
+
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="25dp"
+                    app:srcCompat="@drawable/arrow" />
+
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/iv_profile_alignment_holder"
+                android:layout_width="0dp"
+                android:layout_height="95dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/rounded_edittext_register_login"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView21" />
+
+            <ImageView
+                android:id="@+id/iv_profile_banner"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_marginStart="8dp"
+                android:cropToPadding="false"
+                android:rotation="0"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_profile_alignment_holder"
+                app:layout_constraintStart_toStartOf="@+id/iv_profile_alignment_holder"
+                app:layout_constraintTop_toTopOf="@+id/iv_profile_alignment_holder" />
+
+            <TextView
+                android:id="@+id/tv_profile_alignment_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/fredoka_one"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_profile_banner"
+                app:layout_constraintStart_toEndOf="@+id/iv_profile_banner"
+                app:layout_constraintTop_toTopOf="@+id/iv_profile_banner" />
+
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/fredoka_one"
+                android:text="Alignment:"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="@+id/iv_profile_alignment_holder"
+                app:layout_constraintTop_toBottomOf="@+id/tv_profile_bio" />
+
+            <TextView
+                android:id="@+id/tv_profile_bio_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/fredoka_one"
+                android:text="Bio:"
+                android:textSize="18sp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@+id/tv_profile_bio"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

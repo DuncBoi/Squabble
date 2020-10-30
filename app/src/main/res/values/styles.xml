@@ -5,11 +5,9 @@
         <item name="colorPrimary">@color/navy</item>
         <item name="colorPrimaryDark">@color/greytext</item>
         <item name="colorAccent">@color/navy</item>
+
     </style>
-    <style name="success_alert_dialog" parent="android:Theme.Dialog">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-    </style>
+
     <style name="Widget.BottomNavigationView"
         parent="Widget.Design.BottomNavigationView">
         <item name="fontFamily">@font/fredoka_one</item>

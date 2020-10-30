@@ -2,7 +2,6 @@ package com.duncboi.realsquabble.registration
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,14 +12,10 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.duncboi.realsquabble.profile.ProfileActivity
 import com.duncboi.realsquabble.R
-import com.duncboi.realsquabble.UserInfo
-import com.duncboi.realsquabble.messenger.Users
 import com.duncboi.realsquabble.political.Political
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -35,7 +30,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_email_registration.*
-import kotlinx.android.synthetic.main.fragment_username_registration.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
 
@@ -45,25 +39,13 @@ class EmailRegistration : Fragment() {
     private val args: EmailRegistrationArgs by navArgs()
 
     private var job: Job? = null
-    private var job2: Job? = null
-    private var job3: Job? = null
     private var googleSignInClient: GoogleSignInClient? = null
     private val RC_SIGN_IN = 1000
     private lateinit var auth: FirebaseAuth
 
-    override fun onResume() {
-        super.onResume()
-        val emailPassed = args.email
-        if(emailPassed != "null" && emailPassed != "email"){
-            et_email_email.setText(emailPassed)
-        }
-    }
-
     override fun onPause() {
         super.onPause()
         job?.cancel()
-        job2?.cancel()
-        job3?.cancel()
     }
 
     override fun onCreateView(
@@ -93,49 +75,35 @@ class EmailRegistration : Fragment() {
                     return
                 searchFor = searchText
                 defaultConstraint()
-                if (searchText == "") {
-                     job2 = CoroutineScope(Main).launch {
-                        defaultConstraint()
-                        pb_email_progress.visibility = View.INVISIBLE
-                        delay(3000)
-                         if(searchText != searchFor)
-                             return@launch
-                        onEmailEmpty()
-                    }
-                }
-                else if (!isEmailValid(searchText)){
-                     job3 = CoroutineScope(Main).launch {
-                        defaultConstraint()
-                        pb_email_progress.visibility = View.INVISIBLE
-                        delay(3000)
-                         if(searchText != searchFor)
-                             return@launch
-                        onIncorrectEmailFormat()
-                    }
-                }
-                else {
                     pb_email_progress.visibility = View.VISIBLE
                     job = CoroutineScope(Main).launch {
-                    delay(1000)
-                    if (searchText != searchFor)
-                        return@launch
-                        val usernameQuery = FirebaseDatabase.getInstance().reference.child("Users")
-                            .orderByChild("email").equalTo(searchText)
-                        usernameQuery.addListenerForSingleValueEvent(object : ValueEventListener {
-                            override fun onDataChange(snapshot: DataSnapshot) {
-                                if (snapshot.childrenCount > 0) {
-                                    onEmailAlreadyExists()
-                                    pb_email_progress.visibility = View.INVISIBLE}
-                                else {
-                                    onEmailDoesntExist()
-                                    pb_email_progress.visibility = View.INVISIBLE
+                        delay(1000)
+                        if (searchText != searchFor)
+                            return@launch
+                        if (searchText == "") {
+                            onEmailEmpty()
+                        } else if (!isEmailValid(searchText)) {
+                            onIncorrectEmailFormat()
+                        } else {
+                            val usernameQuery =
+                                FirebaseDatabase.getInstance().reference.child("Users")
+                                    .orderByChild("email").equalTo(searchText)
+                            usernameQuery.addListenerForSingleValueEvent(object :
+                                ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    if (snapshot.childrenCount > 0) {
+                                        onEmailAlreadyExists()
+                                        pb_email_progress.visibility = View.INVISIBLE
+                                    } else {
+                                        onEmailDoesntExist()
+                                        pb_email_progress.visibility = View.INVISIBLE
+                                    }
                                 }
-                            }
 
-                            override fun onCancelled(error: DatabaseError) {}
-                        })
+                                override fun onCancelled(error: DatabaseError) {}
+                            })
+                        }
                     }
-                }
             }
         })
 
@@ -179,15 +147,8 @@ class EmailRegistration : Fragment() {
             })
         }
         tv_email_previous.setOnClickListener {
+            findNavController().popBackStack()
             closeKeyboard()
-            val bundle = Bundle()
-            val username = args.username
-            val password = args.password
-            val email = et_email_email.text.toString().trim().toLowerCase()
-            bundle.putString("username", username)
-            bundle.putString("email", email)
-            bundle.putString("password", password)
-            findNavController().navigate(R.id.action_emailRegistration_to_usernameRegistration, bundle)
        }
     }
 
@@ -231,8 +192,23 @@ class EmailRegistration : Fragment() {
                                     loadingDialog?.dismiss()
                                     val username = args.username
                                     val uid = currentUser?.uid
-                                    val user = Users("", "", "", "OFF", "$email", "", "$uid", "$username", "", "", "google", "OFFLINE", "0", "")
-                                    uploadUserToDatabase(user)
+                                    val userHash = HashMap<String, Any?>()
+                                    userHash["category"] = ""
+                                    userHash["economicScore"] = ""
+                                    userHash["socialScore"] = ""
+                                    userHash["anonymous"] = "OFF"
+                                    userHash["email"] = "$email"
+                                    userHash["name"] = ""
+                                    userHash["uid"] = "$uid"
+                                    userHash["username"] = "$username"
+                                    userHash["bio"] = ""
+                                    userHash["uri"]= ""
+                                    userHash["password"] = "google"
+                                    userHash["status"] = "OFFLINE"
+                                    userHash["userTime"] = "0"
+                                    userHash["groupId"] = ""
+                                    userHash["alignmentTime"] = ""
+                                    uploadUserToDatabase(userHash)
                                 }
                             }
                         })
@@ -268,9 +244,9 @@ class EmailRegistration : Fragment() {
         dialog.show()
     }
 
-    private fun uploadUserToDatabase(user: Users){
+    private fun uploadUserToDatabase(user: HashMap<String, Any?>){
         val ref = FirebaseDatabase.getInstance().getReference("Users")
-        ref.child(user.getUid()!!).setValue(user).addOnCompleteListener {
+        ref.child(user["uid"].toString()).setValue(user).addOnCompleteListener {
             if (it.isSuccessful){
                 val intent = Intent(requireActivity().applicationContext, Political::class.java)
                 startActivity(intent)
@@ -320,30 +296,17 @@ class EmailRegistration : Fragment() {
         b_email_sign_in.visibility = View.INVISIBLE
         b_email_next.setBackgroundResource(R.drawable.greyed_out_button)
         b_email_next.alpha = 0.5f
-        val set = ConstraintSet()
-        val emailLayout = email_constraint
-        iv_email_x.alpha = 0F
-        iv_email_checkmark.alpha = 0F
-        set.clone(emailLayout)
-        set.clear(tv_email_error.id, ConstraintSet.TOP)
-        set.connect(tv_email_error.id, ConstraintSet.TOP,et_email_email.id, ConstraintSet.TOP)
-        set.connect(b_email_next.id, ConstraintSet.TOP,et_email_email.id, ConstraintSet.BOTTOM, 24)
-        set.connect(tv_email_previous.id, ConstraintSet.TOP,b_email_next.id, ConstraintSet.BOTTOM, 150)
-        set.applyTo(emailLayout)
+        tv_email_error.visibility = View.GONE
+        iv_email_checkmark.visibility = View.INVISIBLE
+        iv_email_x.visibility = View.INVISIBLE
     }
     private fun errorConstraint(){
         b_email_next.isClickable = true
         b_email_sign_in.isClickable = false
         b_email_next.visibility = View.VISIBLE
         b_email_sign_in.visibility = View.INVISIBLE
-        val defaultSet = ConstraintSet()
-        val emailLayout = email_constraint
-        defaultSet.clone(emailLayout)
-        defaultSet.clear(b_email_next.id, ConstraintSet.TOP)
-        defaultSet.clear(tv_email_error.id, ConstraintSet.TOP)
-        defaultSet.connect(tv_email_error.id, ConstraintSet.TOP, et_email_email.id, ConstraintSet.BOTTOM, 6)
-        defaultSet.connect(b_email_next.id, ConstraintSet.TOP, tv_email_error.id, ConstraintSet.BOTTOM, 12)
-        defaultSet.applyTo(emailLayout)
+        tv_email_error.visibility = View.VISIBLE
+
     }
 
     //error functions
@@ -354,28 +317,26 @@ class EmailRegistration : Fragment() {
         iv_email_checkmark.bringToFront()
         iv_email_checkmark.alpha = 1F
         iv_email_x.alpha = 0F
+        iv_email_checkmark.visibility = View.VISIBLE
+        iv_email_x.visibility = View.INVISIBLE
     }
     private fun onIncorrectEmailFormat() {
         errorConstraint()
         b_email_next.isClickable = false
         b_email_next.setBackgroundResource(R.drawable.greyed_out_button)
         b_email_next.alpha = 0.5f
-        iv_email_x.bringToFront()
-        iv_email_x.alpha = 1F
-        iv_email_checkmark.alpha = 0F
         tv_email_error.text = "Email formatted incorrectly"
-        tv_email_error.setTextColor(Color.parseColor("#eb4b4b"))
+        iv_email_checkmark.visibility = View.INVISIBLE
+        iv_email_x.visibility = View.VISIBLE
     }
     private fun onEmailEmpty() {
         errorConstraint()
         b_email_next.isClickable = false
         b_email_next.setBackgroundResource(R.drawable.greyed_out_button)
         b_email_next.alpha = 0.5f
-        iv_email_x.bringToFront()
-        iv_email_x.alpha = 1F
-        iv_email_checkmark.alpha = 0F
         tv_email_error.text = "Please enter email"
-        tv_email_error.setTextColor(Color.parseColor("#eb4b4b"))
+        iv_email_checkmark.visibility = View.INVISIBLE
+        iv_email_x.visibility = View.VISIBLE
     }
     private fun onEmailAlreadyExists() {
         errorConstraint()
@@ -391,11 +352,9 @@ class EmailRegistration : Fragment() {
             bundle.putString("email", email)
             findNavController().navigate(R.id.action_emailRegistration_to_login, bundle)
         }
-        iv_email_x.bringToFront()
-        iv_email_x.alpha = 1F
-        iv_email_checkmark.alpha = 0f
         tv_email_error.text = "Email linked to an existing account"
-        tv_email_error.setTextColor(Color.parseColor("#eb4b4b"))
+        iv_email_checkmark.visibility = View.INVISIBLE
+        iv_email_x.visibility = View.VISIBLE
     }
 
 

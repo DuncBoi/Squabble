@@ -5,16 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.duncboi.realsquabble.Constants
-import com.duncboi.realsquabble.Constants.rand
+import com.duncboi.realsquabble.political.Constants.rand
 import com.duncboi.realsquabble.R
 import kotlinx.android.synthetic.main.fragment_healthcare.*
 
 class Healthcare : Fragment() {
 
-    private val answer0: String = "0"
-    private val answer5: String = "5"
-    private val answer10: String = "10"
+    private val answer0: String = "The government should be the main healthcare provider"
+    private val answer5: String = "Americans should have an option to choose between private healthcare or government provided healthcare"
+    private val answer10: String = "Health care should be ran by private institutions only"
     private val randomNumber = rand(1,3)
 
     override fun onCreateView(

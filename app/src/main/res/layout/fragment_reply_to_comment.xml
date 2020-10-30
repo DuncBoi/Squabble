@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HolderClass.ReplyToComment">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/reply_to_comment_relative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/rounded_edittext_register_login"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView45">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ_reply_to_comment_profile_pic"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/profile_icon"
+            app:civ_border_color="@color/navy"
+            app:civ_border_width="2dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RelativeLayout
+            android:id="@+id/rl_reply_to_comment_text_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_reply_to_comment_username"
+            android:layout_alignStart="@+id/tv_reply_to_comment_username"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:layout_toRightOf="@id/civ_reply_to_comment_profile_pic"
+            app:layout_constraintEnd_toStartOf="@+id/iv_reply_to_comment_heart"
+            app:layout_constraintStart_toEndOf="@+id/civ_reply_to_comment_profile_pic"
+            app:layout_constraintTop_toBottomOf="@+id/tv_reply_to_comment_username">
+
+            <TextView
+                android:id="@+id/tv_reply_to_comment_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_edittext_register_login"
+                android:fontFamily="@font/fredoka_one"
+                android:padding="10dp"
+                android:textAlignment="viewStart"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/tv_reply_to_comment_view_replies"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rl_reply_to_comment_text_layout"
+            android:layout_marginTop="4dp"
+            android:layout_toRightOf="@id/civ_reply_to_comment_profile_pic"
+            android:fontFamily="@font/fredoka_one"
+            android:gravity="bottom"
+            android:textAllCaps="false"
+            android:textColor="@color/googleBlue"
+            android:textSize="12sp"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="@+id/rl_reply_to_comment_text_layout"
+            app:layout_constraintTop_toBottomOf="@+id/rl_reply_to_comment_text_layout" />
+
+        <TextView
+            android:id="@+id/tv_reply_to_comment_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/tv_reply_to_comment_username"
+            android:layout_alignBottom="@+id/tv_reply_to_comment_username"
+            android:layout_alignParentEnd="true"
+            android:fontFamily="@font/fredoka_one"
+            android:textAlignment="center"
+            android:textColor="@color/greytext"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_reply_to_comment_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/civ_reply_to_comment_profile_pic"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@+id/civ_reply_to_comment_profile_pic"
+            android:fontFamily="@font/fredoka_one"
+            android:textSize="11sp"
+            app:layout_constraintStart_toEndOf="@+id/civ_reply_to_comment_profile_pic"
+            app:layout_constraintTop_toTopOf="@+id/civ_reply_to_comment_profile_pic" />
+
+        <ImageView
+            android:id="@+id/iv_reply_to_comment_heart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_reply_to_comment_time"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_reply_to_comment_time"
+            app:srcCompat="@drawable/empty_heart_icon" />
+
+        <ImageView
+            android:id="@+id/iv_reply_to_comment_heart_fill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/iv_reply_to_comment_heart"
+            android:layout_alignEnd="@+id/iv_reply_to_comment_heart"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_reply_to_comment_heart"
+            app:layout_constraintEnd_toEndOf="@+id/iv_reply_to_comment_heart"
+            app:layout_constraintStart_toStartOf="@+id/iv_reply_to_comment_heart"
+            app:layout_constraintTop_toTopOf="@+id/iv_reply_to_comment_heart"
+            app:srcCompat="@drawable/heart_full_icon" />
+
+        <TextView
+            android:id="@+id/tv_reply_to_comment_like_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_reply_to_comment_heart"
+            android:layout_alignStart="@+id/iv_reply_to_comment_heart"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/fredoka_one"
+            android:textAlignment="center"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/iv_reply_to_comment_heart"
+            app:layout_constraintStart_toStartOf="@+id/iv_reply_to_comment_heart"
+            app:layout_constraintTop_toBottomOf="@+id/iv_reply_to_comment_heart" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_reply_to_comment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/et_reply_to_comment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reply_to_comment_relative" />
+
+    <ImageView
+        android:id="@+id/imageView33"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/extra_round_edittext_register_login"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_reply_to_comment" />
+
+    <EditText
+        android:id="@+id/et_reply_to_comment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:fontFamily="@font/fredoka_one"
+        android:hint="Reply to comment..."
+        android:inputType="textMultiLine"
+        android:maxLength="300"
+        android:textColor="@color/greytext"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/b_reply_message_send"
+        app:layout_constraintStart_toStartOf="@+id/imageView33" />
+
+    <ImageView
+        android:id="@+id/b_reply_message_send"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:rotation="315"
+        android:src="@drawable/send_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_reply_to_comment_back"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView45"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/fredoka_one"
+        android:text="Reply To Comment"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_reply_to_comment_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_reply_to_comment_back" />
+</androidx.constraintlayout.widget.ConstraintLayout>

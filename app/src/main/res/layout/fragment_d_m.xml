@@ -4,27 +4,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DM">
+    tools:context=".HolderClass.DM">
+
+    <ImageView
+        android:id="@+id/imageView22"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/rounded_edittext_register_login"
+        app:layout_constraintBottom_toTopOf="@+id/rv_dm_recycler"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_dm_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/fredoka_one"
+        android:textSize="13sp"
+        app:layout_constraintStart_toEndOf="@+id/civ_dm_profile_pic"
+        app:layout_constraintTop_toBottomOf="@+id/tv_dm_name" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/civ_dm_profile_pic"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
         android:background="@drawable/profile_icon"
         android:src="@drawable/rounded_select_photo"
+        android:windowSoftInputMode="stateAlwaysVisible"
         app:civ_border_color="@color/navy"
         app:civ_border_width="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_dm_back"
         app:layout_constraintStart_toEndOf="@+id/iv_dm_back"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/iv_dm_back" />
 
     <ImageView
         android:id="@+id/iv_dm_back"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:src="@drawable/arrow_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -33,17 +55,17 @@
         android:id="@+id/tv_dm_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="22dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
         android:ellipsize="end"
         android:fontFamily="@font/fredoka_one"
         android:maxLines="1"
         android:textColor="@color/greytext"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/iv_dm_info"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/civ_dm_profile_pic"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/civ_dm_profile_pic" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_dm_recycler"
@@ -54,16 +76,36 @@
         app:layout_constraintBottom_toTopOf="@+id/et_dm_message"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/civ_dm_profile_pic" />
+        app:layout_constraintTop_toBottomOf="@+id/civ_dm_profile_pic"
+        android:windowSoftInputMode="adjustNothing"
+        />
+
+    <ImageView
+        android:id="@+id/iv_dm_banner"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/civ_dm_profile_pic"
+        app:layout_constraintEnd_toStartOf="@+id/tv_dm_name" />
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/extra_round_edittext_register_login"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rv_dm_recycler"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/iv_dm_picture"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="8dp"
         android:src="@drawable/library"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/et_dm_message"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
@@ -76,52 +118,105 @@
         android:ems="10"
         android:fontFamily="@font/fredoka_one"
         android:hint="Send message..."
-        android:inputType="textPersonName"
+        android:inputType="textMultiLine"
+        android:maxLength="300"
         android:textColor="@color/greytext"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tv_dm_send_message"
         app:layout_constraintStart_toEndOf="@+id/iv_dm_picture" />
 
-    <TextView
+    <ImageView
         android:id="@+id/tv_dm_send_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:fontFamily="@font/fredoka_one"
-        android:text="Send"
-        android:textColor="@color/googleBlue"
-        android:textSize="22sp"
+        android:rotation="315"
+        android:src="@drawable/send_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <ImageView
-        android:id="@+id/iv_dm_banner"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintBottom_toBottomOf="@+id/civ_dm_profile_pic"
-        app:layout_constraintEnd_toStartOf="@+id/tv_dm_name" />
-
-    <ImageView
-        android:id="@+id/iv_dm_info"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
-        android:src="@drawable/info"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/d_m_confirm_image_constraint"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_edittext_register_login"
+        android:padding="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/d_m_confirm_image_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:adjustViewBounds="true"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            app:cardCornerRadius="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView8">
+
+            <ImageView
+                android:id="@+id/d_m_confirm_image_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter" />
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/fredoka_one"
+            android:text="Send Image?"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/dm_confirm_image_send"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="8dp"
+            android:rotation="315"
+            android:src="@drawable/send_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/textView8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView8" />
+
+        <ImageView
+            android:id="@+id/dm_confirm_image_back"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/arrow_back"
+            app:layout_constraintBottom_toBottomOf="@+id/textView8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView8" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ProgressBar
+        android:id="@+id/pb_dm_progress"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_dm_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="6dp"
-        android:fontFamily="@font/fredoka_one"
-        app:layout_constraintStart_toEndOf="@+id/civ_dm_profile_pic"
-        app:layout_constraintTop_toBottomOf="@+id/tv_dm_name" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

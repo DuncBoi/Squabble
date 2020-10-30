@@ -2,228 +2,134 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/profile_constraint"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-
-    <ImageView
-        android:id="@+id/iv_default_profile_following_holder"
-        android:layout_width="80dp"
-        android:layout_height="85dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="45dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-        app:layout_constraintEnd_toStartOf="@+id/iv_default_profile_followers_holder"
-        app:layout_constraintTop_toTopOf="@+id/imageView2" />
-
-    <ImageView
-        android:id="@+id/imageView11"
-        android:layout_width="80dp"
-        android:layout_height="85dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-        app:layout_constraintStart_toStartOf="@+id/imageView2"
-        app:layout_constraintTop_toTopOf="@+id/iv_default_profile_following_holder" />
-
-    <ImageView
-        android:id="@+id/iv_edit_profile"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/civ_default_profile_picture"
-        app:layout_constraintTop_toTopOf="@+id/civ_default_profile_picture"
-        app:srcCompat="@drawable/rounded_edittext_register_login" />
-
-    <ImageView
-        android:id="@+id/iv_default_profile_followers_holder"
-        android:layout_width="80dp"
-        android:layout_height="85dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-        app:layout_constraintEnd_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toTopOf="@+id/imageView2" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="0dp"
-        android:layout_height="74dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_default_profile_name"
-        app:srcCompat="@drawable/rounded_edittext_register_login" />
+    android:layout_height="match_parent">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/civ_default_profile_picture"
-        android:layout_width="115dp"
-        android:layout_height="115dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/profile_icon"
         app:civ_border_color="@color/navy"
         app:civ_border_width="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_default_profile_username" />
-
-    <TextView
-        android:id="@+id/tv_number_of_followers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:fontFamily="@font/fredoka_one"
-        android:text="0"
-        android:textAlignment="center"
-        android:textColor="@color/navy"
-        android:textSize="35sp"
-        app:layout_constraintEnd_toEndOf="@+id/iv_default_profile_followers_holder"
-        app:layout_constraintStart_toStartOf="@+id/iv_default_profile_followers_holder"
-        app:layout_constraintTop_toBottomOf="@+id/tv_followers" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_default_profile_username"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="75dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="25dp"
+        android:layout_marginTop="4dp"
         android:fontFamily="@font/fredoka_one"
         android:textAlignment="center"
-        android:textColor="@color/navy"
-        android:textSize="20sp"
+        android:textColor="@color/greytext"
+        android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/iv_default_profile_settings"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/tv_default_profile_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_default_profile_name" />
 
     <TextView
         android:id="@+id/tv_default_profile_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
         android:fontFamily="@font/fredoka_one"
         android:hint="Name"
         android:maxLength="25"
-        android:textAlignment="center"
-        android:textSize="25sp"
+        android:maxLines="1"
+        android:textAlignment="viewStart"
+        android:textColor="@android:color/black"
+        android:textSize="22sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/civ_default_profile_picture" />
+        app:layout_constraintEnd_toStartOf="@+id/iv_default_profile_settings"
+        app:layout_constraintStart_toEndOf="@+id/civ_default_profile_picture"
+        app:layout_constraintTop_toTopOf="@+id/civ_default_profile_picture" />
 
-    <TextView
-        android:id="@+id/tv_followers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="6dp"
-        android:fontFamily="@font/fredoka_one"
-        android:text="Followers:"
-        android:textAlignment="center"
-        android:textSize="15dp"
-        app:layout_constraintEnd_toEndOf="@+id/iv_default_profile_followers_holder"
-        app:layout_constraintStart_toStartOf="@+id/iv_default_profile_followers_holder"
-        app:layout_constraintTop_toTopOf="@+id/iv_default_profile_followers_holder" />
-
-    <TextView
-        android:id="@+id/tv_following"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="6dp"
-        android:fontFamily="@font/fredoka_one"
-        android:text="Following:"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="@+id/iv_default_profile_following_holder"
-        app:layout_constraintStart_toStartOf="@+id/iv_default_profile_following_holder"
-        app:layout_constraintTop_toTopOf="@+id/iv_default_profile_following_holder" />
-
-    <TextView
-        android:id="@+id/tv_following2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="6dp"
-        android:fontFamily="@font/fredoka_one"
-        android:text="Activity:"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="@+id/imageView11"
-        app:layout_constraintStart_toStartOf="@+id/imageView11"
-        app:layout_constraintTop_toTopOf="@+id/imageView11" />
-
-    <TextView
-        android:id="@+id/tv_number_following"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:fontFamily="@font/fredoka_one"
-        android:text="0"
-        android:textAlignment="center"
-        android:textColor="@color/navy"
-        android:textSize="35sp"
-        app:layout_constraintEnd_toEndOf="@+id/iv_default_profile_following_holder"
-        app:layout_constraintStart_toStartOf="@+id/iv_default_profile_following_holder"
-        app:layout_constraintTop_toBottomOf="@+id/tv_following" />
-
-    <TextView
-        android:id="@+id/tv_default_profile_bio"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/fredoka_one"
-        app:layout_constraintEnd_toEndOf="@+id/imageView2"
-        app:layout_constraintStart_toStartOf="@+id/imageView2"
-        app:layout_constraintTop_toBottomOf="@+id/iv_default_profile_following_holder" />
 
     <ImageView
         android:id="@+id/iv_default_profile_settings"
         android:layout_width="45dp"
         android:layout_height="40dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/civ_default_profile_picture"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/civ_default_profile_picture"
         app:srcCompat="@drawable/settings" />
 
-    <ImageView
-        android:id="@+id/iv_default_profile_banner"
-        android:layout_width="94dp"
-        android:layout_height="75dp"
-        android:layout_marginTop="22dp"
-        android:cropToPadding="false"
-        android:rotation="0"
-        app:layout_constraintEnd_toStartOf="@+id/civ_default_profile_picture"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/profileViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/civ_default_profile_picture" />
+        app:layout_constraintTop_toBottomOf="@+id/profileTabLayout"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/profileTabLayout"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/rounded_edittext_register_login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/b_default_profile_edit_profile"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        app:tabTextAppearance="@style/PagerTabStripText" />
+
+    <Button
+        android:id="@+id/b_default_profile_edit_profile"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rounded_edittext_register_login"
+        android:drawableLeft="@drawable/pen"
+        android:drawablePadding="8dp"
+        android:fontFamily="@font/fredoka_one"
+        android:padding="10dp"
+        android:text="Edit Profile"
+        android:textAllCaps="false"
+        android:textColor="@color/greytext"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/civ_default_profile_picture" />
 
     <ImageView
-        android:id="@+id/iv_default_pen"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toEndOf="@+id/iv_edit_profile"
-        app:layout_constraintStart_toStartOf="@+id/iv_edit_profile"
-        app:layout_constraintTop_toTopOf="@+id/iv_edit_profile"
-        app:srcCompat="@drawable/pen" />
-
-    <TextView
-        android:id="@+id/tv_default_profile_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
-        android:layout_marginBottom="2dp"
-        android:fontFamily="@font/fredoka_one"
-        android:text="Edit Profile"
-        android:textSize="11sp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_edit_profile"
-        app:layout_constraintEnd_toEndOf="@+id/iv_edit_profile"
-        app:layout_constraintStart_toStartOf="@+id/iv_edit_profile"
-        app:layout_constraintTop_toBottomOf="@+id/iv_default_pen" />
+        app:layout_constraintBottom_toBottomOf="@+id/profileTabLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toTopOf="@+id/profileTabLayout"
+        app:srcCompat="@drawable/thumb_up_icon" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/profileTabLayout"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/profileTabLayout"
+        app:srcCompat="@drawable/description_icon" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

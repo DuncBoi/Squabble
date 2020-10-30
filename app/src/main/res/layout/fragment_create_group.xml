@@ -2,17 +2,17 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/create_group_constraint"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateGroup">
+    tools:context=".CreatorClasses.CreateGroup">
 
 
     <TextView
-        android:id="@+id/tv_create_group_header"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
+        android:layout_marginEnd="16dp"
         android:fontFamily="@font/fredoka_one"
         android:text="Create Group"
         android:textColor="#000000"
@@ -28,7 +28,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         android:fontFamily="@font/fredoka_one"
-        android:hint="Next"
+        android:hint="Create"
         android:textColor="@color/googleBlue"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,26 +36,28 @@
 
     <ImageView
         android:id="@+id/iv_create_group_back"
-        android:layout_width="65dp"
-        android:layout_height="55dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:src="@drawable/arrow_back"
+        app:layout_constraintBottom_toBottomOf="@+id/textView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/textView" />
 
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:paddingBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_create_group_back">
+        app:layout_constraintTop_toBottomOf="@+id/iv_create_group_back"
+        app:layout_constraintVertical_bias="0.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/score_calc_constraint"
+            android:id="@+id/alignment_view_constraint"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -66,117 +68,42 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="35dp"
                 android:background="@drawable/rounded_select_photo"
-                app:civ_border_color="@color/navy"
-                app:civ_border_width="2dp"
+                app:civ_border_color="@color/Libertarian"
+                app:civ_border_width="1dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/score_calc_constraint" />
+                app:layout_constraintTop_toTopOf="@id/alignment_view_constraint" />
 
             <EditText
                 android:id="@+id/et_create_group_group_name"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="16dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/rounded_edittext_register_login"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 "
                 android:drawableRight="@drawable/pen"
                 android:ems="10"
                 android:fontFamily="@font/fredoka_one"
                 android:hint="Name"
-                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 "
+                android:inputType="textMultiLine"
                 android:maxLength="21"
-                android:inputType="textFilter"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
+                android:padding="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/civ_create_group_profile"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/civ_create_group_profile"
                 app:layout_constraintTop_toTopOf="@+id/civ_create_group_profile" />
 
             <TextView
-                android:id="@+id/tv_create_group_type_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:fontFamily="@font/fredoka_one"
-                android:text="Type:"
-                android:textColor="#000000"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="@+id/civ_create_group_profile"
-                app:layout_constraintTop_toBottomOf="@+id/civ_create_group_profile" />
-
-            <RadioGroup
-                android:id="@+id/rg_create_group_type"
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/rounded_edittext_register_login"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/tv_create_group_type_header"
-                app:layout_constraintTop_toTopOf="@+id/tv_create_group_type_header">
-
-                <RadioButton
-                    android:id="@+id/rb_create_group_public"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:fontFamily="@font/fredoka_one"
-                    android:paddingLeft="4dp"
-                    android:text="Public"
-                    android:textColor="@color/greytext" />
-
-                <RadioButton
-                    android:id="@+id/rb_create_group_invite_only"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:fontFamily="@font/fredoka_one"
-                    android:paddingLeft="4dp"
-                    android:text="Invite Only"
-                    android:textColor="@color/greytext" />
-
-            </RadioGroup>
-
-            <Button
-                android:id="@+id/b_create_group_add_members"
-                android:layout_width="127dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="16dp"
-                android:background="@drawable/rounded_edittext_register_login"
-                android:drawableLeft="@drawable/make_group_chat_icon"
-                android:fontFamily="@font/fredoka_one"
-                android:paddingLeft="8dp"
-                android:text="Add members"
-                android:textAllCaps="false"
-                android:textColor="@color/greytext"
-                android:textSize="12sp"
-                app:layout_constraintStart_toEndOf="@+id/civ_create_group_profile"
-                app:layout_constraintTop_toBottomOf="@+id/et_create_group_group_name" />
-
-            <Button
-                android:id="@+id/b_create_group_view_members"
-                android:layout_width="127dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/rounded_edittext_register_login"
-                android:drawableLeft="@drawable/view_members_icon"
-                android:fontFamily="@font/fredoka_one"
-                android:paddingLeft="8dp"
-                android:text="View members"
-                android:textAllCaps="false"
-                android:textColor="@color/greytext"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_create_group_group_name" />
-
-            <TextView
                 android:id="@+id/tv_create_group_description_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/fredoka_one"
                 android:text="Description:"
                 android:textColor="#000000"
                 android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="@+id/tv_create_group_type_header"
-                app:layout_constraintTop_toBottomOf="@+id/tv_create_group_type_header" />
+                app:layout_constraintStart_toStartOf="@+id/civ_create_group_profile"
+                app:layout_constraintTop_toBottomOf="@+id/civ_create_group_profile" />
 
             <EditText
                 android:id="@+id/et_create_group_description"
@@ -188,11 +115,11 @@
                 android:background="@drawable/rounded_edittext_register_login"
                 android:fontFamily="@font/fredoka_one"
                 android:gravity="top"
-                android:maxLength="200"
                 android:hint="Write a group description"
+                android:inputType="textPersonName"
+                android:maxLength="200"
                 android:padding="10dp"
                 android:textSize="14sp"
-                android:inputType="textPersonName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_create_group_description_header" />
@@ -212,12 +139,15 @@
             <ImageView
                 android:id="@+id/iv_create_group_filter_holder"
                 android:layout_width="0dp"
-                android:layout_height="340dp"
+                android:layout_height="450dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginBottom="32dp"
                 android:src="@drawable/rounded_edittext_register_login"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_create_group_filter_header" />
 
@@ -259,11 +189,11 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_create_group_location_header">
 
                 <RadioButton
-                    android:id="@+id/rb_create_group_country"
+                    android:id="@+id/rb_create_group_not_specified"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:fontFamily="@font/fredoka_one"
-                    android:text="Anyone"
+                    android:text="Not Specified"
                     android:textColor="@color/greytext" />
 
                 <RadioButton
@@ -275,11 +205,11 @@
                     android:textColor="@color/greytext" />
 
                 <RadioButton
-                    android:id="@+id/rb_create_group_city"
+                    android:id="@+id/rb_create_group_state_and_county"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:fontFamily="@font/fredoka_one"
-                    android:text="County"
+                    android:text="State and County"
                     android:textColor="@color/greytext" />
 
             </RadioGroup>
@@ -291,30 +221,15 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/fredoka_one"
-                android:text="Alignment"
+                android:text="Sub group:"
                 android:textColor="@color/navy"
                 app:layout_constraintStart_toStartOf="@+id/iv_create_group_filter_holder"
                 app:layout_constraintTop_toBottomOf="@+id/rg_create_group_location" />
-
-            <ImageView
-                android:id="@+id/iv_create_group_alignment_holder"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="8dp"
-                android:src="@drawable/rounded_edittext_register_login"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/iv_create_group_filter_holder"
-                app:layout_constraintStart_toStartOf="@+id/iv_create_group_filter_holder"
-                app:layout_constraintTop_toBottomOf="@+id/tv_create_group_alignment" />
 
             <CheckBox
                 android:id="@+id/cb_create_group_alignment_libertarian"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="19dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/rounded_edittext_register_login"
                 android:fontFamily="@font/fredoka_one"
@@ -324,14 +239,13 @@
                 android:scaleY="1.15"
                 android:text="Libertarian"
                 android:textColor="@color/greytext"
-                app:layout_constraintStart_toStartOf="@+id/iv_create_group_alignment_holder"
+                app:layout_constraintStart_toStartOf="@+id/cb_create_group_alignment_conservative"
                 app:layout_constraintTop_toBottomOf="@+id/cb_create_group_alignment_conservative" />
 
             <CheckBox
                 android:id="@+id/cb_create_group_alignment_moderate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="19dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/rounded_edittext_register_login"
                 android:fontFamily="@font/fredoka_one"
@@ -341,15 +255,15 @@
                 android:scaleY="1.15"
                 android:text="Moderate"
                 android:textColor="@color/greytext"
-                app:layout_constraintStart_toStartOf="@+id/iv_create_group_alignment_holder"
+                app:layout_constraintStart_toStartOf="@+id/cb_create_group_alignment_libertarian"
                 app:layout_constraintTop_toBottomOf="@+id/cb_create_group_alignment_libertarian" />
 
             <CheckBox
                 android:id="@+id/cb_create_group_alignment_conservative"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/rounded_edittext_register_login"
                 android:fontFamily="@font/fredoka_one"
                 android:paddingLeft="20dp"
@@ -358,15 +272,14 @@
                 android:scaleY="1.15"
                 android:text="Conservative"
                 android:textColor="@color/greytext"
-                app:layout_constraintStart_toStartOf="@+id/iv_create_group_alignment_holder"
-                app:layout_constraintTop_toTopOf="@+id/iv_create_group_alignment_holder" />
+                app:layout_constraintStart_toStartOf="@+id/tv_create_group_alignment"
+                app:layout_constraintTop_toBottomOf="@+id/tv_create_group_alignment" />
 
             <CheckBox
                 android:id="@+id/cb_create_group_alignment_authoritarian"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
                 android:background="@drawable/rounded_edittext_register_login"
                 android:fontFamily="@font/fredoka_one"
                 android:paddingLeft="20dp"
@@ -375,7 +288,7 @@
                 android:scaleY="1.15"
                 android:text="Authoritarian"
                 android:textColor="@color/greytext"
-                app:layout_constraintEnd_toEndOf="@+id/iv_create_group_alignment_holder"
+                app:layout_constraintStart_toStartOf="@+id/cb_create_group_alignment_liberal"
                 app:layout_constraintTop_toBottomOf="@+id/cb_create_group_alignment_liberal" />
 
             <CheckBox
@@ -383,7 +296,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
                 android:background="@drawable/rounded_edittext_register_login"
                 android:fontFamily="@font/fredoka_one"
                 android:paddingLeft="20dp"
@@ -392,27 +304,10 @@
                 android:scaleY="1.15"
                 android:text="Liberal"
                 android:textColor="@color/greytext"
-                app:layout_constraintEnd_toEndOf="@+id/iv_create_group_alignment_holder"
-                app:layout_constraintTop_toTopOf="@+id/iv_create_group_alignment_holder" />
-
-            <CheckBox
-                android:id="@+id/cb_create_group_alignment_anyone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/rounded_edittext_register_login"
-                android:fontFamily="@font/fredoka_one"
-                android:paddingRight="8dp"
-                android:scaleX="1.15"
-                android:scaleY="1.15"
-                android:text="Anyone"
-                android:textColor="@color/greytext"
-                app:layout_constraintEnd_toEndOf="@+id/iv_create_group_alignment_holder"
-                app:layout_constraintTop_toBottomOf="@+id/cb_create_group_alignment_authoritarian" />
+                app:layout_constraintStart_toStartOf="@+id/cb_create_group_alignment_moderate"
+                app:layout_constraintTop_toBottomOf="@+id/cb_create_group_alignment_moderate" />
 
             <ImageView
-                android:id="@+id/imageView5"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginStart="20dp"
@@ -422,7 +317,6 @@
                 app:layout_constraintTop_toTopOf="@+id/cb_create_group_alignment_conservative" />
 
             <ImageView
-                android:id="@+id/imageView6"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginStart="23dp"
@@ -432,7 +326,6 @@
                 app:layout_constraintTop_toTopOf="@+id/cb_create_group_alignment_liberal" />
 
             <ImageView
-                android:id="@+id/imageView9"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginStart="20dp"
@@ -442,7 +335,6 @@
                 app:layout_constraintTop_toTopOf="@+id/cb_create_group_alignment_libertarian" />
 
             <ImageView
-                android:id="@+id/imageView10"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginStart="21dp"
@@ -452,7 +344,6 @@
                 app:layout_constraintTop_toTopOf="@+id/cb_create_group_alignment_moderate" />
 
             <ImageView
-                android:id="@+id/imageView12"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginStart="20dp"
@@ -465,11 +356,11 @@
                 android:id="@+id/tv_create_group_error"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/fredoka_one"
                 android:textColor="@color/red"
                 android:textSize="14sp"
                 android:visibility="invisible"
-                app:layout_constraintBottom_toTopOf="@+id/et_create_group_group_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -485,6 +376,17 @@
                 android:textColor="@color/green"
                 app:layout_constraintBottom_toBottomOf="@+id/et_create_group_description"
                 app:layout_constraintEnd_toEndOf="@+id/et_create_group_description" />
+
+            <ProgressBar
+                android:id="@+id/pb_create_group_image_load"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/civ_create_group_profile"
+                app:layout_constraintEnd_toEndOf="@+id/civ_create_group_profile"
+                app:layout_constraintStart_toStartOf="@+id/civ_create_group_profile"
+                app:layout_constraintTop_toTopOf="@+id/civ_create_group_profile" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

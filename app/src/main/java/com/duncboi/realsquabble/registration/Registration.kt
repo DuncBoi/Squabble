@@ -8,10 +8,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import com.duncboi.realsquabble.NetworkConnection
+import com.duncboi.realsquabble.Miscellaneous.NetworkConnection
 import com.duncboi.realsquabble.R
 
 

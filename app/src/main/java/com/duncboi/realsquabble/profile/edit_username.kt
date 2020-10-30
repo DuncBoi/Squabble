@@ -31,7 +31,6 @@ class edit_username : Fragment() {
     private var job: Job? = null
 
     private val timeRef = FirebaseDatabase.getInstance().reference.child("Users").child(currentUser).child("usernameTime")
-    private var timeListener: ValueEventListener? = null
 
 
     override fun onCreateView(
@@ -47,7 +46,6 @@ class edit_username : Fragment() {
     override fun onPause() {
         super.onPause()
         job?.cancel()
-        if (timeListener != null) timeRef.removeEventListener(timeListener!!)
     }
 
 
@@ -63,7 +61,8 @@ class edit_username : Fragment() {
         val bio = args.bio
         val name = args.name
 
-            timeListener = timeRef.addValueEventListener(object : ValueEventListener{
+        timeRef.onDisconnect().cancel()
+        timeRef.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onCancelled(error: DatabaseError) {}
             override fun onDataChange(snapshot: DataSnapshot) {
                 val currentTime = System.currentTimeMillis()

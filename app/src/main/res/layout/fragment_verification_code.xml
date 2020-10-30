@@ -5,7 +5,7 @@
     android:id="@+id/verification_constraint"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".VerificationCode">
+    tools:context=".registration.VerificationCode">
 
     <ProgressBar
         android:id="@+id/pb_verification_progress"
@@ -39,11 +39,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
         android:fontFamily="@font/fredoka_one"
         android:text="Verification Code"
         android:textColor="#000000"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/pb_verification_progress"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -53,11 +54,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="8dp"
         android:fontFamily="@font/fredoka_one"
         android:text="Enter 6 digit verification code sent to:"
         android:textAlignment="viewStart"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/pb_verification_progress"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_verification_header" />
 
@@ -76,42 +77,10 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_verification_please_enter_verification" />
 
     <TextView
-        android:id="@+id/tv_verification_countdown"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="20dp"
-        android:fontFamily="@font/fredoka_one"
-        android:textAlignment="viewStart"
-        android:textColor="@color/red"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_verification_phone_number" />
-
-    <Button
-        android:id="@+id/b_verification_next"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="32dp"
-        android:alpha="0.5"
-        android:background="@drawable/greyed_out_button"
-        android:clickable="false"
-        android:fontFamily="@font/fredoka_one"
-        android:text="Resend Code"
-        android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_verification_error" />
-
-    <TextView
         android:id="@+id/tv_verification_previous"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="75dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/fredoka_one"
         android:paddingLeft="30dp"
         android:paddingTop="30dp"
@@ -122,7 +91,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.500"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/b_verification_next" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_verification_error" />
 
 
     <com.chaos.view.PinView
@@ -132,20 +101,19 @@
         android:layout_height="52dp"
         android:layout_marginTop="16dp"
         android:cursorVisible="true"
-        android:fontFamily="@font/fredoka_one"
+        android:hint="Hint."
         android:inputType="number"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:cursorColor="@color/navy"
         app:cursorWidth="2dp"
         app:itemCount="6"
-        app:itemHeight="50dp"
+        app:itemHeight="48dp"
         app:itemRadius="4dp"
         app:itemSpacing="0dp"
-        app:itemWidth="60dp"
+        app:itemWidth="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_verification_countdown"
+        app:layout_constraintTop_toBottomOf="@+id/tv_verification_phone_number"
         app:lineWidth="2dp"
         app:viewType="rectangle" />
 
@@ -154,6 +122,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="@drawable/ic_baseline_error_24"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/pb_verification_progress"
         app:layout_constraintEnd_toEndOf="@+id/pb_verification_progress"
         app:layout_constraintStart_toStartOf="@+id/pb_verification_progress"

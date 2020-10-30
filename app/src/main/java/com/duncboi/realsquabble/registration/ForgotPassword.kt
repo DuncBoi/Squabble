@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -23,6 +25,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.fragment_email_registration.*
 import kotlinx.android.synthetic.main.fragment_forgot_password.*
 import kotlinx.android.synthetic.main.sending_email.view.*
 import kotlinx.coroutines.*
@@ -30,6 +33,7 @@ import kotlinx.coroutines.*
 class ForgotPassword : Fragment() {
 
     private val args: ForgotPasswordArgs by navArgs()
+    private var job: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,8 +48,7 @@ class ForgotPassword : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        stopLiveEmailCheck = true
-        stopOnClickEmailCheck = true
+        job?.cancel()
     }
 
     override fun onResume() {
@@ -58,59 +61,126 @@ class ForgotPassword : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         onEmailPassed()
-        runLiveEmailCheck()
         defaultConstraint()
         auth = Firebase.auth
 
+        tv_forgot_password_previous.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        et_fp_email.addTextChangedListener(object: TextWatcher {
+            private var searchFor = ""
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                val searchText = p0.toString().trim().toLowerCase()
+                if (searchText == searchFor)
+                    return
+                searchFor = searchText
+                defaultConstraint()
+                pb_forgot_password_progress.visibility = View.VISIBLE
+                job = CoroutineScope(Dispatchers.Main).launch {
+                    delay(1000)
+                    if (searchText != searchFor)
+                        return@launch
+                    if (searchText == "") {
+                        onEmailEmpty()
+                        pb_forgot_password_progress.visibility = View.INVISIBLE
+                    } else if (!isEmailValid(searchText)) {
+                        onIncorrectEmailFormat()
+                        pb_forgot_password_progress.visibility = View.INVISIBLE
+                    } else {
+                        val usernameQuery =
+                            FirebaseDatabase.getInstance().reference.child("Users")
+                                .orderByChild("email").equalTo(searchText)
+                        usernameQuery.addListenerForSingleValueEvent(object :
+                            ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                if (snapshot.childrenCount > 0) {
+                                    onEmailInDatabase()
+                                    pb_forgot_password_progress.visibility = View.INVISIBLE
+                                } else {
+                                    onEmailNotInDatabase()
+                                    pb_forgot_password_progress.visibility = View.INVISIBLE
+                                }
+                            }
+                            override fun onCancelled(error: DatabaseError) {}
+                        })
+                    }
+                }
+            }
+        })
+
         b_fp_send_email.setOnClickListener {
 
-            stopLiveEmailCheck = true
-            stopOnClickEmailCheck = false
             val email = et_fp_email.text.toString().trim().toLowerCase()
-            onClickEmail = email
 
             val emailQuery = FirebaseDatabase.getInstance().reference.child("Users").orderByChild("email").equalTo(email)
             emailQuery.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {}
                 override fun onDataChange(snapshot: DataSnapshot) {
 
-                    if(isEmailValid(email) && snapshot.childrenCount > 0){
-
-                        val sendingEmailDialog = sendingEmailDialog()
-                        sendingEmailDialog!!.show()
-
-                        auth.sendPasswordResetEmail(email).addOnCompleteListener {
-
-                            if (it.isSuccessful){
-                                sendingEmailDialog.dismiss()
-                                showEmailSentDialog(email)
+                    for (i in snapshot.children){
+                        val password = i.child("password").getValue(String::class.java)
+                        if (password != null){
+                            if (password == "google"){
+                                val builder = AlertDialog.Builder(activity)
+                                builder.setTitle("Email Failed")
+                                builder.setCancelable(false)
+                                builder.setMessage("Your account is linked to Google, please return to the login screen and sign in with Google")
+                                builder.setPositiveButton("Ok") { _: DialogInterface?, _: Int ->
+                                    findNavController().popBackStack()
+                                }
+                                builder.show()
                             }
+                            else if (password == "phone"){
+                                val builder = AlertDialog.Builder(activity)
+                                builder.setTitle("Email sent to $email")
+                                builder.setCancelable(false)
+                                builder.setMessage("Your account is linked to a phone number, please return to the login screen and sign in with a phone number")
+                                builder.setPositiveButton("Ok") { _: DialogInterface?, _: Int ->
+                                    findNavController().popBackStack()
+                                }
+                                builder.show()
+                            }
+                            else{
+                                if(isEmailValid(email) && snapshot.childrenCount > 0){
 
-                        }.addOnFailureListener {
-                            sendingEmailDialog.dismiss()
-                            errorConstraint()
-                            tv_fp_error_message.text = it.message
+                                    val sendingEmailDialog = sendingEmailDialog()
+                                    sendingEmailDialog!!.show()
+
+                                    auth.sendPasswordResetEmail(email).addOnCompleteListener {
+
+                                        if (it.isSuccessful){
+                                            sendingEmailDialog.dismiss()
+                                            showEmailSentDialog(email)
+                                        }
+
+                                    }.addOnFailureListener {
+                                        sendingEmailDialog.dismiss()
+                                        errorConstraint()
+                                        tv_fp_error_message.text = it.message
+                                    }
+                                }
+                                else{
+                                    if (!isEmailValid(email)){
+                                        onIncorrectEmailFormat()
+                                    }
+                                    else{
+                                        onEmailEmpty()
+                                    }
+                                }
+                            }
                         }
                     }
-                    else{
-                        if (!isEmailValid(email)){
-                            runOnClickEmailCheck()
-                        }
-                        else{
-                            stopLiveEmailCheck = false
-                            stopOnClickEmailCheck = true
-                            runLiveEmailCheck()
-                        }}
                 }
             })
         }
 
         tv_fp_back_to_login.setOnClickListener {
-            val bundle = Bundle()
-            val email = et_fp_email.text.toString().trim().toLowerCase()
-            bundle.putString("email", email)
-            findNavController().navigate(R.id.action_forgotPassword_to_login)
+            findNavController().popBackStack()
         }
     }
 
@@ -118,72 +188,13 @@ class ForgotPassword : Fragment() {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
-    private var stopOnClickEmailCheck = false
-    private var stopLiveEmailCheck = false
-
-    private fun runOnClickEmailCheck(){
-        CoroutineScope(Dispatchers.Main).launch {
-            onClickEmailCheckLogic()}
-    }
-    private fun runLiveEmailCheck(){
-        CoroutineScope(Dispatchers.IO).launch {
-            liveEmailCheckLogic()}
-    }
-
-    //coroutine logic
-    private suspend fun onClickEmailCheckLogic(){
-        while (!stopOnClickEmailCheck){
-            delay(200)
-            val email = et_fp_email.text.toString().trim()
-            if (!isEmailValid(email)){
-                if(email.isEmpty()) onEmailEmpty()
-                else {
-                    //MAKES ERROR MESSAGE SAY EMAIL FORMATTED INCORRECTLY ONLY WHEN HITTING NEXT FOR THE FIRST TIME JUST ERASE THE IF STATEMENT TO CHANGE BACK (KEEP THE ELSE CONTENT BUT DELETE ELSE())
-                    if(email != onClickEmail){
-                        onClickEmail = "*"
-                        defaultConstraint()
-                    }
-                    else onIncorrectEmailFormat()
-                }
-            }
-            else{
-                stopOnClickEmailCheck = true
-                stopLiveEmailCheck = false
-                runLiveEmailCheck()
-            }
-        }
-    }
-    private suspend fun liveEmailCheckLogic(){
-        while(!stopLiveEmailCheck){
-            delay(200)
-
-            val email = et_fp_email.text.toString().trim()
-            val lowerCaseEmail = email.toLowerCase()
-
-            if (!isEmailValid(lowerCaseEmail)) defaultMainThread()
-            else{
-                val emailQuery = FirebaseDatabase.getInstance().reference.child("Users").orderByChild("email").equalTo(lowerCaseEmail)
-                emailQuery.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-
-                        if(snapshot.childrenCount <= 0) { onEmailNotInDatabase() }
-                        else onEmailInDatabase()
-
-                    }
-                    override fun onCancelled(error: DatabaseError) {}
-                })
-            }}
-    }
-
     private fun showEmailSentDialog(email: String) {
         val builder = AlertDialog.Builder(activity)
-        builder.setTitle("Email Sent")
+        builder.setTitle("Email sent to $email")
         builder.setCancelable(false)
         builder.setMessage("Check your inbox for a password reset link.  After you have reset it, you may use it to log in")
         builder.setPositiveButton("Ok") { _: DialogInterface?, _: Int ->
-            val bundle = Bundle()
-            bundle.putString("email", email)
-            findNavController().navigate(R.id.action_forgotPassword_to_login)
+            findNavController().popBackStack()
         }
         builder.show()
     }
@@ -200,29 +211,14 @@ class ForgotPassword : Fragment() {
         imm.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 
-    //constraint functions
     private fun defaultConstraint(){
-        val set = ConstraintSet()
-        val fpLayout = fp_constraint
-        et_fp_email.bringToFront()
-        iv_fp_x.alpha = 0F
-        iv_fp_checkmark.alpha = 0F
-        set.clone(fpLayout)
-        set.clear(tv_fp_error_message.id, ConstraintSet.TOP)
-        set.connect(tv_fp_error_message.id, ConstraintSet.TOP,et_fp_email.id, ConstraintSet.TOP)
-        set.connect(b_fp_send_email.id, ConstraintSet.TOP,et_fp_email.id, ConstraintSet.BOTTOM, 24)
-        set.connect(tv_fp_back_to_login.id, ConstraintSet.TOP,b_fp_send_email.id, ConstraintSet.BOTTOM, 200)
-        set.applyTo(fpLayout)
+        iv_fp_checkmark.visibility = View.INVISIBLE
+        iv_fp_x.visibility = View.INVISIBLE
+        tv_fp_error_message.visibility = View.GONE
+
     }
     private fun errorConstraint(){
-        val defaultSet = ConstraintSet()
-        val fpLayout = fp_constraint
-        defaultSet.clone(fpLayout)
-        defaultSet.clear(b_fp_send_email.id, ConstraintSet.TOP)
-        defaultSet.clear(tv_fp_error_message.id, ConstraintSet.TOP)
-        defaultSet.connect(tv_fp_error_message.id, ConstraintSet.TOP, et_fp_email.id, ConstraintSet.BOTTOM, 6)
-        defaultSet.connect(b_fp_send_email.id, ConstraintSet.TOP, tv_fp_error_message.id, ConstraintSet.BOTTOM, 12)
-        defaultSet.applyTo(fpLayout)
+        tv_fp_error_message.visibility = View.VISIBLE
     }
 
     private fun sendingEmailDialog(): AlertDialog? {
@@ -241,31 +237,27 @@ class ForgotPassword : Fragment() {
     }
     private fun onEmailInDatabase() {
         defaultConstraint()
-        iv_fp_checkmark.bringToFront()
-        iv_fp_checkmark.alpha = 1F
-        iv_fp_x.alpha = 0F
+        iv_fp_checkmark.visibility = View.VISIBLE
+        iv_fp_x.visibility = View.INVISIBLE
     }
     private fun onIncorrectEmailFormat() {
         errorConstraint()
-        iv_fp_x.bringToFront()
-        iv_fp_x.alpha = 1F
-        iv_fp_checkmark.alpha = 0F
+        iv_fp_checkmark.visibility = View.INVISIBLE
+        iv_fp_x.visibility = View.VISIBLE
         tv_fp_error_message.text = "Email formatted incorrectly"
         tv_fp_error_message.setTextColor(Color.parseColor("#eb4b4b"))
     }
     private fun onEmailEmpty() {
         errorConstraint()
-        iv_fp_x.bringToFront()
-        iv_fp_x.alpha = 1F
-        iv_fp_checkmark.alpha = 0F
+        iv_fp_checkmark.visibility = View.INVISIBLE
+        iv_fp_x.visibility = View.VISIBLE
         tv_fp_error_message.text = "Please enter email"
         tv_fp_error_message.setTextColor(Color.parseColor("#eb4b4b"))
     }
     private fun onEmailNotInDatabase() {
         errorConstraint()
-        iv_fp_x.bringToFront()
-        iv_fp_x.alpha = 1F
-        iv_fp_checkmark.alpha = 0f
+        iv_fp_checkmark.visibility = View.INVISIBLE
+        iv_fp_x.visibility = View.VISIBLE
         tv_fp_error_message.text = "User does not exist"
         tv_fp_error_message.setTextColor(Color.parseColor("#eb4b4b"))
     }

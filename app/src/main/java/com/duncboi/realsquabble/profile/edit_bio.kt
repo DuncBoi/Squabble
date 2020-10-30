@@ -2,6 +2,8 @@ package com.duncboi.realsquabble.profile
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -35,7 +37,58 @@ class edit_bio : Fragment() {
         val username = args.username
         val name = args.name
 
-        runBioChecker()
+        //runBioChecker()
+
+        view.et_edit_bio_bio.addTextChangedListener(object : TextWatcher{
+            var argsBio = args.bio
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                val text = p0.toString().trim()
+                val length = text.length
+                val bioNumber = 150 - length
+                tv_edit_bio_letter_counter.text = "$bioNumber"
+                if(text == argsBio){
+                    tv_edit_bio_done.isClickable = true
+                    tv_edit_bio_done.text = "Done"
+                    et_edit_bio_bio.setPadding(24,24,24,24)
+                    et_edit_bio_bio.bringToFront()
+                    et_edit_bio_bio.setCompoundDrawablesWithIntrinsicBounds(0, 0,
+                        R.drawable.pen, 0)
+                }
+                else{
+                    argsBio += "||||||||||||"
+                    if (bioNumber < 150){
+                        tv_edit_bio_letter_counter.bringToFront()
+                        et_edit_bio_bio.setPadding(24,31,100,31)
+                        et_edit_bio_bio.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+                        if(bioNumber >= 0){
+                            tv_edit_bio_done.isClickable = true
+                            tv_edit_bio_done.text = "Done"
+                            tv_edit_bio_letter_counter.setTextColor(ResourcesCompat.getColor(
+                                resources,
+                                R.color.green, null))
+                        }
+                        else{
+                            tv_edit_bio_done.isClickable = false
+                            tv_edit_bio_done.text = ""
+                            tv_edit_bio_letter_counter.setTextColor(ResourcesCompat.getColor(
+                                resources,
+                                R.color.red, null))
+                        }
+                    }
+                    else{
+                        tv_edit_bio_done.isClickable = true
+                        tv_edit_bio_done.text = "Done"
+                        et_edit_bio_bio.setPadding(24,24,24,24)
+                        et_edit_bio_bio.bringToFront()
+                        et_edit_bio_bio.setCompoundDrawablesWithIntrinsicBounds(0, 0,
+                            R.drawable.pen, 0)
+                    }
+                }
+            }
+
+        })
         view.tv_edit_bio_done.setOnClickListener {
             val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(requireView().windowToken, 0)

@@ -9,6 +9,8 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +20,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -39,7 +42,6 @@ import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import kotlinx.android.synthetic.main.fragment_edit_profile.view.*
-import kotlinx.android.synthetic.main.profile_picture_dialog.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -52,11 +54,6 @@ class EditProfile : Fragment() {
     private lateinit var imageUri: Uri
     private val args: EditProfileArgs by navArgs()
 
-    override fun onPause() {
-        super.onPause()
-        stopNameRunner = true
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -64,17 +61,12 @@ class EditProfile : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_edit_profile, container, false)
 
-        val emailQuery = FirebaseDatabase.getInstance().reference.child("Users").orderByChild("uid").equalTo(FirebaseAuth.getInstance().currentUser!!.uid)
+        val emailQuery = FirebaseDatabase.getInstance().reference.child("Users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("uri")
+        emailQuery.onDisconnect().cancel()
         emailQuery.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                for (childSnapshot in snapshot.children) {
-                    if (childSnapshot.child("uri").getValue<String>().toString() != "null"){
-                        val uriString = childSnapshot.child("uri").getValue<String>().toString()
-                        val uri = Uri.parse(uriString)
-                        Picasso.get().load(uri).into(civ_edit_profile_picture)
-                        iv_edit_profile_photo.alpha = 0f
-                        tv_edit_profile_letter.alpha = 0f
-                }}
+                val uri = snapshot.getValue(String::class.java)
+                if (uri != null && uri != "") Picasso.get().load(uri).into(civ_edit_profile_picture)
             }
             override fun onCancelled(error: DatabaseError) {} })
 
@@ -82,25 +74,72 @@ class EditProfile : Fragment() {
         val time = args.usernameTime
         view.b_edit_profile_username.text = username
 
-        val firstLetter = username?.get(0)
-        view.tv_edit_profile_letter.text = "$firstLetter".split(' ').joinToString(" ") { it.capitalize() }
-
         val bio = args.bio
         if (bio != "null") view.b_edit_profile_bio.text = "$bio"
         else view.b_edit_profile_bio.text = ""
 
         val name = args.name
-        if (name != "null" && name != "") {
-                val firstLetter = name.get(0)
-                view.tv_edit_profile_letter.text = "$firstLetter".split(' ').joinToString(" ") { it.capitalize() }
-                view.et_edit_profile_name.setText("$name")
+        if (name != "") {
+            view.et_edit_profile_name.setText("$name")
         }
         else view.et_edit_profile_name.setText("")
 
-        view.iv_edit_profile_photo.setOnClickListener {
-            val photoDialog = waitingForVerificationDialog()
-            photoDialog.show()
+        view.civ_edit_profile_picture.setOnClickListener {
+            choosePhotoIntent()
         }
+
+        view.tv_choose_profile_picture.setOnClickListener {
+            choosePhotoIntent()
+        }
+
+        view.et_edit_profile_name.addTextChangedListener(object : TextWatcher{
+            var argsName = args.name
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                val text = p0.toString().trim()
+                val length = text.length
+                val nameNumber = 25 - length
+                tv_edit_profile_letter_counter.text = "$nameNumber"
+                if (argsName == text){
+                    tv_edit_profile_done.isClickable = true
+                    tv_edit_profile_done.text = "Done"
+                    et_edit_profile_name.setPadding(24,24,24,24)
+                    et_edit_profile_name.bringToFront()
+                    et_edit_profile_name.setCompoundDrawablesWithIntrinsicBounds(0, 0,
+                        R.drawable.pen, 0)
+                }
+                else if (nameNumber < 25){
+                    argsName += "9"
+                    tv_edit_profile_letter_counter.bringToFront()
+                    et_edit_profile_name.setPadding(24,31,100,31)
+                    et_edit_profile_name.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+                    if(nameNumber >= 0){
+                        tv_edit_profile_done.isClickable = true
+                        tv_edit_profile_done.text = "Done"
+                        tv_edit_profile_letter_counter.setTextColor(ResourcesCompat.getColor(
+                            resources,
+                            R.color.green, null))
+                    }
+                    else{
+                        tv_edit_profile_done.isClickable = false
+                        tv_edit_profile_done.text = ""
+                        tv_edit_profile_letter_counter.setTextColor(ResourcesCompat.getColor(
+                            resources,
+                            R.color.red, null))
+                    }
+                }
+                else{
+                    tv_edit_profile_done.isClickable = true
+                    tv_edit_profile_done.text = "Done"
+                    et_edit_profile_name.setPadding(24,24,24,24)
+                    et_edit_profile_name.bringToFront()
+                    et_edit_profile_name.setCompoundDrawablesWithIntrinsicBounds(0, 0,
+                        R.drawable.pen, 0)
+                }
+            }
+
+        })
 
         view.iv_edit_profile_back_button.setOnClickListener {
             val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -169,28 +208,7 @@ class EditProfile : Fragment() {
             bundle.putString("name", name)
             findNavController().navigate(R.id.editProfile_to_edit_bio, bundle)
         }
-        runNameChecker()
         return view
-    }
-
-    private fun waitingForVerificationDialog(): AlertDialog {
-        val waitingForVerificationBuilder = activity?.let { AlertDialog.Builder(it) }
-        val view = LayoutInflater.from(activity).inflate(R.layout.profile_picture_dialog, null)
-        waitingForVerificationBuilder!!.setView(view)
-        waitingForVerificationBuilder.setCancelable(false)
-        val waitingForVerificationDialog = waitingForVerificationBuilder.create()
-        view.b_profile_picture_dialog_cancel.setOnClickListener {
-            waitingForVerificationDialog.dismiss()
-        }
-        view.b_profile_picture_dialog_camera.setOnClickListener {
-            waitingForVerificationDialog.dismiss()
-            takePictureIntent()
-        }
-        view.b_profile_picture_dialog_library.setOnClickListener {
-            waitingForVerificationDialog.dismiss()
-            choosePhotoIntent()
-        }
-        return waitingForVerificationDialog
     }
 
     private var stopNameRunner = false
@@ -247,13 +265,6 @@ class EditProfile : Fragment() {
             }
         }
     }
-    private fun takePictureIntent(){
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { pictureIntent ->
-            pictureIntent.resolveActivity(activity?.packageManager!!)?.also {
-                startActivityForResult(pictureIntent, 0)
-            }
-        }
-    }
 
     private fun choosePhotoIntent(){
         stopNameRunner = true
@@ -265,13 +276,6 @@ class EditProfile : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == 0 && resultCode == RESULT_OK) {
-            val uri = data?.data
-            CropImage.activity(uri).setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(1, 1)
-                .start(
-                    this.requireContext(), this
-                )
-        }
         if (requestCode == 1 && resultCode == RESULT_OK) {
             val uri = data?.data
             CropImage.activity(uri).setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(1, 1)

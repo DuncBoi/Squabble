@@ -5,16 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.duncboi.realsquabble.Constants
-import com.duncboi.realsquabble.Constants.rand
+import com.duncboi.realsquabble.political.Constants.rand
 import com.duncboi.realsquabble.R
 import kotlinx.android.synthetic.main.fragment_environment.*
 
 class Environment : Fragment() {
 
-    private val answer0: String = "0"
-    private val answer5: String = "5"
-    private val answer10: String = "10"
+    private val answer0: String = "Companies should be forced to follow environmental regulations"
+    private val answer5: String = "Companies with eco-friendly practices should receive tax benefits and subsidies"
+    private val answer10: String = "Strict environmental regulations hurt the economy and should not be enforced"
     private val randomNumber = rand(1,3)
 
     override fun onCreateView(
@@ -52,7 +51,7 @@ class Environment : Fragment() {
                         it1,
                         "Environment",
                         answer,
-                        "social",
+                        "economic",
                         Constants.questionNumber + 1
                     )
                 }

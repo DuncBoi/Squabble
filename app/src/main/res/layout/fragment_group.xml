@@ -4,14 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Group">
+    tools:context=".HolderClass.Group">
 
     <ImageView
         android:id="@+id/imageView20"
         android:layout_width="0dp"
+        android:layout_height="65dp"
+        android:src="@drawable/extra_round_edittext_register_login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_group_group_holder" />
+
+    <ProgressBar
+        android:id="@+id/pb_group_progress"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_group_group_holder"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="@drawable/rounded_edittext_register_login"
-        app:layout_constraintBottom_toTopOf="@+id/recycler_group"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -47,10 +65,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_group_do_not_belong_to_group"
+    <Button
+        android:id="@+id/b_group_create_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/rounded_edittext_register_login"
+        android:fontFamily="@font/fredoka_one"
+        android:padding="16dp"
+        android:text="Create Group"
+        android:textAllCaps="false"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/b_group_find_group" />
+
+    <TextView
+        android:id="@+id/tv_group_do_not_belong_to_group"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:fontFamily="@font/fredoka_one"
         android:text="You do not currently belong to a group"
@@ -66,11 +103,12 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:civ_border_color="@color/navy"
-        app:civ_border_width="2dp"
+        android:src="@drawable/group_icon"
+        app:civ_border_color="@color/Libertarian"
+        app:civ_border_width="1dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView20"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_group_group_holder" />
 
     <TextView
         android:id="@+id/tv_group_group_name"
@@ -84,7 +122,6 @@
         app:layout_constraintTop_toTopOf="@+id/civ_group_group_image" />
 
     <ImageView
-        android:id="@+id/iv_group_info"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_marginEnd="8dp"
@@ -93,14 +130,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/civ_group_group_image" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_group"
-        android:layout_width="0dp"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/groupswiperefresh"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/civ_group_group_image" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView20"
+        app:layout_constraintVertical_bias="0.0">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_group"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="0.0" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

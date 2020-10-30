@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".PagerDescriptionClasses.GroupActualDescription">
+
+    <TextView
+        android:id="@+id/tv_group_description_bio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rounded_edittext_register_login"
+        android:fontFamily="@font/fredoka_one"
+        android:padding="8dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/rl_group_actual_description_alignment"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_group_description_location">
+
+        <TextView
+            android:id="@+id/tv_actual_group_description_alignment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/rounded_edittext_register_login"
+            android:drawablePadding="8dp"
+            android:fontFamily="@font/fredoka_one"
+            android:gravity="center_vertical"
+            android:paddingLeft="70dp"
+            android:paddingRight="4dp"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/iv_actual_group_description_single_alignment"
+            android:layout_width="45dp"
+            android:layout_height="50dp"
+            android:layout_alignStart="@+id/tv_actual_group_description_alignment"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_group_actual_description_alignment2"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rl_group_actual_description_alignment">
+
+        <TextView
+            android:id="@+id/tv_actual_group_description_alignment2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/rounded_edittext_register_login"
+            android:drawablePadding="8dp"
+            android:fontFamily="@font/fredoka_one"
+            android:gravity="center_vertical"
+            android:paddingLeft="70dp"
+            android:paddingRight="4dp"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/iv_actual_group_description_single_alignment2"
+            android:layout_width="45dp"
+            android:layout_height="50dp"
+            android:layout_alignStart="@+id/tv_actual_group_description_alignment2"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_group_description_location"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rounded_edittext_register_login"
+        android:drawableLeft="@drawable/location_icon"
+        android:ellipsize="end"
+        android:fontFamily="@font/fredoka_one"
+        android:gravity="center"
+        android:maxLines="3"
+        android:padding="10dp"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_group_description_bio" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

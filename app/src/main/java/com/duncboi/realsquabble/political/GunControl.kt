@@ -5,24 +5,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.duncboi.realsquabble.Constants.checkAnswers
-import com.duncboi.realsquabble.Constants.fragmentList
-import com.duncboi.realsquabble.Constants.nextFragment
-import com.duncboi.realsquabble.Constants.previousFragment
-import com.duncboi.realsquabble.Constants.questionNumber
-import com.duncboi.realsquabble.Constants.rand
-import com.duncboi.realsquabble.Constants.randomAnswers
-import com.duncboi.realsquabble.Constants.runRadioChecker
-import com.duncboi.realsquabble.Constants.stopRadioRunner
+import com.duncboi.realsquabble.political.Constants.checkAnswers
+import com.duncboi.realsquabble.political.Constants.fragmentList
+import com.duncboi.realsquabble.political.Constants.nextFragment
+import com.duncboi.realsquabble.political.Constants.previousFragment
+import com.duncboi.realsquabble.political.Constants.questionNumber
+import com.duncboi.realsquabble.political.Constants.rand
+import com.duncboi.realsquabble.political.Constants.randomAnswers
+import com.duncboi.realsquabble.political.Constants.runRadioChecker
+import com.duncboi.realsquabble.political.Constants.stopRadioRunner
 import com.duncboi.realsquabble.R
 import kotlinx.android.synthetic.main.fragment_gun_control.*
 
 
 class GunControl : Fragment() {
 
-    private val answer0: String = "All gun ownership should be banned"
-    private val answer5: String = "People should be able to own non automatic guns"
-    private val answer10: String = "Every mentally stable person should be able to own a gun"
+    private val answer0: String = "No one should be able to own a gun"
+    private val answer5: String = "People should only be able to own non military grade weapons"
+    private val answer10: String = "Every mentally stable citizen of age has the right to own a gun"
     private val randomNumber = rand(1,3)
 
     override fun onCreateView(

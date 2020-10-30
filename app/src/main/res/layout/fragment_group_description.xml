@@ -4,63 +4,59 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GroupDescription">
+    tools:context=".ViewPagerFragments.GroupDescription">
 
 
-    <ImageView
-        android:id="@+id/imageView7"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:background="@color/greytext"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/groupViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/groupTabLayout" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/groupTabLayout"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_edittext_register_login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_group_description_member_count"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        app:tabTextAppearance="@style/PagerTabStripText" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/civ_group_description"
         android:layout_width="125dp"
         android:layout_height="125dp"
-        android:layout_marginTop="35dp"
-        app:civ_border_color="@color/navy"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/group_icon"
+        app:civ_border_color="@color/Libertarian"
         app:civ_border_width="2dp"
-        app:layout_constraintEnd_toEndOf="@+id/imageView7"
-        app:layout_constraintStart_toStartOf="@+id/imageView7"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView43" />
 
     <TextView
         android:id="@+id/tv_group_description_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/rounded_edittext_register_login"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
         android:fontFamily="@font/fredoka_one"
         android:padding="6dp"
         android:textColor="#000000"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/civ_group_description" />
-
-    <TextView
-        android:id="@+id/tv_group_description_location"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/rounded_edittext_register_login"
-        android:drawableLeft="@drawable/location_icon"
-        android:ellipsize="end"
-        android:fontFamily="@font/fredoka_one"
-        android:gravity="center"
-        android:maxLines="3"
-        android:padding="10dp"
-        android:textAlignment="center"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/civ_group_description"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/civ_group_description"
         app:layout_constraintTop_toTopOf="@+id/civ_group_description" />
+
 
     <ImageView
         android:id="@+id/iv_group_description_back"
@@ -80,18 +76,8 @@
         android:layout_marginEnd="8dp"
         android:src="@drawable/menu_icon"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView7" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-    android:id="@+id/iv_group_description_banner"
-    android:layout_width="65dp"
-    android:layout_height="85dp"
-    android:background="@drawable/rounded_edittext_register_login"
-    android:padding="8dp"
-    app:layout_constraintBottom_toBottomOf="@+id/civ_group_description"
-    app:layout_constraintEnd_toStartOf="@+id/civ_group_description"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="@+id/civ_group_description" />
 
     <ImageView
         android:id="@+id/iv_group_description_banner_holder"
@@ -126,7 +112,6 @@
         app:layout_constraintTop_toTopOf="@+id/iv_group_description_banner_holder" />
 
     <ImageView
-        android:id="@+id/iv_group_description_plus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/add_icon_2"
@@ -138,10 +123,12 @@
 
     <Button
         android:id="@+id/b_group_description_join_group"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/rounded_button_green"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/green"
         android:fontFamily="@font/fredoka_one"
         android:padding="4dp"
         android:text="Join "
@@ -149,7 +136,60 @@
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/civ_group_description"
         app:layout_constraintTop_toBottomOf="@+id/tv_group_description_name" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/fredoka_one"
+        android:text="Members"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/groupViewPager"
+        app:layout_constraintEnd_toEndOf="@+id/groupTabLayout"
+        app:layout_constraintStart_toStartOf="@+id/guideline23"
+        app:layout_constraintTop_toTopOf="@+id/groupTabLayout" />
+
+    <TextView
+        android:id="@+id/textView42"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/fredoka_one"
+        android:text="Description"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/groupViewPager"
+        app:layout_constraintEnd_toStartOf="@+id/guideline23"
+        app:layout_constraintStart_toStartOf="@+id/groupTabLayout"
+        app:layout_constraintTop_toTopOf="@+id/groupTabLayout" />
+
+    <TextView
+        android:id="@+id/textView43"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/fredoka_one"
+        android:text="Group"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/iv_group_description_menu"
+        app:layout_constraintStart_toEndOf="@+id/iv_group_description_back"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_group_description_member_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/fredoka_one"
+        app:layout_constraintStart_toStartOf="@+id/civ_group_description"
+        app:layout_constraintTop_toBottomOf="@+id/civ_group_description" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.50" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

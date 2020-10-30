@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".political.ManuallyChoose">
+
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/b_manually_choose_next"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/greyed_out_button"
+                android:clickable="false"
+                android:fontFamily="@font/fredoka_one"
+                android:text="Next"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/rg_manually_choose"
+                app:layout_constraintStart_toStartOf="@+id/rg_manually_choose"
+                app:layout_constraintTop_toBottomOf="@+id/rg_manually_choose" />
+
+            <TextView
+                android:id="@+id/textView36"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/fredoka_one"
+                android:text="Choose Alignment"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <RadioGroup
+                android:id="@+id/rg_manually_choose"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/rounded_edittext_register_login"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView39">
+
+                <RadioButton
+                    android:id="@+id/rb_manually_choose_conservative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@drawable/conservative_banner"
+                    android:fontFamily="@font/fredoka_one"
+                    android:padding="10dp"
+                    android:text="Conservative"
+                    android:textSize="18sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_manually_choose_liberal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@drawable/ic_liberal_banner"
+                    android:fontFamily="@font/fredoka_one"
+                    android:padding="10dp"
+                    android:text="Liberal"
+                    android:textSize="18sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_manually_choose_libertarian"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@drawable/libertarian_banner"
+                    android:fontFamily="@font/fredoka_one"
+                    android:padding="10dp"
+                    android:text="Libertarian"
+                    android:textSize="18sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_manually_choose_authoritarian"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@drawable/authoritarian_banner"
+                    android:fontFamily="@font/fredoka_one"
+                    android:padding="10dp"
+                    android:text="Populist"
+                    android:textSize="18sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_manually_choose_moderate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@drawable/moderate_banner"
+                    android:fontFamily="@font/fredoka_one"
+                    android:padding="10dp"
+                    android:text="Moderate"
+                    android:textSize="18sp" />
+            </RadioGroup>
+
+            <ImageView
+                android:id="@+id/iv_manually_choose_back"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/arrow_back"
+                app:layout_constraintBottom_toBottomOf="@+id/textView36"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView36" />
+
+            <TextView
+                android:id="@+id/textView39"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/fredoka_one"
+                android:text="(This will somewhat influence the type of content that you view and can be made private by turning on anonymous mode later on)"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView36" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

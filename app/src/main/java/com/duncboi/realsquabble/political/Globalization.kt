@@ -5,16 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.duncboi.realsquabble.Constants
-import com.duncboi.realsquabble.Constants.rand
+import com.duncboi.realsquabble.political.Constants.rand
 import com.duncboi.realsquabble.R
 import kotlinx.android.synthetic.main.fragment_globalization.*
 
 class Globalization : Fragment() {
 
-    private val answer0: String = "0"
-    private val answer5: String = "5"
-    private val answer10: String = "10"
+    private val answer0: String = "We should only buy American products, even if they cost more"
+    private val answer5: String = "We should consider American products before products from other countries"
+    private val answer10: String = "We should buy products from whoever offers them at the best price"
     private val randomNumber = rand(1,3)
 
     override fun onCreateView(
@@ -50,7 +49,7 @@ class Globalization : Fragment() {
                 activity?.let { it1 ->
                     Constants.nextFragment(
                         it1,
-                        "Globalization",
+                        "Retirement",
                         answer,
                         "economic",
                         Constants.questionNumber + 1

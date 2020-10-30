@@ -5,16 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.duncboi.realsquabble.Constants
-import com.duncboi.realsquabble.Constants.rand
+import com.duncboi.realsquabble.political.Constants.rand
 import com.duncboi.realsquabble.R
 import kotlinx.android.synthetic.main.fragment_drugs.*
 
 class Drugs : Fragment() {
 
-    private val answer0: String = "0"
-    private val answer5: String = "5"
-    private val answer10: String = "10"
+    private val answer0: String = "The government should fight to minimize recreational drug use and its distribution"
+    private val answer5: String = "Recreational drugs should be legal, with regulated distribution"
+    private val answer10: String = "Recreational drugs should be legal, without regulation"
 
     private val randomNumber = rand(1,3)
 

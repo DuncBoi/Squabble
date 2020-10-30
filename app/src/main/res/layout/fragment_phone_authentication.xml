@@ -5,7 +5,7 @@
     android:id="@+id/phone_constraint"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PhoneAuthentication">
+    tools:context=".registration.PhoneAuthentication">
 
     <TextView
         android:id="@+id/tv_phone_phone_taken"
@@ -29,6 +29,7 @@
         android:layout_marginTop="32dp"
         android:fontFamily="@font/fredoka_one"
         android:text="Phone Authentication"
+        android:textColor="@android:color/black"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +45,7 @@
         android:fontFamily="@font/fredoka_one"
         android:text="Phone number must be registered in the United States"
         android:textAlignment="center"
-        android:textColor="@color/navy"
+        android:textColor="@color/greytext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_phone_header" />
@@ -111,7 +112,7 @@
         app:srcCompat="@drawable/x" />
 
     <TextView
-        android:id="@+id/tv_phone_format_phone"
+        android:id="@+id/textView6969"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="45dp"
@@ -143,19 +144,6 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_phone_please_enter_phone" />
 
     <TextView
-        android:id="@+id/textView14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="2dp"
-        android:fontFamily="@font/fredoka_one"
-        android:text="[+1]"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/et_phone_phone"
-        app:layout_constraintStart_toStartOf="@+id/et_phone_phone"
-        app:layout_constraintTop_toTopOf="@+id/et_phone_phone" />
-
-    <TextView
         android:id="@+id/tv_phone_formatted_phone"
         android:layout_width="0dp"
         android:layout_height="50dp"
@@ -164,6 +152,7 @@
         android:background="@drawable/rounded_edittext_register_login"
         android:ems="10"
         android:fontFamily="@font/fredoka_one"
+        android:hint="Phone Number"
         android:maxLength="14"
         android:paddingLeft="45dp"
         android:paddingTop="13dp"
@@ -174,6 +163,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/et_phone_phone" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="2dp"
+        android:fontFamily="@font/fredoka_one"
+        android:text="[+1]"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/et_phone_phone"
+        app:layout_constraintStart_toStartOf="@+id/et_phone_phone"
         app:layout_constraintTop_toTopOf="@+id/et_phone_phone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

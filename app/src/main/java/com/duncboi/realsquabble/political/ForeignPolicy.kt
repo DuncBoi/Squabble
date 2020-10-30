@@ -5,16 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.duncboi.realsquabble.Constants
-import com.duncboi.realsquabble.Constants.rand
+import com.duncboi.realsquabble.political.Constants.rand
 import com.duncboi.realsquabble.R
 import kotlinx.android.synthetic.main.fragment_foreign_policy.*
 
 class ForeignPolicy : Fragment() {
 
-    private val answer0: String = "0"
-    private val answer5: String = "5"
-    private val answer10: String = "10"
+    private val answer0: String = "The United States should get involved in oversea affairs to maintain global peace"
+    private val answer5: String = "The United States should impose tariffs and regulations on problematic countries"
+    private val answer10: String = "The United States should generally back out of other countries' problems"
     private val randomNumber = rand(1,3)
 
     override fun onCreateView(
@@ -52,7 +51,7 @@ class ForeignPolicy : Fragment() {
                         it1,
                         "Foreign Policy",
                         answer,
-                        "economic",
+                        "social",
                         Constants.questionNumber + 1
                     )
                 }
